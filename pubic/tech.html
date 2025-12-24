@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术栈 - 个人技术博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #292b3c;
+            --bg-secondary: #34364a;
+            --bg-tertiary: #3e4054;
+            --text-primary: #c4c7e0;
+            --text-secondary: #8a8daa;
+            --text-muted: #6b6d83;
+            --accent-blue: #5b5ebf;
+            --accent-purple: #7a52cf;
+            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
+            --border-color: #4a4d64;
+            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-secondary);
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--accent-blue);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+        }
+
+        /* 技术栈网格 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* 技术卡片样式 */
+        .tech-card {
+            background-color: var(--bg-tertiary);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .tech-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tech-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 技术列表样式 */
+        .tech-list {
+            list-style: none;
+        }
+
+        .tech-list li {
+            margin-bottom: 1rem;
+            padding-left: 2.25rem;
+            position: relative;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        /* 技术图标样式 */
+        .tech-icon {
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: var(--transition);
+            filter: brightness(0.7);
+        }
+
+        .tech-list li:hover .tech-icon {
+            filter: brightness(1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .tech-list li:hover {
+            color: var(--text-primary);
+            padding-left: 2rem;
+        }
+
+        .tech-list li:hover::before {
+            color: var(--accent-orange);
+        }
+
+        /* 技能等级样式 */
+        .skill-level {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-title">技术栈</h1>
+        
+        <div class="tech-grid">
+            <!-- 前端开发 -->
+            <div class="tech-card">
+                <h3>前端开发</h3>
+                <ul class="tech-list">
+                    <li><img src="assets/icons/javascript.svg" alt="JavaScript" class="tech-icon">JavaScript</li>
+                    <li><img src="assets/icons/typescript.svg" alt="TypeScript" class="tech-icon">TypeScript</li>
+                    <li><img src="assets/icons/React.svg" alt="React" class="tech-icon">React</li>
+                    <li><img src="assets/icons/nextjs.svg" alt="NextJS" class="tech-icon">NextJS</li>
+                    <li><img src="assets/icons/vue3.svg" alt="Vue3" class="tech-icon">Vue3</li>
+                    <li><img src="assets/icons/react-native.svg" alt="React-Native" class="tech-icon">React-Native</li>
+                </ul>
+            </div>
+
+            <!-- 后端开发 -->
+            <div class="tech-card">
+                <h3>后端开发</h3>
+                <ul class="tech-list">
+                    <li><img src="assets/icons/php.svg" alt="PHP" class="tech-icon">PHP</li>
+                    <li><img src="assets/icons/nodejs.svg" alt="Node.js" class="tech-icon">Node.js</li>
+                    <li><img src="assets/icons/backEnd.svg" alt="Express" class="tech-icon">Express</li>
+                    <li><img src="assets/icons/laravel.svg" alt="Laravel" class="tech-icon">Laravel</li>
+                    <li><img src="assets/icons/koajs.svg" style="width: 40px; left: -8px;" alt="Koa.js" class="tech-icon">Koa.js</li>
+                    <li><img src="assets/icons/mysql.svg" alt="MySQL" class="tech-icon">MySQL</li>
+                    <li><img src="assets/icons/Prisma.svg" alt="Prisma" class="tech-icon">Prisma</li>
+                </ul>
+            </div>
+
+            <!-- 其他技能 -->
+            <div class="tech-card">
+                <h3>其他技能</h3>
+                <ul class="tech-list">
+                    <li><img src="assets/icons/github-fill.svg" alt="Git & GitHub" class="tech-icon">Git & GitHub</li>
+                    <li><img src="assets/icons/API.svg" alt="RESTful API设计" class="tech-icon">RESTful API设计</li>
+                    <li><img src="assets/icons/database.svg" alt="数据库设计" class="tech-icon">数据库设计</li>
+                    <li><img src="assets/icons/performance.svg" alt="性能优化" class="tech-icon">性能优化</li>
+                    <li><img src="assets/icons/devops.svg" alt="DevOps基础" class="tech-icon">DevOps基础</li>
+                    <li><img src="assets/icons/docs.svg" alt="文档编写" class="tech-icon">文档编写</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

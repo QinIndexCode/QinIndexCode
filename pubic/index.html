@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人技术博客 - 云南开发者</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #292b3c;
+            --bg-secondary: #34364a;
+            --bg-tertiary: #3e4054;
+            --text-primary: #c4c7e0;
+            --text-secondary: #8a8daa;
+            --text-muted: #6b6d83;
+            --accent-blue: #5b5ebf;
+            --accent-purple: #7a52cf;
+            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
+            --border-color: #4a4d64;
+            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            overflow: hidden;
+        }
+
+        /* 主容器布局 */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        /* 左侧边栏样式 */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 0;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* 个人资料区域 */
+        .profile-section {
+            text-align: center;
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent-blue);
+            border: 3px solid var(--accent-blue);
+            transition: var(--transition);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 25px rgba(37, 99, 235, 0.4);
+            border-color: var(--accent-orange);
+        }
+
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* 浮动文字样式 */
+        .floating-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .floating-text.show {
+            animation: float 1s ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -60%) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            flex: 1;
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* 导航图标样式 */
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 0.625rem;
+            transition: var(--transition);
+            filter: brightness(0.7);
+            z-index: 2;
+            position: relative;
+        }
+
+        /* 导航文字样式 */
+        .nav-text {
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.025em;
+            transition: var(--transition);
+        }
+
+        /* 渐变背景和边框效果 */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-tertiary);
+            z-index: -2;
+            transition: background 0.3s ease;
+        }
+
+        /* 跟随鼠标的渐变效果 */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            z-index: -1;
+            transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+            left: var(--mouse-x, 50%);
+            top: var(--mouse-y, 50%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+
+        .nav-link:hover::after {
+            width: 300px;
+            height: 300px;
+            opacity: 0.3;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-blue);
+        }
+
+        .nav-link:hover .nav-icon {
+            filter: brightness(1);
+            transform: scale(1.1);
+        }
+
+        /* 左侧激活边框 */
+        .nav-link.active::before {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-link.active::after {
+            width: 300px;
+            height: 300px;
+            opacity: 0.2;
+        }
+
+        .nav-link.active {
+            color: var(--accent-blue);
+        }
+
+        .nav-link.active .nav-icon {
+            filter: brightness(1);
+        }
+
+        /* 左侧指示条 */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleY(0);
+            width: 3px;
+            height: 60%;
+            background: var(--gradient-primary);
+            transition: transform 0.3s ease;
+            z-index: 3;
+        }
+
+        .nav-link:hover ~ .nav-item::before,
+        .nav-link.active ~ .nav-item::before {
+            transform: translateY(-50%) scaleY(0);
+        }
+
+        .nav-item:hover::before,
+        .nav-link.active::before {
+            transform: translateY(-50%) scaleY(1);
+        }
+
+        /* 联系信息区域 */
+        .contact-section {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .contact-email {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            position: relative;
+        }
+
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-blue);
+            transition: var(--transition);
+        }
+
+        .contact-email:hover {
+            color: var(--accent-blue);
+        }
+
+        .contact-email:hover::after {
+            width: 100%;
+        }
+
+        /* 主要内容区域 */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* Iframe 样式 */
+        #content-frame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        /* 页面加载动画 */
+        .content-area.loading #content-frame {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .sidebar {
+                width: 240px;
+                position: fixed;
+                left: -240px;
+                height: calc(100vh - 1rem);
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                left: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar" id="sidebar">
+            <!-- 个人资料 -->
+            <div class="profile-section">
+                <div class="profile-avatar" id="avatar">
+                    <img src="assets/images/avatar.jpg" alt="个人头像" id="avatar-img" onerror="this.style.display='none'; this.parentElement.innerHTML='💻'">
+                </div>
+                <div class="profile-name">QinZhiHeng</div>
+                <!-- 浮动文字元素 -->
+                <div class="floating-text" id="floating-text"></div>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="home.html" class="nav-link active" data-target="home">
+                        <img src="assets/icons/home.svg" alt="首页" class="nav-icon">
+                        <span class="nav-text">首页</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="tech.html" class="nav-link" data-target="tech">
+                        <img src="assets/icons/technical.svg" alt="技术" class="nav-icon">
+                        <span class="nav-text">技术</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="projects.html" class="nav-link" data-target="projects">
+                        <img src="assets/icons/project.svg" alt="项目" class="nav-icon">
+                        <span class="nav-text">项目</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link" data-target="about">
+                        <img src="assets/icons/aboutMe.svg" alt="关于" class="nav-icon">
+                        <span class="nav-text">关于</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- 联系信息 -->
+            <div class="contact-section">
+                <a href="mailto:qinindexcode@gmail.com" class="contact-email">qinindexcode@gmail.com</a>
+            </div>
+        </aside>
+
+        <!-- 主要内容区域 -->
+        <main class="content-area" id="content-area">
+            <iframe id="content-frame" src="home.html" frameborder="0"></iframe>
+        </main>
+    </div>
+
+    <script>
+        // 获取所有导航链接
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentFrame = document.getElementById('content-frame');
+        const contentArea = document.getElementById('content-area');
+
+        // 导航链接点击事件
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 添加加载动画
+                contentArea.classList.add('loading');
+                
+                // 更新激活状态
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 延迟加载内容，增强动画效果
+                setTimeout(() => {
+                    // 加载对应页面到iframe
+                    const targetUrl = this.getAttribute('href');
+                    contentFrame.src = targetUrl;
+                }, 150);
+            });
+        });
+
+        // 监听iframe加载完成事件
+        contentFrame.addEventListener('load', function() {
+            // 移除加载动画
+            setTimeout(() => {
+                contentArea.classList.remove('loading');
+            }, 100);
+        });
+
+        // 头像交互功能
+        const avatar = document.getElementById('avatar');
+        const avatarImg = document.getElementById('avatar-img');
+        const floatingText = document.getElementById('floating-text');
+        
+        // 要显示的文字数组
+        const messages = [
+            'what?',
+            '你在干什么',
+            '这什么都没有',
+            'Don\'t do this',
+            'Stop'
+        ];
+        
+        // 当前显示的文字索引
+        let currentMessageIndex = 0;
+        // 是否已更换头像
+        let avatarChanged = false;
+        // 动画是否正在播放（防止快速点击）
+        let isAnimating = false;
+        
+        // 头像点击事件
+        avatar.addEventListener('click', function() {
+            // 如果头像已经更换，不再处理
+            if (avatarChanged) {
+                return;
+            }
+            
+            // 如果还有文字要显示
+            if (currentMessageIndex < messages.length) {
+                // 如果动画正在播放，不响应点击
+                if (isAnimating) {
+                    return;
+                }
+                
+                // 设置动画正在播放
+                isAnimating = true;
+                
+                // 确保先移除show类，防止动画冲突
+                floatingText.classList.remove('show');
+                
+                // 显示当前文字
+                const message = messages[currentMessageIndex];
+                floatingText.textContent = message;
+                
+                // 强制重排，确保动画正确触发
+                floatingText.offsetHeight;
+                
+                // 添加show类显示动画
+                floatingText.classList.add('show');
+                
+                // 文字消失后移除show类，并重置动画状态
+                setTimeout(() => {
+                    floatingText.classList.remove('show');
+                    isAnimating = false;
+                    // 动画结束后再移动到下一条文字
+                    currentMessageIndex++;
+                }, 1000);
+            } 
+            // 所有文字已显示完毕，再次点击直接更换头像
+            else {
+                // 更换头像
+                avatarImg.src = 'assets/images/avatar2.png';
+                avatarChanged = true;
+            }
+        });
+
+        // 鼠标跟随渐变效果
+        navLinks.forEach(link => {
+            link.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // 使用CSS变量传递鼠标位置
+                this.style.setProperty('--mouse-x', `${x}px`);
+                this.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源项目 - 个人技术博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #292b3c;
+            --bg-secondary: #34364a;
+            --bg-tertiary: #3e4054;
+            --text-primary: #c4c7e0;
+            --text-secondary: #8a8daa;
+            --text-muted: #6b6d83;
+            --accent-blue: #5b5ebf;
+            --accent-purple: #7a52cf;
+            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
+            --border-color: #4a4d64;
+            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-secondary);
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--accent-blue);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        /* 项目网格 */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* 项目卡片样式 */
+        .project-card {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-blue);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        /* 项目标题图标 */
+        .project-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            letter-spacing: 0.025em;
+        }
+
+        .project-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 0.75rem;
+            transition: var(--transition);
+            filter: brightness(0.7);
+        }
+
+        .project-card:hover .project-icon {
+            filter: brightness(1);
+            transform: scale(1.1);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* 项目标签 */
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background-color: var(--bg-primary);
+            color: var(--accent-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .tag:hover {
+            background-color: var(--accent-blue);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        /* 项目链接 */
+        .project-link {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--accent-blue);
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: var(--transition);
+            position: relative;
+            padding-right: 1.5rem;
+            letter-spacing: 0.0125em;
+        }
+
+        .project-link::after {
+            content: '›';
+            position: absolute;
+            right: 0;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            color: var(--accent-purple);
+        }
+
+        .project-link:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .project-content {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-title">项目</h1>
+        
+        <div class="project-grid">
+            <!-- 项目1：expo-lite-data-store -->
+            <div class="project-card">
+                <div class="project-content">
+                    <div class="project-title">
+                        <img src="assets/icons/leaf.svg" alt="expo-lite-data-store" class="project-icon">
+                        <h3>expo-lite-data-store</h3>
+                    </div>
+                    <p>用于Expo应用的轻量级数据存储库，提供本地存储与云端同步功能。</p>
+                    <div class="project-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Expo</span>
+                        <span class="tag">React Native</span>
+                    </div>
+                    <a href="https://github.com/QinIndexCode/expo-lite-data-store" class="project-link">查看</a>
+                </div>
+            </div>
+          
+            <!-- 项目2：GitHub Reference中文文档 -->
+            <div class="project-card">
+                <div class="project-content">
+                    <div class="project-title">
+                        <img src="assets/icons/reference.svg" alt="GitHub Reference中文文档" class="project-icon">
+                        <h3>GitHub Reference中文文档</h3>
+                    </div>
+                    <p>参与编写Vue性能优化部分，提供框架使用与性能提升建议。</p>
+                    <div class="project-tags">
+                        <span class="tag">Vue.js</span>
+                        <span class="tag">Documentation</span>
+                        <span class="tag">GitHub</span>
+                    </div>
+                    <a href="https://github.com/jaywcjlove/reference" class="project-link">查看</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

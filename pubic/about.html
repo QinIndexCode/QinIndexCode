@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 - 个人技术博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #292b3c;
+            --bg-secondary: #34364a;
+            --bg-tertiary: #3e4054;
+            --text-primary: #c4c7e0;
+            --text-secondary: #8a8daa;
+            --text-muted: #6b6d83;
+            --accent-blue: #5b5ebf;
+            --accent-purple: #7a52cf;
+            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
+            --border-color: #4a4d64;
+            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-secondary);
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--accent-blue);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+        }
+
+        /* 个人信息卡片 */
+        .profile-card {
+            background-color: var(--bg-tertiary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .profile-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-orange);
+        }
+
+        .profile-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* 内容区块 */
+        .content-section {
+            background-color: var(--bg-tertiary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .content-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+        .content-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-orange);
+        }
+
+        .content-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul {
+            color: var(--text-secondary);
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 联系方式区域 */
+        .contact-section {
+            background-color: var(--bg-tertiary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--bg-primary);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-blue);
+        }
+
+        /* 联系方式图标样式 */
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+            filter: brightness(0.7);
+        }
+
+        .contact-item:hover .contact-icon {
+            filter: brightness(1);
+            transform: scale(1.1);
+        }
+
+        .contact-item h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .profile-card,
+            .content-section,
+            .contact-section {
+                padding: 1.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .profile-card,
+            .content-section,
+            .contact-section {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="section-title">关于</h1>
+
+        <!-- 个人信息卡片 -->
+        <div class="profile-card">
+            <h2>基本信息</h2>
+            <p>04生人，目前在校求学。</p>
+        </div>
+
+        <!-- 技术背景 -->
+        <div class="content-section">
+            <h2>技术背景</h2>
+            <p>主要接触的技术领域包括：</p>
+            <ul>
+                <li>JavaScript、TypeScript、PHP、MySQL、MongoDB</li>
+                <li>NextJS、Express、React、React-Native、Prisma、Laravel、Koa.js、Vue3、NestJS</li>
+                <li>Git & GitHub、RESTful API设计、数据库设计</li>
+            </ul>
+            
+        </div>
+
+        <!-- 开源贡献 -->
+        <div class="content-section">
+            <h2>开源参与</h2>
+            <ul>
+                <li>expo-lite-data-store：Expo应用的数据存储库</li>
+                <li>参与GitHub Reference Vue3部分性能优化中文文档编写</li>
+            </ul>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="contact-section">
+            <h2>联系方式</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <a href="mailto:qinindexcode@gmail.com" target="_blank">
+                        <img src="assets/icons/email.svg" alt="邮箱" class="contact-icon">
+                    </a>
+                    <h3>邮箱</h3>
+                    <p>qinindexcode@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <a href="https://github.com/QinIndexCode" target="_blank">
+                        <img src="assets/icons/github-fill.svg" alt="GitHub" class="contact-icon">
+                    </a>
+                    <h3>GitHub</h3>
+                    <p>github.com/QinIndexCode</p>
+                </div>
+                <div class="contact-item">
+                    <a href="https://discordapp.com/users/54100" target="_blank">
+                        <img src="assets/icons/discord.svg" alt="LinkedIn" class="contact-icon">
+                    </a>
+                    <h3>Discord</h3>
+                    <p>qinindexcode_54100</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
