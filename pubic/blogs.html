@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随记</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/atom-one-dark.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #292b3c;
+            --bg-secondary: #34364a;
+            --bg-tertiary: #3e4054;
+            --text-primary: #c4c7e0;
+            --text-secondary: #8a8daa;
+            --text-muted: #6b6d83;
+            --accent-blue: #5b5ebf;
+            --accent-purple: #7a52cf;
+            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
+            --border-color: #4a4d64;
+            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-secondary);
+        }
+
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 标题样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--accent-blue);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        /* 博客列表容器 */
+        .blog-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* 博客卡片样式 */
+        .blog-card {
+            background-color: var(--bg-tertiary);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            border-color: var(--accent-blue);
+        }
+
+        .blog-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover h3 {
+            color: var(--accent-purple);
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            align-self: flex-start;
+        }
+
+        .read-more:hover {
+            color: var(--accent-purple);
+            text-shadow: 0 0 8px rgba(91, 94, 191, 0.5);
+        }
+
+        .read-more::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .read-more:hover::after {
+            margin-left: 0.75rem;
+        }
+
+        /* 加载状态样式 */
+        .loading {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+        }
+
+        /* 空状态样式 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+        }
+
+        /* 博客详情样式 */
+        .blog-detail {
+            background-color: var(--bg-tertiary);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        /* 内容过渡动画 */
+        .container {
+            transition: opacity 0.3s ease;
+        }
+
+        .container.fade-out {
+            opacity: 0;
+        }
+
+        .container.fade-in {
+            opacity: 1;
+        }
+
+        .blog-detail h1 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        .blog-detail h2 {
+            color: var(--accent-purple);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .blog-detail h3 {
+            color: var(--accent-blue);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .blog-detail p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .blog-detail ul,
+        .blog-detail ol {
+            color: var(--text-secondary);
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-detail li {
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-detail code {
+            background-color: var(--bg-primary);
+            color: var(--accent-purple);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        .blog-detail pre {
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .blog-detail pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            cursor: pointer;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: var(--accent-purple);
+            text-shadow: 0 0 8px rgba(91, 94, 191, 0.5);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .blog-list {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-card {
+                padding: 1.5rem;
+            }
+
+            .blog-detail {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .container {
+                padding: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .blog-card {
+                padding: 1.25rem;
+            }
+
+            .blog-detail {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <h1 class="section-title">随记</h1>
+
+        <!-- 博客列表 -->
+        <div class="blog-list" id="blog-list">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <!-- 引入markdown解析库 -->
+    <script src="./js/markdown-it.min.js"></script>
+    <script src="./js/highlight.min.js"></script>
+    <script>
+        const md = window.markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return '<pre class="hljs"><code>' +
+                            hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+                            '</code></pre>';
+                    } catch (__) { }
+                }
+                return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+            }
+        });
+
+
+        let blogData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogsSequentially();
+        });
+
+        async function loadBlogsSequentially() {
+            const blogListElement = document.getElementById('blog-list');
+            blogListElement.innerHTML = '<div class="loading">加载中...</div>';
+
+            const loadedBlogs = [];
+            let index = 1;
+
+            while (true) {
+                const fileName = `${index.toString().padStart(3, '0')}.md`;
+                const filePath = `./blogs/${fileName}`;
+
+                try {
+                    const response = await fetch(filePath, { method: 'HEAD' });
+                    if (!response.ok) break;
+
+                    const contentResponse = await fetch(filePath);
+                    if (!contentResponse.ok) break;
+
+                    const content = await contentResponse.text();
+                    const blog = parseBlogContent(fileName, content);
+                    loadedBlogs.push(blog);
+
+                } catch (error) {
+                    console.warn(`停止加载：${filePath} 不存在或无法访问`);
+                    break;
+                }
+
+                index++;
+            }
+
+            if (loadedBlogs.length === 0) {
+                blogListElement.innerHTML = '<div class="empty-state">暂无博客文章</div>';
+                return;
+            }
+
+            blogData = loadedBlogs.sort((a, b) => b.seq - a.seq);
+            renderBlogList();
+        }
+
+        function parseBlogContent(fileName, content) {
+            const seq = parseInt(fileName.replace('.md', ''), 10);
+
+            let title = '未命名博客';
+            let date = '未知日期';
+
+            const firstLineMatch = content.match(/^##\s+(\d{4}-\d{2}-\d{2})\s+(.*)$/m);
+            if (firstLineMatch) {
+                date = firstLineMatch[1].trim();
+                title = firstLineMatch[2].trim();
+            }
+
+            let plainText = content
+                .replace(/^##.*$/gm, '')
+                .replace(/```[\s\S]*?```/g, '')
+                .replace(/!\[.*?\]\(.*?\)/g, '')
+                .replace(/\n/g, ' ')
+                .trim();
+
+            const excerpt = plainText.length > 150
+                ? plainText.substring(0, 150) + '...'
+                : plainText || '暂无摘要';
+
+            return {
+                id: fileName.replace('.md', ''),
+                fileName: fileName,
+                seq: seq,
+                title: title,
+                date: date,
+                author: 'QinZhiHeng',
+                excerpt: excerpt,
+                content: content
+            };
+        }
+
+        function renderBlogList() {
+            const container = document.getElementById('container');
+            container.classList.add('fade-out');
+
+            setTimeout(() => {
+                container.innerHTML = `
+                <h1 class="section-title">随记</h1>
+                <div class="blog-list" id="blog-list"></div>
+            `;
+
+                const blogList = document.getElementById('blog-list');
+                const blogCardsHTML = blogData.map(blog => `
+                <div class="blog-card" onclick="openBlog('${blog.id}')">
+                    <h3>${blog.title}</h3>
+                    <div class="blog-meta">
+                        <span>${blog.date}</span>
+                        <span>${blog.author}</span>
+                    </div>
+                    <p class="blog-excerpt">${blog.excerpt}</p>
+                    <span class="read-more">阅读更多</span>
+                </div>
+            `).join('');
+
+                blogList.innerHTML = blogCardsHTML;
+
+                container.classList.remove('fade-out');
+                container.classList.add('fade-in');
+                setTimeout(() => container.classList.remove('fade-in'), 300);
+            }, 300);
+        }
+
+        function openBlog(blogId) {
+            const blog = blogData.find(b => b.id === blogId);
+            if (!blog) return;
+
+            const htmlContent = md.render(blog.content);
+
+            const container = document.getElementById('container');
+            container.classList.add('fade-out');
+
+            setTimeout(() => {
+                container.innerHTML = `
+                <button class="back-btn" onclick="renderBlogList()">
+                    <span style="margin-right: 0.5rem;">←</span> 返回列表
+                </button>
+                <div class="blog-detail">
+                    ${htmlContent}
+                </div>
+            `;
+                container.classList.remove('fade-out');
+                container.classList.add('fade-in');
+                setTimeout(() => container.classList.remove('fade-in'), 300);
+            }, 300);
+        }
+    </script>
+</body>
+</html>

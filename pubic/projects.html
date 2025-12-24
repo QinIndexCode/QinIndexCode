@@ -88,7 +88,7 @@
 
         .project-card:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 20px rgba(91, 94, 191, 0.4);
             border-color: var(--accent-blue);
         }
 
@@ -121,6 +121,7 @@
         .project-card:hover .project-icon {
             filter: brightness(1);
             transform: scale(1.1);
+            filter: brightness(1) drop-shadow(0 0 10px rgba(91, 94, 191, 0.6));
         }
 
         .project-card p {
@@ -151,6 +152,7 @@
             background-color: var(--accent-blue);
             color: var(--text-primary);
             border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
         }
 
         /* 项目链接 */
@@ -175,10 +177,12 @@
 
         .project-link:hover {
             color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(122, 82, 207, 0.5);
         }
 
         .project-link:hover::after {
             transform: translateX(3px);
+            text-shadow: 0 0 10px rgba(122, 82, 207, 0.5);
         }
 
         /* 响应式设计 */

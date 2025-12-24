@@ -77,6 +77,12 @@
             margin-bottom: 3rem;
             border: 1px solid var(--border-color);
             text-align: center;
+            transition: var(--transition);
+        }
+
+        .profile-card:hover {
+            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            border-color: var(--accent-blue);
         }
 
         .profile-card h2 {
@@ -99,6 +105,12 @@
             box-shadow: var(--shadow);
             margin-bottom: 3rem;
             border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .content-section:hover {
+            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            border-color: var(--accent-blue);
         }
 
         .content-section h2 {
@@ -166,7 +178,7 @@
 
         .contact-item:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
             border-color: var(--accent-blue);
         }
 
@@ -180,7 +192,7 @@
         }
 
         .contact-item:hover .contact-icon {
-            filter: brightness(1);
+            filter: brightness(1) drop-shadow(0 0 10px rgba(91, 94, 191, 0.6));
             transform: scale(1.1);
         }
 
@@ -237,7 +249,7 @@
         <!-- 个人信息卡片 -->
         <div class="profile-card">
             <h2>基本信息</h2>
-            <p>04生人，目前在校求学。</p>
+            <p>2004年，目前在校求学。</p>
         </div>
 
         <!-- 技术背景 -->

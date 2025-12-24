@@ -225,11 +225,13 @@
 
         .nav-link:hover {
             color: var(--accent-blue);
+            text-shadow: 0 0 8px rgba(91, 94, 191, 0.5);
         }
 
         .nav-link:hover .nav-icon {
             filter: brightness(1);
             transform: scale(1.1);
+            filter: brightness(1) drop-shadow(0 0 8px rgba(91, 94, 191, 0.6));
         }
 
         /* 左侧激活边框 */
@@ -391,6 +393,12 @@
                     <a href="projects.html" class="nav-link" data-target="projects">
                         <img src="assets/icons/project.svg" alt="项目" class="nav-icon">
                         <span class="nav-text">项目</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="blogs.html" class="nav-link" data-target="blogs">
+                        <img src="assets/icons/blog.svg" alt="博客" class="nav-icon">
+                        <span class="nav-text">随记</span>
                     </a>
                 </li>
                 <li class="nav-item">
