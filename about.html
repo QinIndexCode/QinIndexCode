@@ -4,83 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QinIndexCode - 关于我，个人信息、技术背景和联系方式">
+    <meta name="keywords" content="关于我, 个人信息, 技术背景, 联系方式">
     <title>关于我 - 个人技术博客</title>
-    <link
-        href="./css/css2.css"
-        rel="stylesheet">
+    <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="./js/smooth-scroll.js" defer></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #292b3c;
-            --bg-secondary: #34364a;
-            --bg-tertiary: #3e4054;
-            --text-primary: #c4c7e0;
-            --text-secondary: #8a8daa;
-            --text-muted: #6b6d83;
-            --accent-blue: #5b5ebf;
-            --accent-purple: #7a52cf;
-            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
-            --border-color: #4a4d64;
-            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
-        }
-
         body {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
-            color: var(--text-primary);
-            line-height: 1.6;
             background-color: var(--bg-secondary);
-        }
-
-        /* 容器样式 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* 标题样式 */
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--accent-blue);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-primary);
         }
 
         /* 个人信息卡片 */
         .profile-card {
             background-color: var(--bg-tertiary);
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-2xl);
             border: 1px solid var(--border-color);
             text-align: center;
-            transition: var(--transition);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 0.6s ease-out;
+            transform: translateY(0);
         }
 
         .profile-card:hover {
-            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
             border-color: var(--accent-blue);
+            transform: translateY(-5px);
         }
 
         .profile-card h2 {
@@ -88,11 +42,14 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
             color: var(--accent-blue);
+            letter-spacing: -0.01em;
         }
 
         .profile-card p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1rem;
         }
 
         /* 内容区块 */
@@ -103,12 +60,15 @@
             box-shadow: var(--shadow);
             margin-bottom: 3rem;
             border: 1px solid var(--border-color);
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 0.6s ease-out 0.2s both;
+            transform: translateY(0);
         }
 
         .content-section:hover {
-            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            box-shadow: 0 0 30px rgba(91, 94, 191, 0.4);
             border-color: var(--accent-blue);
+            transform: translateY(-3px);
         }
 
         .content-section h2 {
@@ -116,6 +76,7 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
             color: var(--accent-blue);
+            letter-spacing: -0.01em;
         }
 
         .content-section h3 {
@@ -123,21 +84,26 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--accent-blue);
+            letter-spacing: -0.01em;
         }
 
         .content-section p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1rem;
         }
 
         .content-section ul {
             color: var(--text-secondary);
             margin-left: 1.5rem;
             margin-bottom: 1.5rem;
+            line-height: 1.8;
         }
 
         .content-section li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
         }
 
         /* 联系方式区域 */
@@ -147,14 +113,16 @@
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
+            animation: fadeIn 0.6s ease-out 0.4s both;
         }
 
         .contact-section h2 {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             color: var(--accent-blue);
             text-align: center;
+            letter-spacing: -0.01em;
         }
 
         .contact-grid {
@@ -167,42 +135,51 @@
 
         .contact-item {
             text-align: center;
-            padding: 1.5rem;
+            padding: var(--spacing-lg);
             background-color: var(--bg-primary);
-            border-radius: var(--border-radius);
-            transition: var(--transition);
+            border-radius: var(--border-radius-lg);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transform: translateY(0);
         }
 
         .contact-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
             border-color: var(--accent-blue);
         }
 
         /* 联系方式图标样式 */
         .contact-icon {
-            width: 20px;
-            height: 20px;
-            margin-bottom: 0.75rem;
-            transition: var(--transition);
+            width: 24px;
+            height: 24px;
+            margin-bottom: 0.875rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             filter: brightness(0.7);
+            transform: scale(1);
         }
 
         .contact-item:hover .contact-icon {
-            filter: brightness(1) drop-shadow(0 0 10px rgba(91, 94, 191, 0.6));
-            transform: scale(1.1);
+            filter: brightness(1) drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
+            transform: scale(1.15);
         }
 
         .contact-item h3 {
             font-size: 1rem;
-            font-weight: 400;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         .contact-item p {
             font-size: 0.875rem;
             color: var(--text-secondary);
+            word-break: break-all;
         }
 
         /* 响应式设计 */

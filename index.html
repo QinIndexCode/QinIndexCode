@@ -3,35 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QinIndexCode - 个人技术博客，专注于全栈开发、Web开发、移动应用开发等技术领域">
+    <meta name="keywords" content="个人技术博客, QinIndexCode, 全栈开发, Web开发, React, Vue, Node.js, 移动开发">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="QinIndexCode - 个人技术博客">
+    <meta property="og:description" content="专注于全栈开发领域的技术博客">
+    <meta property="og:type" content="website">
     <title>个人技术博客 QinIndexCode</title>
     <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="./js/smooth-scroll.js" defer></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #292b3c;
-            --bg-secondary: #34364a;
-            --bg-tertiary: #3e4054;
-            --text-primary: #c4c7e0;
-            --text-secondary: #8a8daa;
-            --text-muted: #6b6d83;
-            --accent-blue: #5b5ebf;
-            --accent-purple: #7a52cf;
-            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
-            --border-color: #4a4d64;
-            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
-        }
-
         body {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
-            color: var(--text-primary);
-            line-height: 1.6;
             background-color: var(--bg-primary);
             overflow: hidden;
         }
@@ -40,22 +24,24 @@
         .main-container {
             display: flex;
             height: 100vh;
-            padding: 1rem;
-            gap: 1rem;
+            padding: var(--spacing-md);
+            gap: var(--spacing-md);
+            animation: fadeIn 0.6s ease-out;
         }
 
         /* 左侧边栏样式 */
         .sidebar {
-            width: 260px;
+            width: 280px;
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-lg);
             display: flex;
             flex-direction: column;
-            padding: 2rem 0;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
+            padding: var(--spacing-xl) 0;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         /* 个人资料区域 */
@@ -78,23 +64,40 @@
             font-size: 2rem;
             color: var(--accent-blue);
             border: 3px solid var(--accent-blue);
-            transition: var(--transition);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 12px rgba(91, 94, 191, 0.3);
             cursor: pointer;
+            position: relative;
+        }
+
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            z-index: -1;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .profile-avatar:hover::before {
+            opacity: 0.4;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .profile-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: var(--transition);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .profile-avatar:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 25px rgba(91, 94, 191, 0.4);
-            border-color: var(--accent-blue);
+            transform: scale(1.15) rotate(8deg);
+            box-shadow: var(--shadow-glow-strong);
+            border-color: var(--accent-purple);
         }
 
         .profile-name {
@@ -102,6 +105,7 @@
             font-weight: 700;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            letter-spacing: 0.025em;
         }
 
         /* 浮动文字样式 */
@@ -147,6 +151,7 @@
             flex: 1;
             list-style: none;
             padding: 1rem 0;
+            overflow-y: auto;
         }
 
         .nav-item {
@@ -157,7 +162,7 @@
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 0.75rem 2rem;
+            padding: 0.875rem 2rem;
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
@@ -165,26 +170,40 @@
             border-radius: 0 var(--border-radius) var(--border-radius) 0;
             overflow: hidden;
             z-index: 1;
-            transition: color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.025em;
+        }
+
+        /* 导航图标容器 */
+        .nav-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-right: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0);
         }
 
         /* 导航图标样式 */
         .nav-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 0.625rem;
-            transition: var(--transition);
+            width: 18px;
+            height: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             filter: brightness(0.7);
             z-index: 2;
             position: relative;
+            transform: scale(1);
         }
 
         /* 导航文字样式 */
         .nav-text {
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
             font-weight: 400;
             letter-spacing: 0.025em;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* 渐变背景和边框效果 */
@@ -197,7 +216,7 @@
             height: 100%;
             background: var(--bg-tertiary);
             z-index: -2;
-            transition: background 0.3s ease;
+            transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* 跟随鼠标的渐变效果 */
@@ -209,47 +228,69 @@
             border-radius: 50%;
             background: var(--gradient-primary);
             z-index: -1;
-            transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+            transition: width 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        height 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             left: var(--mouse-x, 50%);
             top: var(--mouse-y, 50%);
             transform: translate(-50%, -50%);
             opacity: 0;
         }
 
-        .nav-link:hover::after {
-            width: 300px;
-            height: 300px;
-            opacity: 0.3;
+        .nav-link:hover::after,
+        .nav-link:focus-within::after {
+            width: 350px;
+            height: 350px;
+            opacity: 0.35;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link:focus-within {
             color: var(--accent-blue);
-            text-shadow: 0 0 8px rgba(91, 94, 191, 0.5);
+            text-shadow: 0 0 12px rgba(91, 94, 191, 0.7);
         }
 
-        .nav-link:hover .nav-icon {
-            filter: brightness(1);
-            transform: scale(1.1);
-            filter: brightness(1) drop-shadow(0 0 8px rgba(91, 94, 191, 0.6));
+        .nav-link:hover .nav-icon-wrapper,
+        .nav-link:focus-within .nav-icon-wrapper {
+            transform: translateX(0.75rem);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .nav-link:hover .nav-icon,
+        .nav-link:focus-within .nav-icon {
+            filter: brightness(1) drop-shadow(0 0 12px rgba(91, 94, 191, 0.8));
+            transform: scale(1.2);
         }
 
         /* 左侧激活边框 */
         .nav-link.active::before {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(99, 102, 241, 0.15);
+            transition: background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .nav-link.active::after {
-            width: 300px;
-            height: 300px;
-            opacity: 0.2;
+            width: 350px;
+            height: 350px;
+            opacity: 0.25;
+            transition: width 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        height 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .nav-link.active {
             color: var(--accent-blue);
+            transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .nav-link.active .nav-icon-wrapper {
+            transform: translateX(0.75rem);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .nav-link.active .nav-icon {
             filter: brightness(1);
+            transition: filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: scale(1);
         }
 
         /* 左侧指示条 */
@@ -264,6 +305,7 @@
             background: var(--gradient-primary);
             transition: transform 0.3s ease;
             z-index: 3;
+            border-radius: 0 2px 2px 0;
         }
 
         .nav-link:hover ~ .nav-item::before,
@@ -286,7 +328,7 @@
         .contact-email {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: var(--transition);
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-block;
             position: relative;
         }
@@ -299,7 +341,7 @@
             width: 0;
             height: 1px;
             background-color: var(--accent-blue);
-            transition: var(--transition);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .contact-email:hover {
@@ -321,6 +363,7 @@
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
         }
 
         /* Iframe 样式 */
@@ -333,10 +376,127 @@
             transition: var(--transition);
         }
 
+        /* 骨架屏样式 */
+        .skeleton-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-xl);
+            background-color: var(--bg-secondary);
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skeleton-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .skeleton-header {
+            height: 60px;
+            width: 60%;
+            border-radius: var(--border-radius-lg);
+            animation: shimmerSmooth 2s ease-in-out infinite;
+        }
+
+        .skeleton-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            flex: 1;
+        }
+
+        .skeleton-card {
+            height: 200px;
+            border-radius: var(--border-radius-lg);
+            animation: shimmerSmooth 2s ease-in-out infinite;
+            animation-delay: 0.2s;
+        }
+
+        /* 加载提示 */
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+            z-index: 5;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spinSmooth 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-timeout {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--accent-blue);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            z-index: 20;
+            animation: scaleIn 0.3s ease-out;
+            box-shadow: var(--shadow-xl);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .loading-timeout h3 {
+            color: var(--accent-blue);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-xl);
+        }
+
+        .loading-timeout p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.7;
+        }
+
+        .loading-timeout button {
+            width: 100%;
+            margin-top: var(--spacing-sm);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* 页面加载动画 */
         .content-area.loading #content-frame {
             opacity: 0;
             transform: scale(0.98);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content-area.loaded #content-frame {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* 汉堡菜单按钮样式 */
@@ -347,22 +507,47 @@
             z-index: 1001;
             background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-lg);
             padding: 0.75rem;
             cursor: pointer;
-            transition: var(--transition);
+            transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: none;
+            backdrop-filter: blur(10px);
         }
 
         .hamburger-btn:hover {
             background: var(--bg-primary);
-            box-shadow: 0 0 15px rgba(91, 94, 191, 0.4);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
             border-color: var(--accent-blue);
+            transform: scale(1.05);
         }
 
         .hamburger-btn:hover svg path {
             stroke: var(--accent-blue);
-            filter: drop-shadow(0 0 8px rgba(91, 94, 191, 0.6));
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
+            transition: stroke 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* 响应式设计 */
@@ -396,6 +581,9 @@
     </style>
 </head>
 <body>
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
     <!-- 汉堡菜单按钮 -->
     <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle sidebar">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -409,7 +597,8 @@
             <!-- 个人资料 -->
             <div class="profile-section">
                 <div class="profile-avatar" id="avatar">
-                    <img src="assets/images/avatar.jpg" alt="个人头像" id="avatar-img" onerror="this.style.display='none'; this.parentElement.innerHTML='💻'">
+                    <img src="assets/images/avatar.jpg" alt="个人头像" id="avatar-img" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='💻'">
+                    <img src="assets/images/avatar-alt.jpg" alt="备用头像" id="avatar-img-alt" loading="lazy" style="display: none;">
                 </div>
                 <div class="profile-name">QinIndexCode</div>
                 <!-- 浮动文字元素 -->
@@ -420,31 +609,41 @@
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="home.html" class="nav-link active" data-target="home">
-                        <img src="assets/icons/home.svg" alt="首页" class="nav-icon">
+                        <div class="nav-icon-wrapper">
+                            <img src="assets/icons/home.svg" alt="首页" class="nav-icon" loading="lazy">
+                        </div>
                         <span class="nav-text">首页</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="tech.html" class="nav-link" data-target="tech">
-                        <img src="assets/icons/technical.svg" alt="技术" class="nav-icon">
+                        <div class="nav-icon-wrapper">
+                            <img src="assets/icons/technical.svg" alt="技术" class="nav-icon" loading="lazy">
+                        </div>
                         <span class="nav-text">技术</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="projects.html" class="nav-link" data-target="projects">
-                        <img src="assets/icons/project.svg" alt="项目" class="nav-icon">
+                        <div class="nav-icon-wrapper">
+                            <img src="assets/icons/project.svg" alt="项目" class="nav-icon" loading="lazy">
+                        </div>
                         <span class="nav-text">项目</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="blogs.html" class="nav-link" data-target="blogs">
-                        <img src="assets/icons/blog.svg" alt="博客" class="nav-icon">
+                        <div class="nav-icon-wrapper">
+                            <img src="assets/icons/blog.svg" alt="博客" class="nav-icon" loading="lazy">
+                        </div>
                         <span class="nav-text">随记</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="about.html" class="nav-link" data-target="about">
-                        <img src="assets/icons/aboutMe.svg" alt="关于" class="nav-icon">
+                        <div class="nav-icon-wrapper">
+                            <img src="assets/icons/aboutMe.svg" alt="关于" class="nav-icon" loading="lazy">
+                        </div>
                         <span class="nav-text">关于</span>
                     </a>
                 </li>
@@ -458,51 +657,146 @@
 
         <!-- 主要内容区域 -->
         <main class="content-area" id="content-area">
+            <!-- 骨架屏 -->
+            <div class="skeleton-screen hidden" id="skeleton-screen">
+                <div class="skeleton-header skeleton"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-card skeleton"></div>
+                    <div class="skeleton-card skeleton"></div>
+                    <div class="skeleton-card skeleton"></div>
+                </div>
+            </div>
+            
+            <!-- 加载指示器 -->
+            <div class="loading-indicator hidden" id="loading-indicator">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">正在加载...</div>
+            </div>
+            
+            <!-- 加载超时提示 -->
+            <div class="loading-timeout hidden" id="loading-timeout">
+                <h3>加载时间过长</h3>
+                <p>页面加载时间超过预期，可能是网络连接较慢或服务器响应延迟。</p>
+                <p>您可以尝试以下操作：</p>
+                <ul style="text-align: left; margin-bottom: var(--spacing-lg); color: var(--text-secondary);">
+                    <li>检查您的网络连接</li>
+                    <li>稍后重试</li>
+                    <li>刷新页面</li>
+                </ul>
+                <button class="btn btn-primary" onclick="retryLoading()">重试</button>
+                <button class="btn btn-outline" onclick="cancelLoading()" style="margin-top: var(--spacing-sm);">取消</button>
+            </div>
+            
             <iframe id="content-frame" src="home.html" frameborder="0"></iframe>
         </main>
     </div>
 
     <script>
-        // 获取所有导航链接
         const navLinks = document.querySelectorAll('.nav-link');
         const contentFrame = document.getElementById('content-frame');
         const contentArea = document.getElementById('content-area');
+        const skeletonScreen = document.getElementById('skeleton-screen');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const loadingTimeout = document.getElementById('loading-timeout');
+        
+        let loadingTimer = null;
+        let timeoutTimer = null;
+        const LOADING_TIMEOUT = 10000;
+        const SHOW_LOADING_DELAY = 300;
 
-        // 导航链接点击事件
+        function showLoading() {
+            skeletonScreen.classList.remove('hidden');
+            loadingIndicator.classList.remove('hidden');
+            loadingTimeout.classList.add('hidden');
+            contentArea.classList.add('loading');
+        }
+
+        function hideLoading() {
+            skeletonScreen.classList.add('hidden');
+            loadingIndicator.classList.add('hidden');
+            loadingTimeout.classList.add('hidden');
+            contentArea.classList.remove('loading');
+            contentArea.classList.add('loaded');
+            
+            setTimeout(() => {
+                contentArea.classList.remove('loaded');
+            }, 500);
+        }
+
+        function showTimeout() {
+            skeletonScreen.classList.add('hidden');
+            loadingIndicator.classList.add('hidden');
+            loadingTimeout.classList.remove('hidden');
+        }
+
+        function clearTimers() {
+            if (loadingTimer) {
+                clearTimeout(loadingTimer);
+                loadingTimer = null;
+            }
+            if (timeoutTimer) {
+                clearTimeout(timeoutTimer);
+                timeoutTimer = null;
+            }
+        }
+
+        function retryLoading() {
+            const activeLink = document.querySelector('.nav-link.active');
+            if (activeLink) {
+                clearTimers();
+                showLoading();
+                timeoutTimer = setTimeout(showTimeout, LOADING_TIMEOUT);
+                
+                setTimeout(() => {
+                    const targetUrl = activeLink.getAttribute('href');
+                    contentFrame.src = targetUrl;
+                }, 150);
+            }
+        }
+
+        function cancelLoading() {
+            clearTimers();
+            hideLoading();
+        }
+
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                // 添加加载动画
-                contentArea.classList.add('loading');
+                clearTimers();
                 
-                // 更新激活状态
                 navLinks.forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
                 
-                // 延迟加载内容，增强动画效果
+                loadingTimer = setTimeout(() => {
+                    showLoading();
+                    timeoutTimer = setTimeout(showTimeout, LOADING_TIMEOUT);
+                }, SHOW_LOADING_DELAY);
+                
                 setTimeout(() => {
-                    // 加载对应页面到iframe
                     const targetUrl = this.getAttribute('href');
                     contentFrame.src = targetUrl;
                 }, 150);
             });
         });
 
-        // 监听iframe加载完成事件
         contentFrame.addEventListener('load', function() {
-            // 移除加载动画
+            clearTimers();
             setTimeout(() => {
-                contentArea.classList.remove('loading');
-            }, 100);
+                hideLoading();
+            }, 300);
         });
 
-        // 头像交互功能
+        contentFrame.addEventListener('error', function() {
+            clearTimers();
+            showTimeout();
+        });
+
         const avatar = document.getElementById('avatar');
         const avatarImg = document.getElementById('avatar-img');
+        const avatarImgAlt = document.getElementById('avatar-img-alt');
         const floatingText = document.getElementById('floating-text');
         
-        // 要显示的文字数组
         const messages = [
             'what?',
             '你在干什么',
@@ -511,87 +805,91 @@
             'Stop'
         ];
         
-        // 当前显示的文字索引
         let currentMessageIndex = 0;
-        // 是否已更换头像
         let avatarChanged = false;
-        // 动画是否正在播放（防止快速点击）
         let isAnimating = false;
+        let isRemoving = false;
         
-        // 头像点击事件
         avatar.addEventListener('click', function() {
-            // 如果头像已经更换，不再处理
-            if (avatarChanged) {
+            if (isRemoving) {
                 return;
             }
             
-            // 如果还有文字要显示
             if (currentMessageIndex < messages.length) {
-                // 如果动画正在播放，不响应点击
                 if (isAnimating) {
                     return;
                 }
                 
-                // 设置动画正在播放
                 isAnimating = true;
                 
-                // 确保先移除show类，防止动画冲突
                 floatingText.classList.remove('show');
                 
-                // 显示当前文字
                 const message = messages[currentMessageIndex];
                 floatingText.textContent = message;
                 
-                // 强制重排，确保动画正确触发
                 floatingText.offsetHeight;
                 
-                // 添加show类显示动画
                 floatingText.classList.add('show');
                 
-                // 文字消失后移除show类，并重置动画状态
                 setTimeout(() => {
                     floatingText.classList.remove('show');
                     isAnimating = false;
-                    // 动画结束后再移动到下一条文字
                     currentMessageIndex++;
                 }, 1000);
-            } 
-            // 所有文字已显示完毕，再次点击直接更换头像
-            else {
-                // 更换头像
-                avatarImg.src = 'assets/images/avatar2.png';
-                avatarChanged = true;
+            } else {
+                isRemoving = true;
+                avatar.classList.add('removing');
+                
+                setTimeout(() => {
+                    if (avatarChanged) {
+                        // 切换回原始头像
+                        avatarImg.style.display = 'block';
+                        avatarImgAlt.style.display = 'none';
+                        avatarChanged = false;
+                    } else {
+                        // 切换到备用头像
+                        avatarImg.style.display = 'none';
+                        avatarImgAlt.style.display = 'block';
+                        avatarChanged = true;
+                    }
+                    avatar.classList.remove('removing');
+                    isRemoving = false;
+                }, 600);
             }
         });
 
-        // 鼠标跟随渐变效果
         navLinks.forEach(link => {
             link.addEventListener('mousemove', function(e) {
                 const rect = this.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 
-                // 使用CSS变量传递鼠标位置
                 this.style.setProperty('--mouse-x', `${x}px`);
                 this.style.setProperty('--mouse-y', `${y}px`);
             });
         });
 
-        // 汉堡菜单切换功能
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
 
         hamburgerBtn.addEventListener('click', function() {
             sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         });
 
-        // 在移动设备上，点击内容区域时关闭侧边栏
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
         document.addEventListener('click', function(e) {
             const isMobile = window.innerWidth <= 768;
             const isClickOutside = !sidebar.contains(e.target) && !hamburgerBtn.contains(e.target);
             
             if (isMobile && isClickOutside && sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
+                overlay.classList.remove('active');
             }
         });
     </script>

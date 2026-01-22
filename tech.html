@@ -3,87 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="个人技术博客 QinIndexCode 技术栈">
-    <meta name="keywords" content="个人技术博客, QinIndexCode, 技术栈">
+    <meta name="description" content="QinIndexCode - 技术栈，包括前端、后端、数据库等开发技术">
+    <meta name="keywords" content="技术栈, 前端开发, 后端开发, React, Vue, Node.js, PHP, MySQL">
     <meta name="author" content="QinIndexCode">
     <meta name="robots" content="index, follow">
-    <!-- 图标 -->
-     <meta name="icon" content="./assets/favicon.ico">
     <title>技术栈 - 个人技术博客</title>
     <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
+    <script src="./js/smooth-scroll.js" defer></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #292b3c;
-            --bg-secondary: #34364a;
-            --bg-tertiary: #3e4054;
-            --text-primary: #c4c7e0;
-            --text-secondary: #8a8daa;
-            --text-muted: #6b6d83;
-            --accent-blue: #5b5ebf;
-            --accent-purple: #7a52cf;
-            --gradient-primary: linear-gradient(135deg, #5b5ebf, #7a52cf);
-            --border-color: #4a4d64;
-            --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
-        }
-
         body {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
-            color: var(--text-primary);
-            line-height: 1.6;
             background-color: var(--bg-secondary);
-        }
-
-        /* 容器样式 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* 标题样式 */
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--accent-blue);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-primary);
         }
 
         /* 技术栈网格 */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
         }
 
         /* 技术卡片样式 */
         .tech-card {
             background-color: var(--bg-tertiary);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border-color);
@@ -98,12 +47,13 @@
             height: 4px;
             background: var(--gradient-primary);
             transform: scaleX(0);
-            transition: var(--transition);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left;
         }
 
         .tech-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(91, 94, 191, 0.4);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
             border-color: var(--accent-blue);
         }
 
@@ -118,7 +68,13 @@
             color: var(--accent-blue);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            letter-spacing: -0.01em;
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tech-card:hover h3 {
+            color: var(--accent-purple);
         }
 
         /* 技术列表样式 */
@@ -128,38 +84,38 @@
 
         .tech-list li {
             margin-bottom: 1rem;
-            padding-left: 2.25rem;
+            padding-left: 2.5rem;
             position: relative;
             color: var(--text-secondary);
-            transition: var(--transition);
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
+            font-weight: 500;
         }
 
         /* 技术图标样式 */
         .tech-icon {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             position: absolute;
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            transition: var(--transition);
-            filter: brightness(0.7);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: brightness(0.8);
         }
 
         .tech-list li:hover .tech-icon {
-            filter: brightness(1) drop-shadow(0 0 10px rgba(91, 94, 191, 0.6));
-            transform: translateY(-50%) scale(1.1);
+            filter: brightness(1) drop-shadow(0 0 15px rgba(99, 102, 241, 0.7));
+            transform: translateY(-50%) scale(1.2);
         }
 
         .tech-list li:hover {
             color: var(--text-primary);
-            padding-left: 2rem;
-        }
-
-        .tech-list li:hover::before {
-            color: var(--accent-blue);
+            padding-left: 2.75rem;
+            transform: translateX(8px);
         }
 
         /* 技能等级样式 */
@@ -169,6 +125,10 @@
             font-size: 0.875rem;
             color: var(--accent-blue);
             font-weight: 600;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* 响应式设计 */
