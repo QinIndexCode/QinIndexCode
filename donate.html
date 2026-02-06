@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>捐赠 - QinIndexCode</title>
+    <link href="./css/css2.css" rel="stylesheet" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <style>
+      .donate-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-md);
+      }
+
+      .donate-card {
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+        padding: var(--spacing-2xl) !important;
+        align-items: center !important;
+        position: relative;
+        z-index: 1;
+      }
+
+      .kofi-logo-wrapper {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        transition: all .3s ease-in-out;
+      }
+
+      .donate-card:hover .kofi-logo-wrapper {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .kofi-logo {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      .donate-title {
+        font-size: 1.75rem;
+        margin-bottom: var(--spacing-sm);
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+      }
+
+      .donate-desc {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-xl);
+        line-height: 1.6;
+      }
+
+      /* 按钮通用样式 */
+      .btn-payment {
+        width: 100%;
+        height: 56px;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        border: none;
+        color: white;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        cursor: pointer;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .btn-payment:last-child {
+        margin-bottom: 0;
+      }
+
+      .btn-payment:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-payment::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+
+      .btn-payment:hover::after {
+        left: 100%;
+      }
+
+      /* 各支付按钮特定样式 */
+      .btn-kofi {
+        background: #ff5e5b;
+      }
+      .btn-kofi:hover {
+        background: #ff4542;
+        box-shadow: 0 8px 20px rgba(255, 94, 91, 0.4);
+      }
+
+      .btn-wechat {
+        background: #07c160;
+      }
+      .btn-wechat:hover {
+        background: #06ad56;
+        box-shadow: 0 8px 20px rgba(7, 193, 96, 0.4);
+      }
+
+      .btn-alipay {
+        background: #1677ff;
+      }
+      .btn-alipay:hover {
+        background: #1363df;
+        box-shadow: 0 8px 20px rgba(22, 119, 255, 0.4);
+      }
+
+      .heart-icon {
+        animation: beat 1.5s infinite;
+      }
+
+      @keyframes beat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        color: var(--text-muted);
+        margin: var(--spacing-xl) 0;
+        font-size: 0.875rem;
+        width: 100%;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--glass-border);
+      }
+
+      .divider span {
+        padding: 0 1rem;
+        opacity: 0.7;
+      }
+
+      .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+        width: 100%;
+      }
+
+      /* Modal Styles */
+      .qr-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .qr-modal.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .qr-modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius-lg);
+        text-align: center;
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        max-width: 90%;
+      }
+
+      .qr-modal.active .qr-modal-content {
+        transform: scale(1);
+      }
+
+      .qr-modal-img {
+        width: 300px;
+        height: 300px;
+        object-fit: contain;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      .qr-modal-title {
+        color: #333;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .qr-modal-tip {
+        color: #666;
+        font-size: 0.875rem;
+      }
+
+      .qr-close-btn {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px;
+      }
+
+      /* 装饰背景元素 */
+      .bg-glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: var(--accent-blue);
+        filter: blur(100px);
+        opacity: 0.1;
+        border-radius: 50%;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      @media (max-width: 480px) {
+        .payment-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .qr-modal-img {
+          width: 240px;
+          height: 240px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="donate-wrapper">
+      <div class="bg-glow"></div>
+
+      <div class="card donate-card glass">
+        <div class="kofi-logo-wrapper">
+          <img src="assets/images/ko-fi.png" alt="Ko-fi" class="kofi-logo" />
+        </div>
+
+        <h1 class="donate-title">请我喝杯咖啡</h1>
+        <p class="donate-desc">
+          如果您觉得我的文章或开源项目对您有所帮助，<br />
+          欢迎通过 Ko-fi 进行捐赠支持。您的鼓励是我持续创作的最大动力！
+        </p>
+
+        <!-- Ko-fi Button -->
+        <a
+          href="https://ko-fi.com/qinindexcode"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-payment btn-kofi"
+        >
+          <img src="./assets/icons/coffee.svg" alt="coffee" width="24px" height="24px" class="heart-icon">
+          <span>前往 Ko-fi 捐赠</span>
+        </a>
+
+        <div class="divider">
+          <span>或使用扫码支付</span>
+        </div>
+
+        <div class="payment-grid">
+          <!-- WeChat Pay Button -->
+          <button class="btn-payment btn-wechat" onclick="showQR('wechat')">
+            <svg
+              t="1770389141400"
+              viewBox="0 0 1024 1024"
+              width="24"
+              height="24"
+            >
+              <path
+                d="M390.382933 645.3248c-61.303467 36.9664-70.382933-20.753067-70.382933-20.753067l-76.8-193.877333c-29.559467-92.16 25.565867-41.540267 25.565867-41.540267s47.3088 38.7072 83.217066 62.293334c35.874133 23.620267 76.8 6.929067 76.8 6.929066l502.1696-250.709333C838.280533 82.978133 685.226667 1.4336 511.965867 1.4336 229.205333 1.4336 0 218.4192 0 486.126933c0 153.941333 75.8784 290.986667 194.116267 379.8016l-21.333334 132.573867s-10.376533 38.7072 25.634134 20.753067c24.576-12.253867 87.108267-56.1152 124.347733-82.773334A535.825067 535.825067 0 0 0 512 970.752c282.760533 0 512-216.9856 512-484.693333 0-77.5168-19.319467-150.7328-53.5552-215.722667-159.982933 104.106667-532.138667 346.112-580.061867 374.954667z"
+                fill="#FFFFFF"
+                p-id="1742"
+              ></path>
+            </svg>
+            <span>微信支付</span>
+          </button>
+
+          <!-- Alipay Button -->
+          <button class="btn-payment btn-alipay" onclick="showQR('alipay')">
+            <svg
+              t="1770389179042"
+              viewBox="0 0 1024 1024"
+              width="24"
+              height="24"
+            >
+              <path
+                d="M860.009412 1.445647H164.020706A163.779765 163.779765 0 0 0 0 165.044706v693.940706c0 90.322824 73.396706 163.568941 164.020706 163.568941h695.988706A163.749647 163.749647 0 0 0 1024 858.985412v-6.686118s-266.360471-110.712471-400.835765-175.194353c-90.202353 110.682353-206.576941 177.844706-327.378823 177.844706-204.318118 0-273.709176-178.266353-176.941177-295.634823 21.082353-25.6 56.982588-49.995294 112.670118-63.698824 87.100235-21.323294 225.761882 13.312 355.689412 56.079059a709.993412 709.993412 0 0 0 57.675294-140.559059H244.404706v-40.448h206.486588V298.164706H200.824471V257.686588h250.096941V154.262588s0-17.438118 17.709176-17.438117h100.924236v120.862117h247.265882V298.164706h-247.265882v72.493176h201.84847c-19.305412 78.878118-48.670118 151.491765-85.473882 215.250824 61.259294 22.106353 116.254118 43.038118 157.214117 56.711529C990.539294 691.832471 1024 694.512941 1024 694.512941V165.044706A163.749647 163.749647 0 0 0 860.009412 1.445647zM248.892235 556.122353c-25.569882 2.529882-73.607529 13.824-99.870117 36.954353-78.727529 68.457412-31.623529 193.566118 127.668706 193.566118 92.581647 0 185.133176-59.030588 257.807058-153.569883-103.363765-50.266353-190.976-86.256941-285.605647-76.950588z"
+                fill="#ffffff"
+                p-id="2910"
+                data-spm-anchor-id="a313x.search_index.0.i4.79523a81Rj0u6X"
+                class="selected"
+              ></path>
+            </svg>
+            <span>支付宝</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="qr-modal" id="qrModal" onclick="closeQR(event)">
+      <div class="qr-modal-content">
+        <button class="qr-close-btn" onclick="closeQR(event, true)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <img src="" alt="QR Code" class="qr-modal-img" id="qrImage" />
+        <div class="qr-modal-title" id="qrTitle">支付方式</div>
+        <div class="qr-modal-tip">感谢您的支持！</div>
+      </div>
+    </div>
+
+    <script>
+      const modal = document.getElementById("qrModal");
+      const qrImage = document.getElementById("qrImage");
+      const qrTitle = document.getElementById("qrTitle");
+      const body = document.body;
+
+      const qrData = {
+        wechat: {
+          src: "assets/images/weixin.jpg",
+          title: "微信支付",
+          color: "#07C160",
+        },
+        alipay: {
+          src: "assets/images/zhifubao.jpg",
+          title: "支付宝",
+          color: "#1677FF",
+        },
+      };
+
+      function showQR(type) {
+        const data = qrData[type];
+        if (!data) return;
+
+        qrImage.src = data.src;
+        qrTitle.textContent = data.title;
+        qrTitle.style.color = data.color;
+
+        modal.classList.add("active");
+        // 禁止背景滚动
+        body.style.overflow = "hidden";
+      }
+
+      function closeQR(event, force) {
+        // 如果点击的是内容区域（且不是关闭按钮），不关闭
+        if (!force && event.target.closest(".qr-modal-content")) return;
+
+        modal.classList.remove("active");
+        body.style.overflow = "";
+      }
+
+      // ESC键关闭
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          closeQR(e, true);
+        }
+      });
+    </script>
+  </body>
+</html>
