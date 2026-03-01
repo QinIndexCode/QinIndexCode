@@ -501,40 +501,17 @@
 
         // 更新 Giscus 主题
         function updateGiscusTheme(theme) {
-            const giscusContainer = document.getElementById('giscus-container');
             const giscusFrame = document.querySelector('iframe.giscus-frame');
-            
-            if (!giscusFrame || !giscusFrame.contentWindow) {
-                return;
-            }
-
-            // 创建或获取遮罩元素
-            let mask = giscusContainer.querySelector('.theme-transition-mask');
-            if (!mask) {
-                mask = document.createElement('div');
-                mask.className = 'theme-transition-mask';
-                giscusContainer.style.position = 'relative';
-                giscusContainer.appendChild(mask);
-            }
-
-            // 显示遮罩（淡入）
-            mask.classList.add('active');
-            
-            // 立即发送主题切换消息
-            giscusFrame.contentWindow.postMessage({
-                giscus: {
-                    setConfig: {
-                        theme: theme
+            if (giscusFrame && giscusFrame.contentWindow) {
+                giscusFrame.contentWindow.postMessage({
+                    giscus: {
+                        setConfig: {
+                            theme: theme
+                        }
                     }
-                }
-            }, 'https://giscus.app');
-            
-            console.log(`🎨 Giscus 主题已切换为: ${theme}`);
-            
-            // 150ms 后隐藏遮罩（淡出）
-            setTimeout(() => {
-                mask.classList.remove('active');
-            }, 150);
+                }, 'https://giscus.app');
+                console.log(`🎨 Giscus 主题已切换为: ${theme}`);
+            }
         }
     </script>
     <style>
@@ -763,32 +740,10 @@
         /* Giscus 容器样式 */
         #giscus-container {
             margin-top: 1rem;
-            /* 添加过渡动画，与主站同步 */
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         #giscus-container iframe {
             border-radius: var(--border-radius);
-            /* 禁用 iframe 的过渡动画，避免不同步 */
-            transition: none !important;
-        }
-
-        /* 主题切换时的遮罩，减少视觉不同步 */
-        .theme-transition-mask {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-secondary);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.15s ease;
-            z-index: 100;
-        }
-
-        .theme-transition-mask.active {
-            opacity: 0.5;
         }
 
         /* 返回主站链接样式 */

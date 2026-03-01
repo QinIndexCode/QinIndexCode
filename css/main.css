@@ -4,6 +4,11 @@
     padding: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    /* 全局主题过渡动画 - 0.2s 与 Giscus 同步 */
+    transition: background-color 0.1s ease, 
+                color 0.1s ease, 
+                border-color 0.1s ease, 
+                box-shadow 0.1s ease;
 }
 
 :root {
@@ -430,7 +435,7 @@ button:focus {
     padding: var(--spacing-xl) 0;
     border-radius: var(--border-radius-lg);
     z-index: 20;
-    transition: transform var(--transition-base);
+    transition: transform var(--transition-base), background-color 0.2s ease, border-color 0.2s ease;
     flex-shrink: 0;
 }
 
@@ -556,6 +561,8 @@ button:focus {
     height: 100%;
     border: none;
     background: var(--bg-secondary);
+    /* iframe 页面主题过渡动画 - 0.2s 与 Giscus 同步 */
+    transition: background-color 0.2s ease;
 }
 
 /* 骨架屏 - Index Specific */
