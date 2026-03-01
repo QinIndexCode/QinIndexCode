@@ -199,11 +199,11 @@
             container.innerHTML = `
                 <h1 class="section-title">随记</h1>
                 <div class="grid grid-2" id="blog-list"></div>
-            `
+            `;
 
             const blogList = document.getElementById('blog-list');
-            const blogCardsHTML = blogData.map(blog => `
-                <div class="card" onclick="openBlog('${blog.id}')" style="cursor: pointer;">
+            const blogCardsHTML = blogData.map(blog => 
+                `<div class="card" onclick="openBlog('${blog.id}')" style="cursor: pointer;">
                     <h3>${blog.title}</h3>
                     <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
                         <span style="margin-right: 1rem;">${blog.date}</span>
@@ -211,8 +211,8 @@
                     </div>
                     <p style="flex: 1; margin-bottom: 1.5rem;">${blog.excerpt}</p>
                     <span class="link-arrow">阅读更多</span>
-                </div>
-            `).join('');
+                </div>`
+            ).join('');
 
             blogList.innerHTML = blogCardsHTML;
 
@@ -288,53 +288,65 @@
                             <p>加载评论中...</p>
                         </div>
                     </div>
-                </div>
-                
-                <!-- 引入 Giscus -->
-                <script src="https://giscus.app/client.js"
-                    data-repo="QinIndexCode/QinIndexCode"
-                    data-repo-id="R_kgDOQmJfZg"
-                    data-category="General"
-                    data-category-id="DIC_kwDOQmJfZs4C3dZh"
-                    data-mapping="specific"
-                    data-term="${discussionId}"
-                    data-strict="0"
-                    data-reactions-enabled="1"
-                    data-emit-metadata="0"
-                    data-input-position="top"
-                    data-theme="preferred_color_scheme"
-                    data-lang="zh-CN"
-                    data-loading="lazy"
-                    crossorigin="anonymous"
-                    async>
-                </script>
-        `;
+                </div>`;
 
-    container.classList.remove('fade-out');
-    container.classList.add('fade-in');
+                container.classList.remove('fade-out');
+                container.classList.add('fade-in');
 
-    // 加载点赞数据
-    loadLikeCount(discussionId);
+                // 加载点赞数据
+                loadLikeCount(discussionId);
 
-    // 监听主题变化
-    const observer = new MutationObserver(() => {
-    const giscusFrame = document.querySelector('iframe.giscus-frame');
-    if (giscusFrame && window.getCurrentTheme) {
-    const isDark = !window.getCurrentTheme()['--bg-primary'].includes('#F1F5F9');
-    giscusFrame.contentWindow.postMessage({
-    giscus: {
-    setConfig: {
-    theme: isDark ? 'dark' : 'light'
-    }
-    }
-    }, 'https://giscus.app');
-    }
-    });
-    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+                // 动态加载 Giscus
+                loadGiscus(discussionId);
 
-    setTimeout(() => container.classList.remove('fade-in'), 300);
-    }, 300);
-    }
+                // 监听主题变化
+                const observer = new MutationObserver(() => {
+                    const giscusFrame = document.querySelector('iframe.giscus-frame');
+                    if (giscusFrame && window.getCurrentTheme) {
+                        const isDark = !window.getCurrentTheme()['--bg-primary'].includes('#F1F5F9');
+                        giscusFrame.contentWindow.postMessage({
+                            giscus: {
+                                setConfig: {
+                                    theme: isDark ? 'dark' : 'light'
+                                }
+                            }
+                        }, 'https://giscus.app');
+                    }
+                });
+                observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+
+                setTimeout(() => container.classList.remove('fade-in'), 300);
+            }, 300);
+        }
+
+        // 动态加载 Giscus 评论系统
+        function loadGiscus(discussionId) {
+            // 检查是否已存在
+            const existing = document.querySelector('script[src*="giscus.app"]');
+            if (existing) {
+                existing.remove();
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://giscus.app/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('data-repo', 'QinIndexCode/QinIndexCode');
+            script.setAttribute('data-repo-id', 'R_kgDOQmJfZg');
+            script.setAttribute('data-category', 'General');
+            script.setAttribute('data-category-id', 'DIC_kwDOQmJfZs4C3dZh');
+            script.setAttribute('data-mapping', 'specific');
+            script.setAttribute('data-term', discussionId);
+            script.setAttribute('data-strict', '0');
+            script.setAttribute('data-reactions-enabled', '1');
+            script.setAttribute('data-emit-metadata', '0');
+            script.setAttribute('data-input-position', 'top');
+            script.setAttribute('data-theme', 'preferred_color_scheme');
+            script.setAttribute('data-lang', 'zh-CN');
+            script.setAttribute('data-loading', 'lazy');
+
+            document.body.appendChild(script);
+        }
     </script>
     <style>
         /* 博客详情页 Markdown 样式增强 */
