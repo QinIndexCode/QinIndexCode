@@ -326,6 +326,9 @@
         }
 
         // 动态加载 Giscus 评论系统
+        let giscusRetryCount = 0;
+        const maxGiscusRetries = 3;
+
         function loadGiscus(discussionId) {
             // 检查是否已存在
             const existing = document.querySelector('script[src*="giscus.app"]');
@@ -342,6 +345,11 @@
             // 构建回调 URL - 使用统一的 auth-callback.html 处理 OAuth 回调
             const backLink = `${window.location.origin}/auth-callback.html?redirect=${encodeURIComponent(window.location.href)}`;
 
+            // 检测当前主题
+            const isDark = document.body.classList.contains('dark-theme') || 
+                          getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').includes('#0B0C15');
+            const theme = isDark ? 'dark' : 'light';
+
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
             script.async = true;
@@ -356,30 +364,177 @@
             script.setAttribute('data-reactions-enabled', '1');
             script.setAttribute('data-emit-metadata', '0');
             script.setAttribute('data-input-position', 'top');
-            script.setAttribute('data-theme', 'preferred_color_scheme');
+            // 使用检测到的主题，而不是跟随系统
+            script.setAttribute('data-theme', theme);
             script.setAttribute('data-lang', 'zh-CN');
             // 设置回调链接，让 OAuth 后返回到统一的处理页面
             script.setAttribute('data-backlink', backLink);
             // 移除 lazy loading，确保立即加载
             // script.setAttribute('data-loading', 'lazy');
 
-            // 错误处理
+            // 错误处理 - 带重试机制
             script.addEventListener('error', () => {
-                console.error('Giscus 脚本加载失败');
-                const container = document.getElementById('giscus-container');
-                if (container) {
-                    container.innerHTML = `
-                        <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                            <p>评论系统加载失败，请稍后重试。</p>
-                            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
-                                重新加载
-                            </button>
-                        </div>
-                    `;
+                console.error(`Giscus 脚本加载失败 (尝试 ${giscusRetryCount + 1}/${maxGiscusRetries})`);
+                
+                if (giscusRetryCount < maxGiscusRetries) {
+                    giscusRetryCount++;
+                    console.log(`正在重试加载 Giscus...`);
+                    setTimeout(() => loadGiscus(discussionId), 2000);
+                } else {
+                    console.error('Giscus 加载失败，已达到最大重试次数');
+                    showGiscusError();
                 }
             });
 
+            // 成功加载后重置重试计数
+            script.addEventListener('load', () => {
+                giscusRetryCount = 0;
+                console.log('Giscus 加载成功');
+            });
+
             document.body.appendChild(script);
+
+            // 监听主题变化，动态切换 Giscus 主题
+            setupGiscusThemeListener();
+        }
+
+        // 显示 Giscus 错误界面
+        function showGiscusError() {
+            const container = document.getElementById('giscus-container');
+            if (container) {
+                container.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 1rem; opacity: 0.5;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">评论系统暂时不可用</h3>
+                        <p style="margin-bottom: 1.5rem;">可能是网络连接问题或 Giscus 服务暂时不可用。</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button onclick="giscusRetryCount=0; loadGiscus('${discussionId}');" style="padding: 0.5rem 1rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                重新加载
+                            </button>
+                            <a href="https://github.com/QinIndexCode/QinIndexCode/discussions" target="_blank" style="padding: 0.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); text-decoration: none; border-radius: 8px;">
+                                在 GitHub 上讨论
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 设置 Giscus 主题监听器
+        function setupGiscusThemeListener() {
+            let lastTheme = getCurrentTheme();
+            
+            // 方法1: 监听父窗口的隐藏输入框变化（最可靠）
+            if (window.parent !== window) {
+                const parentInput = window.parent.document.getElementById('theme-state');
+                if (parentInput) {
+                    // 初始同步
+                    const parentTheme = parentInput.value;
+                    if (parentTheme !== lastTheme) {
+                        lastTheme = parentTheme;
+                        updateGiscusTheme(parentTheme);
+                    }
+                    
+                    // 监听输入框变化
+                    const inputObserver = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                                const newTheme = parentInput.value;
+                                if (newTheme !== lastTheme) {
+                                    lastTheme = newTheme;
+                                    updateGiscusTheme(newTheme);
+                                }
+                            }
+                        });
+                    });
+                    inputObserver.observe(parentInput, { attributes: true });
+                }
+                
+                // 方法2: 监听父窗口的自定义事件
+                window.parent.addEventListener('themeChanged', (e) => {
+                    const newTheme = e.detail.theme;
+                    if (newTheme !== lastTheme) {
+                        lastTheme = newTheme;
+                        updateGiscusTheme(newTheme);
+                    }
+                });
+            }
+            
+            // 方法3: 监听本地 CSS 变量变化（作为后备）
+            const styleObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        const currentTheme = getCurrentTheme();
+                        if (currentTheme !== lastTheme) {
+                            lastTheme = currentTheme;
+                            updateGiscusTheme(currentTheme);
+                        }
+                    }
+                });
+            });
+            styleObserver.observe(document.documentElement, { attributes: true });
+
+            // 方法4: 超快速轮询检查（50ms，仅前3秒）
+            const fastCheckInterval = setInterval(() => {
+                const currentTheme = getCurrentTheme();
+                if (currentTheme !== lastTheme) {
+                    lastTheme = currentTheme;
+                    updateGiscusTheme(currentTheme);
+                }
+            }, 50);
+
+            // 3秒后停止快速轮询
+            setTimeout(() => {
+                clearInterval(fastCheckInterval);
+            }, 3000);
+        }
+
+        // 获取当前主题
+        function getCurrentTheme() {
+            const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim();
+            return (bgColor.includes('#0B0C15') || bgColor.includes('#0b0c15')) ? 'dark' : 'light';
+        }
+
+        // 更新 Giscus 主题
+        function updateGiscusTheme(theme) {
+            const giscusContainer = document.getElementById('giscus-container');
+            const giscusFrame = document.querySelector('iframe.giscus-frame');
+            
+            if (!giscusFrame || !giscusFrame.contentWindow) {
+                return;
+            }
+
+            // 创建或获取遮罩元素
+            let mask = giscusContainer.querySelector('.theme-transition-mask');
+            if (!mask) {
+                mask = document.createElement('div');
+                mask.className = 'theme-transition-mask';
+                giscusContainer.style.position = 'relative';
+                giscusContainer.appendChild(mask);
+            }
+
+            // 显示遮罩（淡入）
+            mask.classList.add('active');
+            
+            // 立即发送主题切换消息
+            giscusFrame.contentWindow.postMessage({
+                giscus: {
+                    setConfig: {
+                        theme: theme
+                    }
+                }
+            }, 'https://giscus.app');
+            
+            console.log(`🎨 Giscus 主题已切换为: ${theme}`);
+            
+            // 150ms 后隐藏遮罩（淡出）
+            setTimeout(() => {
+                mask.classList.remove('active');
+            }, 150);
         }
     </script>
     <style>
@@ -608,10 +763,32 @@
         /* Giscus 容器样式 */
         #giscus-container {
             margin-top: 1rem;
+            /* 添加过渡动画，与主站同步 */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         #giscus-container iframe {
             border-radius: var(--border-radius);
+            /* 禁用 iframe 的过渡动画，避免不同步 */
+            transition: none !important;
+        }
+
+        /* 主题切换时的遮罩，减少视觉不同步 */
+        .theme-transition-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-secondary);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            z-index: 100;
+        }
+
+        .theme-transition-mask.active {
+            opacity: 0.5;
         }
 
         /* 返回主站链接样式 */

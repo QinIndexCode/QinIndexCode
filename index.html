@@ -766,6 +766,13 @@
             } catch(e) { console.error('Theme sync failed for frame', e); }
         }
 
+        // 创建隐藏输入框用于主题状态同步
+        const themeStateInput = document.createElement('input');
+        themeStateInput.type = 'hidden';
+        themeStateInput.id = 'theme-state';
+        themeStateInput.value = 'dark'; // 默认暗色
+        document.body.appendChild(themeStateInput);
+
         function applyTheme(themeVars) {
             const root = document.documentElement;
             for (const [key, value] of Object.entries(themeVars)) {
@@ -775,6 +782,15 @@
             // Sync with all existing iframes
             const frames = document.querySelectorAll('iframe');
             frames.forEach(frame => applyThemeToFrame(frame, themeVars));
+            
+            // 更新隐藏输入框的值，触发 iframe 中的监听器
+            const isDark = themeVars['--bg-primary'] === '#0B0C15';
+            themeStateInput.value = isDark ? 'dark' : 'light';
+            
+            // 触发自定义事件，通知所有 iframe 主题已变化
+            window.dispatchEvent(new CustomEvent('themeChanged', { 
+                detail: { theme: isDark ? 'dark' : 'light' } 
+            }));
         }
 
         themeBtn.addEventListener('click', (e) => {
