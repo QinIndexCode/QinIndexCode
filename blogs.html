@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
     <link href="./css/main.css" rel="stylesheet">
     <script src="./js/smooth-scroll.js" defer></script>
 </head>
+
 <body>
     <div class="container" id="container">
         <h1 class="section-title">随记</h1>
@@ -21,7 +23,7 @@
         </div>
     </div>
 
-    <!-- 引入markdown解析库 -->
+    <!-- 引入 markdown 解析库 -->
     <script src="./js/markdown-it.min.js"></script>
     <script src="./js/highlight.min.js"></script>
     <script>
@@ -41,8 +43,19 @@
             }
         });
 
-
         let blogData = [];
+
+        // 点赞数据存储（使用 localStorage 缓存）
+        const likeStorage = {
+            getKey: (id) => `blog_like_${id}`,
+            hasLiked: (id) => localStorage.getItem(likeStorage.getKey(id)) === 'true',
+            setLiked: (id, liked) => localStorage.setItem(likeStorage.getKey(id), liked.toString()),
+            getCount: (id) => {
+                const data = localStorage.getItem(`blog_like_count_${id}`);
+                return data ? parseInt(data, 10) : 0;
+            },
+            setCount: (id, count) => localStorage.setItem(`blog_like_count_${id}`, count.toString())
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             loadBlogsSequentially();
@@ -122,18 +135,74 @@
             };
         }
 
-        function renderBlogList() {
-            const container = document.getElementById('container');
-            container.classList.add('fade-out');
+        // 点赞功能实现
+        async function loadLikeCount(blogId) {
+            const countEl = document.getElementById('like-count');
+            const btn = document.getElementById('like-btn');
 
-            setTimeout(() => {
-                container.innerHTML = `
+            // 从 localStorage 加载缓存数据
+            const cachedCount = likeStorage.getCount(blogId);
+            const hasLiked = likeStorage.hasLiked(blogId);
+
+            if (cachedCount > 0) {
+                countEl.textContent = cachedCount;
+            }
+
+            if (hasLiked) {
+                btn.classList.add('liked');
+            }
+
+            // 尝试从 GitHub API 获取真实数据（如果有）
+            try {
+                // 这里可以扩展为调用 GitHub API 获取 reactions
+                // 目前使用 localStorage 作为主要存储
+            } catch (error) {
+                console.warn('Failed to load likes from GitHub:', error);
+            }
+        }
+
+        async function toggleLike(blogId) {
+            const btn = document.getElementById('like-btn');
+            const countEl = document.getElementById('like-count');
+            const hasLiked = likeStorage.hasLiked(blogId);
+
+            // 检查是否已登录 GitHub（可选）
+            // 这里简单实现，使用 localStorage
+
+            if (hasLiked) {
+                // 取消点赞
+                likeStorage.setLiked(blogId, false);
+                const currentCount = likeStorage.getCount(blogId);
+                likeStorage.setCount(blogId, Math.max(0, currentCount - 1));
+                btn.classList.remove('liked');
+            } else {
+                // 添加点赞
+                likeStorage.setLiked(blogId, true);
+                const currentCount = likeStorage.getCount(blogId);
+                likeStorage.setCount(blogId, currentCount + 1);
+                btn.classList.add('liked');
+
+                // 小动画反馈
+                btn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+            }
+
+            // 更新显示
+            countEl.textContent = likeStorage.getCount(blogId);
+        }
+        const container = document.getElementById('container');
+        container.classList.add('fade-out');
+
+        setTimeout(() => {
+            container.innerHTML = `
                 <h1 class="section-title">随记</h1>
                 <div class="grid grid-2" id="blog-list"></div>
             `;
 
-                const blogList = document.getElementById('blog-list');
-                const blogCardsHTML = blogData.map(blog => `
+            const blogList = document.getElementById('blog-list');
+            const blogCardsHTML = blogData.map(blog => `
                 <div class="card" onclick="openBlog('${blog.id}')" style="cursor: pointer;">
                     <h3>${blog.title}</h3>
                     <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
@@ -145,19 +214,22 @@
                 </div>
             `).join('');
 
-                blogList.innerHTML = blogCardsHTML;
+            blogList.innerHTML = blogCardsHTML;
 
-                container.classList.remove('fade-out');
-                container.classList.add('fade-in');
-                setTimeout(() => container.classList.remove('fade-in'), 300);
-            }, 300);
-        }
+            container.classList.remove('fade-out');
+            container.classList.add('fade-in');
+            setTimeout(() => container.classList.remove('fade-in'), 300);
+        }, 300);
 
         function openBlog(blogId) {
             const blog = blogData.find(b => b.id === blogId);
             if (!blog) return;
 
             const htmlContent = md.render(blog.content);
+
+            // 生成唯一的讨论 ID（使用博客 ID）
+            const discussionId = blogId;
+            const discussionTitle = blog.title;
 
             const container = document.getElementById('container');
             container.classList.add('fade-out');
@@ -167,26 +239,155 @@
                 <button class="back-link" onclick="renderBlogList()">
                     <span class="arrow">←</span> 返回列表
                 </button>
-                <div class="card">
-                    ${htmlContent}
+                <div class="card blog-detail-card">
+                    <!-- 博客头部信息 -->
+                    <div class="blog-header">
+                        <h1 class="blog-title">${blog.title}</h1>
+                        <div class="blog-meta">
+                            <span class="blog-date">📅 ${blog.date}</span>
+                            <span class="blog-author">✍️ ${blog.author}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 点赞和互动栏 -->
+                    <div class="blog-interactions">
+                        <button class="like-btn" id="like-btn" onclick="toggleLike('${discussionId}')" aria-label="点赞文章">
+                            <svg class="like-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                            <span class="like-count" id="like-count">0</span>
+                            <span class="like-text">点赞</span>
+                        </button>
+                        <div class="interaction-divider"></div>
+                        <a href="#comments-section" class="comment-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>评论</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 博客正文 -->
+                    <div class="blog-content">
+                        ${htmlContent}
+                    </div>
+                    
+                    <!-- 标签区域 -->
+                    <div class="blog-tags">
+                        <span class="tag">#AI</span>
+                        <span class="tag">#技术思考</span>
+                    </div>
                 </div>
-            `;
-                container.classList.remove('fade-out');
-                container.classList.add('fade-in');
-                setTimeout(() => container.classList.remove('fade-in'), 300);
-            }, 300);
-        }
+                
+                <!-- Giscus 评论区域 -->
+                <div class="card comments-card" id="comments-section">
+                    <h2 style="margin-bottom: 1.5rem;">💬 评论讨论</h2>
+                    <div id="giscus-container">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>加载评论中...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 引入 Giscus -->
+                <script src="https://giscus.app/client.js"
+                    data-repo="QinIndexCode/QinIndexCode"
+                    data-repo-id="R_kgDOQmJfZg"
+                    data-category="General"
+                    data-category-id="DIC_kwDOQmJfZs4C3dZh"
+                    data-mapping="specific"
+                    data-term="${discussionId}"
+                    data-strict="1"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="top"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+    </script>
+    `;
+    container.classList.remove('fade-out');
+    container.classList.add('fade-in');
+
+    // 加载点赞数据
+    loadLikeCount(discussionId);
+
+    // 监听主题变化
+    const observer = new MutationObserver(() => {
+    const giscusFrame = document.querySelector('iframe.giscus-frame');
+    if (giscusFrame && window.getCurrentTheme) {
+    const isDark = !window.getCurrentTheme()['--bg-primary'].includes('#F1F5F9');
+    giscusFrame.contentWindow.postMessage({
+    giscus: {
+    setConfig: {
+    theme: isDark ? 'dark' : 'light'
+    }
+    }
+    }, 'https://giscus.app');
+    }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+
+    setTimeout(() => container.classList.remove('fade-in'), 300);
+    }, 300);
+    }
     </script>
     <style>
         /* 博客详情页 Markdown 样式增强 */
-        .card h1 { color: var(--accent-blue); font-size: 2rem; margin-bottom: 1.5rem; }
-        .card h2 { color: var(--accent-purple); font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
-        .card h3 { color: var(--text-primary); font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 1rem; }
-        .card ul, .card ol { margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-secondary); }
-        .card li { margin-bottom: 0.5rem; }
-        .card pre { background: var(--bg-primary); padding: 1rem; border-radius: var(--border-radius); overflow-x: auto; margin-bottom: 1.5rem; border: 1px solid var(--border-color); }
-        .card code { font-family: 'Fira Code', monospace; font-size: 0.9em; }
-        .card p code { background: var(--bg-primary); padding: 0.2rem 0.4rem; border-radius: 4px; color: var(--accent-pink); }
+        .card h1 {
+            color: var(--accent-blue);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            color: var(--accent-purple);
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card ul,
+        .card ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card pre {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        .card p code {
+            background: var(--bg-primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: var(--accent-pink);
+        }
 
         /* Back Link Style */
         .back-link {
@@ -202,20 +403,168 @@
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .back-link:hover {
             color: var(--accent-purple);
             transform: translateX(-4px);
         }
+
         .back-link .arrow {
             margin-right: 0.5rem;
-            font-family: system-ui; /* Ensure arrow renders consistently */
+            font-family: system-ui;
+            /* Ensure arrow renders consistently */
         }
 
         /* Mobile specific fixes */
         @media (max-width: 768px) {
             .container {
-                padding-top: 6rem; /* Increased top padding to clear fixed hamburger menu */
+                padding-top: 6rem;
+                /* Increased top padding to clear fixed hamburger menu */
             }
+        }
+
+        /* 博客详情页样式增强 */
+        .blog-detail-card {
+            margin-bottom: 2rem;
+        }
+
+        .blog-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .blog-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .blog-interactions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .like-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+        }
+
+        .like-btn:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+
+        .like-btn.liked {
+            background: rgba(236, 72, 153, 0.1);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+
+        .like-btn.liked .like-icon {
+            fill: var(--accent-pink);
+            stroke: var(--accent-pink);
+        }
+
+        .like-icon {
+            transition: all 0.3s;
+        }
+
+        .like-count {
+            font-weight: 600;
+            min-width: 20px;
+        }
+
+        .interaction-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--glass-border);
+            margin: 0 0.5rem;
+        }
+
+        .comment-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .comment-link:hover {
+            color: var(--accent-blue);
+            background: var(--glass-bg-hover);
+            border-radius: var(--border-radius);
+        }
+
+        .blog-content {
+            margin-bottom: 2rem;
+        }
+
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .comments-card {
+            margin-top: 2rem;
+        }
+
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Giscus 容器样式 */
+        #giscus-container {
+            margin-top: 1rem;
+        }
+
+        #giscus-container iframe {
+            border-radius: var(--border-radius);
         }
     </style>
 </body>

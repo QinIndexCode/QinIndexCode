@@ -24,6 +24,7 @@
     --accent-purple-glow: rgba(139, 92, 246, 0.5);
     --accent-cyan: #06B6D4;
     --accent-pink: #EC4899;
+    --accent-green: #10B981;
     
     /* 渐变系统 */
     --gradient-primary: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
@@ -274,6 +275,30 @@ a {
     gap: 0.5rem;
 }
 
+/* 焦点可见样式 - 可访问性增强 */
+.btn:focus-visible,
+a:focus-visible,
+.nav-link:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* 移除默认 outline，使用更明显的焦点样式 */
+.btn:focus,
+a:focus,
+.nav-link:focus,
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
+}
+
 .btn-primary {
     background: var(--gradient-primary);
     color: #fff;
@@ -283,6 +308,10 @@ a {
 .btn-primary:hover {
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
     transform: translateY(-2px);
+}
+
+.btn-primary:focus-visible {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3), 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
 .btn-outline {
@@ -346,6 +375,35 @@ a {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* 尊重用户的动画偏好设置 - 可访问性 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .avatar-wrapper {
+        animation: none;
+    }
+
+    .skeleton {
+        animation: none;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .heart-icon {
+        animation: none;
+    }
+
+    .floating-text.show {
+        animation: none;
+    }
 }
 
 @keyframes pulse {

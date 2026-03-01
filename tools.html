@@ -202,6 +202,42 @@
             border: 1px solid var(--glass-border);
             margin-top: 0.5rem;
             transition: background-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Checkerboard background for transparency */
+        .color-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #ccc 75%), 
+                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            z-index: 0;
+            opacity: 0.1; /* Subtle checkerboard */
+        }
+        
+        .color-preview-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .color-picker-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
         }
 
         /* --- Navigation Menu --- */
@@ -574,21 +610,43 @@
                         <img src="assets/icons/palette.svg" alt="Color" class="tool-icon-img">
                     </div>
                     <div>
-                        <h3 class="tool-title">颜色转换</h3>
+                        <h3 class="tool-title">颜色调试器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">HEX 与 RGB 格式互转。</p>
+                <p class="tool-desc">HEX / RGB / RGBA 互转，支持透明度。</p>
                 
                 <div class="tool-content">
                     <div class="input-group">
-                        <input type="text" id="color-input" class="text-input" placeholder="输入 HEX (#fff) 或 RGB (255,255,255)">
+                        <label class="input-label">颜色选择器</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="color-picker" value="#6366f1" style="height: 38px; width: 50px; cursor: pointer; border: none; padding: 0; background: none;">
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                                <label class="input-label" style="font-size: 0.7rem;">透明度 (Alpha): <span id="alpha-val">1.0</span></label>
+                                <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="1" style="width: 100%;">
+                            </div>
+                        </div>
                     </div>
-                    <button id="color-convert-btn" class="btn btn-outline">转换</button>
-                    <div class="output-wrapper">
-                        <input type="text" id="color-output" class="text-input" readonly placeholder="结果...">
-                        <button class="copy-btn" onclick="copyToClipboard('color-output')">复制</button>
+                    
+                    <div class="input-group">
+                        <label class="input-label">输出格式</label>
+                        <select id="color-format" class="select-input">
+                            <option value="auto">自动 (Auto)</option>
+                            <option value="hex">HEX (#RRGGBB / #RRGGBBAA)</option>
+                            <option value="rgb">RGB / RGBA</option>
+                        </select>
                     </div>
-                    <div id="color-preview-box" class="color-preview"></div>
+
+                    <div class="input-group">
+                        <label class="input-label">输入 / 输出</label>
+                        <div class="output-wrapper">
+                            <input type="text" id="color-input" class="text-input" placeholder="支持 HEX, RGB, RGBA">
+                            <button class="copy-btn" onclick="copyToClipboard('color-input')">复制</button>
+                        </div>
+                    </div>
+
+                    <div id="color-preview-box" class="color-preview">
+                        <div id="color-preview-inner" class="color-preview-inner" style="background-color: #6366f1;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -813,11 +871,29 @@
         // --- 5. Base64 & 6. URL ---
         const b64In = document.getElementById('b64-input');
         const b64Out = document.getElementById('b64-output');
+
+        // 安全的 UTF-8 到 Base64 编码（替代废弃的 unescape）
+        function utf8ToBase64(str) {
+            const utf8Bytes = new TextEncoder().encode(str);
+            const base64String = btoa(String.fromCharCode(...utf8Bytes));
+            return base64String;
+        }
+
+        // 安全的 Base64 到 UTF-8 解码（替代废弃的 escape）
+        function base64ToUtf8(base64) {
+            const binaryString = atob(base64);
+            const utf8Bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                utf8Bytes[i] = binaryString.charCodeAt(i);
+            }
+            return new TextDecoder().decode(utf8Bytes);
+        }
+
         document.getElementById('b64-encode-btn').addEventListener('click', () => {
-            try { b64Out.value = btoa(unescape(encodeURIComponent(b64In.value))); } catch(e){ b64Out.value = "Err"; }
+            try { b64Out.value = utf8ToBase64(b64In.value); } catch(e){ b64Out.value = "编码错误: " + e.message; }
         });
         document.getElementById('b64-decode-btn').addEventListener('click', () => {
-            try { b64Out.value = decodeURIComponent(escape(atob(b64In.value))); } catch(e){ b64Out.value = "Err"; }
+            try { b64Out.value = base64ToUtf8(b64In.value); } catch(e){ b64Out.value = "解码错误: " + e.message; }
         });
 
         const urlIn = document.getElementById('url-input');
@@ -825,43 +901,103 @@
         document.getElementById('url-encode-btn').addEventListener('click', () => urlOut.value = encodeURIComponent(urlIn.value));
         document.getElementById('url-decode-btn').addEventListener('click', () => urlOut.value = decodeURIComponent(urlIn.value));
 
-        // --- 7. Color Converter ---
-        document.getElementById('color-convert-btn').addEventListener('click', () => {
-            const val = document.getElementById('color-input').value.trim();
-            const out = document.getElementById('color-output');
-            const preview = document.getElementById('color-preview-box');
+        // --- 7. Color Converter Enhanced ---
+        const colorPicker = document.getElementById('color-picker');
+        const alphaSlider = document.getElementById('alpha-slider');
+        const alphaVal = document.getElementById('alpha-val');
+        const colorInput = document.getElementById('color-input');
+        const colorPreviewInner = document.getElementById('color-preview-inner');
+        const colorFormat = document.getElementById('color-format'); // New format selector
+
+        function hexToRgb(hex) {
+            // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+            const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function updateColorFromControls() {
+            const hex = colorPicker.value;
+            const alpha = parseFloat(alphaSlider.value);
+            alphaVal.textContent = alpha.toFixed(2);
             
-            // Simple Hex to RGB
-            if(val.startsWith('#')) {
-                let r=0, g=0, b=0;
-                if(val.length == 4) {
-                    r = parseInt(val[1]+val[1], 16);
-                    g = parseInt(val[2]+val[2], 16);
-                    b = parseInt(val[3]+val[3], 16);
-                } else if (val.length == 7) {
-                    r = parseInt(val.substring(1,3), 16);
-                    g = parseInt(val.substring(3,5), 16);
-                    b = parseInt(val.substring(5,7), 16);
-                }
-                out.value = `rgb(${r}, ${g}, ${b})`;
-                preview.style.backgroundColor = val;
-            } 
-            // Simple RGB to Hex
-            else if (val.toLowerCase().startsWith('rgb')) {
-                const parts = val.match(/\d+/g);
-                if(parts && parts.length >= 3) {
-                    const toHex = (c) => {
-                        const hex = parseInt(c).toString(16);
-                        return hex.length == 1 ? "0" + hex : hex;
-                    };
-                    const hex = "#" + toHex(parts[0]) + toHex(parts[1]) + toHex(parts[2]);
-                    out.value = hex;
-                    preview.style.backgroundColor = hex;
-                }
+            const rgb = hexToRgb(hex);
+            const format = colorFormat.value;
+            let result = "";
+            
+            if (format === 'rgb') {
+                // Force RGB/RGBA
+                result = alpha === 1 ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+            } else if (format === 'hex') {
+                // Force HEX (with alpha if needed)
+                let alphaHex = alpha === 1 ? "" : Math.round(alpha * 255).toString(16).padStart(2, '0');
+                result = `${hex}${alphaHex}`;
             } else {
-                out.value = "格式不支持";
+                // Auto (Default behavior)
+                if (alpha === 1) {
+                    result = hex;
+                } else {
+                    result = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+                }
             }
-        });
+            
+            colorInput.value = result;
+            colorPreviewInner.style.backgroundColor = result;
+        }
+
+        function updateControlsFromInput() {
+            let val = colorInput.value.trim().toLowerCase();
+            let hex = "#000000";
+            let alpha = 1;
+
+            if (val.startsWith('#')) {
+                // HEX
+                if(val.length === 4 || val.length === 7) {
+                    hex = val;
+                } else if (val.length === 9) {
+                    // #RRGGBBAA
+                    hex = val.substring(0, 7);
+                    alpha = parseInt(val.substring(7, 9), 16) / 255;
+                }
+            } else if (val.startsWith('rgb')) {
+                // RGB / RGBA
+                const parts = val.match(/(\d+(\.\d+)?)/g);
+                if (parts) {
+                    const r = parseInt(parts[0]);
+                    const g = parseInt(parts[1]);
+                    const b = parseInt(parts[2]);
+                    const toHex = (c) => {
+                        const h = Math.min(255, Math.max(0, c)).toString(16);
+                        return h.length == 1 ? "0" + h : h;
+                    };
+                    hex = "#" + toHex(r) + toHex(g) + toHex(b);
+                    
+                    if (parts.length >= 4) {
+                        alpha = parseFloat(parts[3]);
+                    }
+                }
+            }
+
+            // Update controls
+            colorPicker.value = hex;
+            alphaSlider.value = alpha;
+            alphaVal.textContent = alpha.toFixed(2);
+            colorPreviewInner.style.backgroundColor = val; // Try to use input directly for preview
+        }
+
+        colorPicker.addEventListener('input', updateColorFromControls);
+        alphaSlider.addEventListener('input', updateColorFromControls);
+        colorFormat.addEventListener('change', updateColorFromControls); // Listen for format changes
+        colorInput.addEventListener('input', updateControlsFromInput);
+        
+        // Init
+        updateColorFromControls();
+
 
         // --- 8. Password Generator ---
         const pwdLen = document.getElementById('pwd-len');
