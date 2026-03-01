@@ -479,7 +479,18 @@
             styleObserver.observe(document.documentElement, { attributes: true });
 
             // 方法4: 超快速轮询检查（50ms，仅前3秒）
-            const fastCheckInterval = setInterval(() => {
+            let fastCheckInterval = null;
+            let isPageVisible = !document.hidden;
+            
+            // 页面可见性变化时暂停/恢复轮询
+            document.addEventListener('visibilitychange', () => {
+                isPageVisible = !document.hidden;
+            });
+            
+            fastCheckInterval = setInterval(() => {
+                // 页面不可见时跳过检查，节省资源
+                if (!isPageVisible) return;
+                
                 const currentTheme = getCurrentTheme();
                 if (currentTheme !== lastTheme) {
                     lastTheme = currentTheme;
@@ -489,7 +500,10 @@
 
             // 3秒后停止快速轮询
             setTimeout(() => {
-                clearInterval(fastCheckInterval);
+                if (fastCheckInterval) {
+                    clearInterval(fastCheckInterval);
+                    fastCheckInterval = null;
+                }
             }, 3000);
         }
 
