@@ -192,18 +192,21 @@
             // 更新显示
             countEl.textContent = likeStorage.getCount(blogId);
         }
-        const container = document.getElementById('container');
-        container.classList.add('fade-out');
 
-        setTimeout(() => {
-            container.innerHTML = `
+        // 渲染博客列表
+        function renderBlogList() {
+            const container = document.getElementById('container');
+            container.classList.add('fade-out');
+
+            setTimeout(() => {
+                container.innerHTML = `
                 <h1 class="section-title">随记</h1>
                 <div class="grid grid-2" id="blog-list"></div>
             `;
 
-            const blogList = document.getElementById('blog-list');
-            const blogCardsHTML = blogData.map(blog => 
-                `<div class="card" onclick="openBlog('${blog.id}')" style="cursor: pointer;">
+                const blogList = document.getElementById('blog-list');
+                const blogCardsHTML = blogData.map(blog =>
+                    `<div class="card" onclick="openBlog('${blog.id}')" style="cursor: pointer;">
                     <h3>${blog.title}</h3>
                     <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
                         <span style="margin-right: 1rem;">${blog.date}</span>
@@ -212,14 +215,15 @@
                     <p style="flex: 1; margin-bottom: 1.5rem;">${blog.excerpt}</p>
                     <span class="link-arrow">阅读更多</span>
                 </div>`
-            ).join('');
+                ).join('');
 
-            blogList.innerHTML = blogCardsHTML;
+                blogList.innerHTML = blogCardsHTML;
 
-            container.classList.remove('fade-out');
-            container.classList.add('fade-in');
-            setTimeout(() => container.classList.remove('fade-in'), 300);
-        }, 300);
+                container.classList.remove('fade-out');
+                container.classList.add('fade-in');
+                setTimeout(() => container.classList.remove('fade-in'), 300);
+            }, 300);
+        }
 
         function openBlog(blogId) {
             const blog = blogData.find(b => b.id === blogId);
