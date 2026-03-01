@@ -286,12 +286,7 @@
                 <!-- Giscus 评论区域 -->
                 <div class="card comments-card" id="comments-section">
                     <h2 style="margin-bottom: 1.5rem;">💬 评论讨论</h2>
-                    <div id="giscus-container">
-                        <div class="loading-state">
-                            <div class="spinner"></div>
-                            <p>加载评论中...</p>
-                        </div>
-                    </div>
+                    <div class="giscus" id="giscus-container"></div>
                 </div>`;
 
                 container.classList.remove('fade-out');
@@ -331,6 +326,12 @@
                 existing.remove();
             }
 
+            // 同时移除可能存在的 iframe
+            const existingFrame = document.querySelector('iframe.giscus-frame');
+            if (existingFrame) {
+                existingFrame.remove();
+            }
+
             const script = document.createElement('script');
             script.src = 'https://giscus.app/client.js';
             script.async = true;
@@ -347,7 +348,24 @@
             script.setAttribute('data-input-position', 'top');
             script.setAttribute('data-theme', 'preferred_color_scheme');
             script.setAttribute('data-lang', 'zh-CN');
-            script.setAttribute('data-loading', 'lazy');
+            // 移除 lazy loading，确保立即加载
+            // script.setAttribute('data-loading', 'lazy');
+
+            // 错误处理
+            script.addEventListener('error', () => {
+                console.error('Giscus 脚本加载失败');
+                const container = document.getElementById('giscus-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                            <p>评论系统加载失败，请稍后重试。</p>
+                            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                重新加载
+                            </button>
+                        </div>
+                    `;
+                }
+            });
 
             document.body.appendChild(script);
         }
