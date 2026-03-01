@@ -286,6 +286,47 @@
             });
         }
 
+        // 处理 OAuth 回调和独立页面访问
+        let initialPage = 'home'; // 默认页面
+        let shouldSwitchPage = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // 检查 OAuth 回调
+            const redirect = urlParams.get('redirect');
+            // 检查独立页面访问
+            const fromPage = urlParams.get('from');
+            
+            let targetPage = null;
+            
+            if (redirect) {
+                // OAuth 回调场景
+                try {
+                    const redirectUrl = new URL(redirect);
+                    const pathname = redirectUrl.pathname;
+                    const pageName = pathname.split('/').pop().replace('.html', '') || 'home';
+                    targetPage = pageName;
+                    console.log('✅ OAuth 回调，目标页面:', pageName);
+                } catch (e) {
+                    console.error('❌ 解析 redirect URL 失败:', e);
+                }
+            } else if (fromPage) {
+                // 独立页面访问场景
+                targetPage = fromPage;
+                console.log('✅ 独立页面访问，来源页面:', fromPage);
+            }
+            
+            // 如果找到了目标页面
+            if (targetPage) {
+                initialPage = targetPage;
+                shouldSwitchPage = true;
+                console.log('✅ 设置初始页面为:', initialPage);
+            } else {
+                console.log('ℹ️ 使用默认首页');
+            }
+        });
+
         class PageSlider {
             constructor() {
                 this.slider = document.getElementById('page-slider');
@@ -294,7 +335,17 @@
                     id: link.dataset.target,
                     src: link.dataset.src
                 }));
-                this.currentIndex = 0;
+                
+                // 如果是 OAuth 回调，直接设置为目标页面
+                this.currentIndex = shouldSwitchPage 
+                    ? this.pages.findIndex(p => p.id === initialPage) 
+                    : 0;
+                
+                // 如果找不到目标页面，回到首页
+                if (this.currentIndex === -1) {
+                    this.currentIndex = 0;
+                }
+                
                 this.isAnimating = false;
                 
                 // Touch state
@@ -306,6 +357,16 @@
             }
 
             init() {
+                // 如果是目标页面访问，先设置 slider 的初始位置
+                if (shouldSwitchPage) {
+                    const targetIndex = this.pages.findIndex(p => p.id === initialPage);
+                    if (targetIndex !== -1) {
+                        // 在创建 iframe 之前就设置 slider 位置
+                        this.slider.style.transform = `translate3d(${-targetIndex * 100}%, 0, 0)`;
+                        console.log(`📍 预设 slider 位置：${-targetIndex * 100}%`);
+                    }
+                }
+
                 // Initialize iframes
                 this.pages.forEach((page, index) => {
                     const iframe = document.createElement('iframe');
@@ -326,7 +387,7 @@
                         this.handleIframeError(iframe, page);
                     });
 
-                    // 超时处理：5秒内未加载完成视为失败
+                    // 超时处理：5 秒内未加载完成视为失败
                     const loadTimeout = setTimeout(() => {
                         if (!iframe.contentDocument || iframe.contentDocument.body.innerHTML === '') {
                             this.handleIframeError(iframe, page);
@@ -337,12 +398,37 @@
                         clearTimeout(loadTimeout);
                     }, { once: true });
 
-                    // Only load the first page immediately
-                    if (index === 0) {
-                        iframe.src = page.src;
+                    // 如果是 OAuth 回调或独立页面访问，只加载目标页面
+                    const isTargetPage = shouldSwitchPage && page.id === initialPage;
+                    
+                    // 如果有目标页面，只加载目标页面；否则加载首页
+                    if (shouldSwitchPage) {
+                        // 只加载目标页面
+                        if (isTargetPage) {
+                            console.log(`🎯 加载目标页面 iframe: ${page.id}`);
+                            iframe.src = page.src;
+                        }
+                    } else {
+                        // 默认加载首页
+                        if (index === 0) {
+                            iframe.src = page.src;
+                        }
                     }
                     this.slider.appendChild(iframe);
                 });
+
+                // 如果是目标页面访问，确保 slider 位置正确（再次确认）
+                if (shouldSwitchPage) {
+                    const targetIndex = this.pages.findIndex(p => p.id === initialPage);
+                    if (targetIndex !== -1) {
+                        // 设置 currentIndex
+                        this.currentIndex = targetIndex;
+                        // 再次确保 slider 位置正确
+                        this.slider.style.transition = 'none';
+                        this.slider.style.transform = `translate3d(${-targetIndex * 100}%, 0, 0)`;
+                        console.log(`📍 确认 slider 位置：index=${targetIndex}, page=${initialPage}`);
+                    }
+                }
 
                 // Lazy load others
                 setTimeout(() => this.loadOtherPages(), 2000);
@@ -351,6 +437,18 @@
                 this.navLinks.forEach((link, index) => {
                     link.addEventListener('click', () => this.goToPage(index));
                 });
+
+                // 如果是 OAuth 回调或独立页面访问，设置正确的导航激活状态
+                if (shouldSwitchPage) {
+                    const targetIndex = this.pages.findIndex(p => p.id === initialPage);
+                    if (targetIndex !== -1) {
+                        // 移除所有激活状态
+                        this.navLinks.forEach(link => link.classList.remove('active'));
+                        // 设置目标导航为激活状态
+                        this.navLinks[targetIndex].classList.add('active');
+                        console.log(`✅ 已设置导航激活状态：${initialPage}`);
+                    }
+                }
 
                 // Bind Touch Events
                 const viewport = document.getElementById('viewport');
@@ -429,8 +527,19 @@
             loadOtherPages() {
                 const frames = this.slider.querySelectorAll('iframe');
                 frames.forEach((frame, index) => {
-                    if (index !== 0 && !frame.src) {
-                        frame.src = this.pages[index].src;
+                    // 如果是目标页面访问，跳过首页（index 0）
+                    // 如果是默认访问，跳过首页（index 0）
+                    // 其他页面延迟加载
+                    if (shouldSwitchPage) {
+                        // 目标页面访问：加载所有未加载的页面（除了首页）
+                        if (index !== this.currentIndex && !frame.src) {
+                            frame.src = this.pages[index].src;
+                        }
+                    } else {
+                        // 默认访问：加载所有未加载的页面（除了首页）
+                        if (index !== 0 && !frame.src) {
+                            frame.src = this.pages[index].src;
+                        }
                     }
                 });
             }
@@ -516,8 +625,15 @@
             }
         }
 
-        // Initialize App
-        const app = new PageSlider();
+        // Initialize App - 在 DOMContentLoaded 之后初始化，确保 shouldSwitchPage 已设置
+        let app = null;
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            // 等待 shouldSwitchPage 设置完成后再初始化 PageSlider
+            setTimeout(() => {
+                app = new PageSlider();
+            }, 0);
+        });
 
         // --- Mobile Menu Logic ---
         const sidebar = document.getElementById('sidebar');
