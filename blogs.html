@@ -199,7 +199,7 @@
             container.innerHTML = `
                 <h1 class="section-title">随记</h1>
                 <div class="grid grid-2" id="blog-list"></div>
-            `;
+            `
 
             const blogList = document.getElementById('blog-list');
             const blogCardsHTML = blogData.map(blog => `
@@ -298,7 +298,7 @@
                     data-category-id="DIC_kwDOQmJfZs4C3dZh"
                     data-mapping="specific"
                     data-term="${discussionId}"
-                    data-strict="1"
+                    data-strict="0"
                     data-reactions-enabled="1"
                     data-emit-metadata="0"
                     data-input-position="top"
@@ -307,8 +307,9 @@
                     data-loading="lazy"
                     crossorigin="anonymous"
                     async>
-    </script>
-    `;
+                </script>
+        `;
+
     container.classList.remove('fade-out');
     container.classList.add('fade-in');
 
@@ -568,4 +569,5 @@
         }
     </style>
 </body>
+
 </html>
