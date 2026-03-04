@@ -304,22 +304,9 @@
 
                 // 动态加载 Giscus
                 loadGiscus(discussionId);
-
-                // 监听主题变化
-                const observer = new MutationObserver(() => {
-                    const giscusFrame = document.querySelector('iframe.giscus-frame');
-                    if (giscusFrame && window.getCurrentTheme) {
-                        const isDark = !window.getCurrentTheme()['--bg-primary'].includes('#F1F5F9');
-                        giscusFrame.contentWindow.postMessage({
-                            giscus: {
-                                setConfig: {
-                                    theme: isDark ? 'dark' : 'light'
-                                }
-                            }
-                        }, 'https://giscus.app');
-                    }
-                });
-                observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+                
+                // 设置 Giscus 主题监听器
+                setupGiscusThemeListener();
 
                 setTimeout(() => container.classList.remove('fade-in'), 300);
             }, 300);
@@ -424,87 +411,76 @@
             }
         }
 
-        // 设置 Giscus 主题监听器
+        // Giscus 主题监听器清理函数
+        let giscusThemeObservers = [];
+        let giscusThemeListeners = [];
+        
+        // 清理所有主题监听器
+        function cleanupGiscusThemeListeners() {
+            giscusThemeObservers.forEach(observer => observer.disconnect());
+            giscusThemeObservers = [];
+            
+            giscusThemeListeners.forEach(listener => {
+                try {
+                    if (listener.target) {
+                        listener.target.removeEventListener(listener.type, listener.handler);
+                    }
+                } catch(e) {
+                    console.warn('清理事件监听器失败:', e);
+                }
+            });
+            giscusThemeListeners = [];
+        }
+        
+        // 设置 Giscus 主题监听器（简化优化版）
         function setupGiscusThemeListener() {
+            // 先清理之前的监听器，防止重复创建
+            cleanupGiscusThemeListeners();
+            
             let lastTheme = getCurrentTheme();
             
-            // 方法1: 监听父窗口的隐藏输入框变化（最可靠）
+            // 统一方案：使用 postMessage 与父窗口通信
             if (window.parent !== window) {
-                const parentInput = window.parent.document.getElementById('theme-state');
-                if (parentInput) {
-                    // 初始同步
-                    const parentTheme = parentInput.value;
-                    if (parentTheme !== lastTheme) {
-                        lastTheme = parentTheme;
-                        updateGiscusTheme(parentTheme);
-                    }
+                const themeChangeHandler = (e) => {
+                    // 只处理来自父窗口的消息
+                    if (e.source !== window.parent) return;
                     
-                    // 监听输入框变化
-                    const inputObserver = new MutationObserver((mutations) => {
-                        mutations.forEach((mutation) => {
-                            if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-                                const newTheme = parentInput.value;
-                                if (newTheme !== lastTheme) {
-                                    lastTheme = newTheme;
-                                    updateGiscusTheme(newTheme);
-                                }
-                            }
-                        });
-                    });
-                    inputObserver.observe(parentInput, { attributes: true });
-                }
-                
-                // 方法2: 监听父窗口的自定义事件
-                window.parent.addEventListener('themeChanged', (e) => {
-                    const newTheme = e.detail.theme;
-                    if (newTheme !== lastTheme) {
+                    const newTheme = e.data?.giscus?.theme || e.detail?.theme;
+                    if (newTheme && newTheme !== lastTheme) {
                         lastTheme = newTheme;
                         updateGiscusTheme(newTheme);
                     }
+                };
+                
+                // 监听 CustomEvent
+                window.parent.addEventListener('themeChanged', themeChangeHandler);
+                giscusThemeListeners.push({
+                    target: window.parent,
+                    type: 'themeChanged',
+                    handler: themeChangeHandler
+                });
+                
+                // 监听 postMessage
+                const messageHandler = (e) => {
+                    if (e.source !== window.parent) return;
+                    if (e.data?.type === 'themeChange') {
+                        const newTheme = e.data.theme;
+                        if (newTheme && newTheme !== lastTheme) {
+                            lastTheme = newTheme;
+                            updateGiscusTheme(newTheme);
+                        }
+                    }
+                };
+                window.addEventListener('message', messageHandler);
+                giscusThemeListeners.push({
+                    target: window,
+                    type: 'message',
+                    handler: messageHandler
                 });
             }
             
-            // 方法3: 监听本地 CSS 变量变化（作为后备）
-            const styleObserver = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                        const currentTheme = getCurrentTheme();
-                        if (currentTheme !== lastTheme) {
-                            lastTheme = currentTheme;
-                            updateGiscusTheme(currentTheme);
-                        }
-                    }
-                });
-            });
-            styleObserver.observe(document.documentElement, { attributes: true });
-
-            // 方法4: 超快速轮询检查（50ms，仅前3秒）
-            let fastCheckInterval = null;
-            let isPageVisible = !document.hidden;
-            
-            // 页面可见性变化时暂停/恢复轮询
-            document.addEventListener('visibilitychange', () => {
-                isPageVisible = !document.hidden;
-            });
-            
-            fastCheckInterval = setInterval(() => {
-                // 页面不可见时跳过检查，节省资源
-                if (!isPageVisible) return;
-                
-                const currentTheme = getCurrentTheme();
-                if (currentTheme !== lastTheme) {
-                    lastTheme = currentTheme;
-                    updateGiscusTheme(currentTheme);
-                }
-            }, 50);
-
-            // 3秒后停止快速轮询
-            setTimeout(() => {
-                if (fastCheckInterval) {
-                    clearInterval(fastCheckInterval);
-                    fastCheckInterval = null;
-                }
-            }, 3000);
+            // 页面卸载时清理
+            window.addEventListener('unload', cleanupGiscusThemeListeners);
         }
 
         // 获取当前主题

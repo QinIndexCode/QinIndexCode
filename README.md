@@ -12,7 +12,7 @@
 
   🔭 I’m currently working on **Modern Web Applications & UI/UX Design**
   
-  🌱 I’m currently learning **Rust & WebAssembly Performance Optimization**
+  🌱 I’m currently learning **LLM/Agent & Ai application Performance Optimization**
   
   💬 Ask me about **Vue 3, React, Node.js, NestJS, and System Architecture**
   
