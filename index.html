@@ -208,7 +208,7 @@
         <aside class="sidebar glass" id="sidebar">
             <div class="profile-section">
                 <div class="profile-avatar" id="avatar">
-                    <img src="assets/images/avatar.jpg" alt="Avatar" width="100" height="100" loading="lazy">
+                    <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="lazy">
                     <div class="floating-text" id="floating-text"></div>
                 </div>
                 <div class="profile-name">QinIndexCode</div>
@@ -217,43 +217,43 @@
             <ul class="nav-menu">
                 <li class="nav-item">
                     <div class="nav-link active" data-target="home" data-src="home.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/home.svg" class="nav-icon" alt="Home"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/home.svg" class="nav-icon" alt="首页"></div>
                         <span>首页</span>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" data-target="tech" data-src="tech.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/technical.svg" class="nav-icon" alt="Tech"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/technical.svg" class="nav-icon" alt="技术"></div>
                         <span>技术</span>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" data-target="projects" data-src="projects.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/project.svg" class="nav-icon" alt="Projects"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/project.svg" class="nav-icon" alt="项目"></div>
                         <span>项目</span>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" data-target="blogs" data-src="blogs.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/blog.svg" class="nav-icon" alt="Blog"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/blog.svg" class="nav-icon" alt="博客"></div>
                         <span>随记</span>
                     </div>
                 </li>
                  <li class="nav-item">
                     <div class="nav-link" data-target="tools" data-src="tools.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/tool.svg" class="nav-icon" alt="Tool"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/tool.svg" class="nav-icon" alt="工具"></div>
                         <span>工具</span>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" data-target="donate" data-src="donate.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/donate.svg" class="nav-icon" alt="Donate"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/donate.svg" class="nav-icon" alt="捐赠"></div>
                         <span>捐赠</span>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" data-target="about" data-src="about.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/aboutMe.svg" class="nav-icon" alt="About"></div>
+                        <div class="nav-icon-wrapper"><img src="assets/icons/aboutMe.svg" class="nav-icon" alt="关于"></div>
                         <span>关于</span>
                     </div>
                 </li>
@@ -375,7 +375,7 @@
                     iframe.className = 'page-frame';
                     iframe.dataset.id = page.id;
                     iframe.title = page.id; // 添加可访问性标题
-                    iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox'; // 安全沙箱 + 允许弹窗
+                    iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'; // 安全沙箱 + 允许弹窗 + 允许用户触发的导航
 
                     // Attach load event for theme sync
                     iframe.addEventListener('load', () => {

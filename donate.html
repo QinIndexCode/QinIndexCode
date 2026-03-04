@@ -348,9 +348,9 @@
     </div>
 
     <!-- QR Code Modal -->
-    <div class="qr-modal" id="qrModal" onclick="closeQR(event)">
-      <div class="qr-modal-content">
-        <button class="qr-close-btn" onclick="closeQR(event, true)">
+    <div class="qr-modal" id="qrModal" onclick="closeQR(event)" role="dialog" aria-modal="true" aria-labelledby="qrTitle" aria-describedby="qrDesc">
+      <div class="qr-modal-content" role="document">
+        <button class="qr-close-btn" onclick="closeQR(event, true)" aria-label="关闭二维码">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -361,14 +361,15 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            aria-hidden="true"
           >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <img src="" alt="QR Code" class="qr-modal-img" id="qrImage" />
+        <img src="" alt="支付二维码" class="qr-modal-img" id="qrImage" />
         <div class="qr-modal-title" id="qrTitle">支付方式</div>
-        <div class="qr-modal-tip">感谢您的支持！</div>
+        <div class="qr-modal-tip" id="qrDesc">感谢您的支持！</div>
       </div>
     </div>
 

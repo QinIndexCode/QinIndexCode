@@ -75,8 +75,39 @@
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect');
 
-        // 如果没有 redirect 参数，默认返回到首页
-        const targetUrl = redirectUrl || window.location.origin + '/index.html';
+        // 验证重定向 URL 的安全性
+        function isValidRedirectUrl(url) {
+            if (!url) return false;
+            
+            try {
+                const parsedUrl = new URL(url);
+                const currentOrigin = window.location.origin;
+                
+                // 只允许同源重定向
+                if (parsedUrl.origin !== currentOrigin) {
+                    console.warn('拒绝非同源重定向:', parsedUrl.origin);
+                    return false;
+                }
+                
+                // 验证路径是否合法（只允许 .html 文件）
+                const path = parsedUrl.pathname;
+                const allowedPaths = /^\/(index|home|tech|projects|blogs|tools|about|donate|auth-callback)?\.html$/;
+                if (!allowedPaths.test(path) && path !== '/') {
+                    console.warn('拒绝非法路径重定向:', path);
+                    return false;
+                }
+                
+                return true;
+            } catch (e) {
+                console.error('URL 解析失败:', e);
+                return false;
+            }
+        }
+
+        // 如果没有 redirect 参数或验证失败，默认返回到首页
+        const targetUrl = isValidRedirectUrl(redirectUrl) 
+            ? redirectUrl 
+            : window.location.origin + '/index.html';
 
         // 设置手动跳转链接
         const manualLink = document.getElementById('manual-redirect');

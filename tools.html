@@ -424,6 +424,117 @@
                 margin-left: 1.5rem;
                 color: var(--text-secondary);
             }
+            
+            #md-preview {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            
+            #md-preview p {
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Markdown Modal Styles */
+            #md-modal {
+                backdrop-filter: blur(10px);
+            }
+            
+            #md-modal .modal-content {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+                border: 1px solid var(--glass-border);
+            }
+            
+            #md-modal-preview {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+            }
+            
+            #md-modal-preview h1, #md-modal-preview h2, #md-modal-preview h3 {
+                margin-top: 1rem;
+                margin-bottom: 0.75rem;
+                color: var(--text-primary);
+            }
+            
+            #md-modal-preview h1 { font-size: 2rem; border-bottom: 2px solid var(--glass-border); padding-bottom: 0.5rem; }
+            #md-modal-preview h2 { font-size: 1.5rem; }
+            #md-modal-preview h3 { font-size: 1.25rem; }
+            
+            #md-modal-preview p {
+                margin-bottom: 1rem;
+                color: var(--text-secondary);
+            }
+            
+            #md-modal-preview strong { color: var(--accent-blue); }
+            #md-modal-preview em { color: var(--text-secondary); font-style: italic; }
+            
+            #md-modal-preview a {
+                color: var(--accent-blue);
+                text-decoration: underline;
+            }
+            
+            #md-modal-preview code {
+                background: var(--bg-tertiary);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+                font-family: 'Fira Code', monospace;
+                font-size: 0.9em;
+            }
+            
+            #md-modal-preview pre {
+                background: var(--bg-tertiary);
+                padding: 1rem;
+                border-radius: var(--border-radius);
+                overflow-x: auto;
+                margin: 1rem 0;
+            }
+            
+            #md-modal-preview pre code {
+                background: transparent;
+                padding: 0;
+            }
+            
+            #md-modal-preview ul, #md-modal-preview ol {
+                margin-left: 2rem;
+                margin-bottom: 1rem;
+                color: var(--text-secondary);
+            }
+            
+            #md-modal-preview li {
+                margin-bottom: 0.5rem;
+            }
+            
+            #md-modal-preview blockquote {
+                border-left: 4px solid var(--accent-blue);
+                padding-left: 1rem;
+                margin: 1rem 0;
+                color: var(--text-secondary);
+                font-style: italic;
+            }
+            
+            #md-modal-preview hr {
+                border: none;
+                border-top: 1px solid var(--glass-border);
+                margin: 1.5rem 0;
+            }
+            
+            #md-modal-preview table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1rem 0;
+            }
+            
+            #md-modal-preview th, #md-modal-preview td {
+                border: 1px solid var(--glass-border);
+                padding: 0.75rem;
+                text-align: left;
+            }
+            
+            #md-modal-preview th {
+                background: var(--bg-tertiary);
+                font-weight: 600;
+            }
         }
     </style>
 </head>
@@ -761,8 +872,31 @@
                 <p class="tool-desc">实时预览 Markdown 渲染效果。</p>
                 
                 <div class="tool-content">
-                    <textarea id="md-input" class="textarea-input" placeholder="# 标题&#10;&#10;**粗体** *斜体*&#10;- 列表项 1&#10;- 列表项 2&#10;&#10;[链接](https://example.com)" style="height: 120px;"></textarea>
-                    <div id="md-preview" class="preview-box" style="min-height: 150px; align-items: flex-start; padding: 1rem; overflow-y: auto; text-align: left;"></div>
+                    <textarea id="md-input" class="textarea-input" placeholder="# 标题&#10;&#10;**粗体** *斜体*&#10;- 列表项 1&#10;- 列表项 2&#10;&#10;[链接](https://example.com)" style="height: 200px; min-height: 200px;"></textarea>
+                    <div style="display: flex; justify-content: flex-end; margin: 0.5rem 0;">
+                        <button id="md-expand-btn" class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                            全屏预览
+                        </button>
+                    </div>
+                    <div id="md-preview" class="preview-box" style="min-height: 250px; max-height: 400px; align-items: flex-start; padding: 1.5rem; overflow-y: auto; text-align: left; line-height: 1.6;"></div>
+                </div>
+            </div>
+            
+            <!-- Markdown Fullscreen Modal -->
+            <div id="md-modal" class="modal hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+                <div class="modal-content" style="background: var(--bg-primary); border-radius: var(--border-radius); max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--glass-border);">
+                        <h3 style="margin: 0; color: var(--text-primary);">Markdown 全屏预览</h3>
+                        <button id="md-close-btn" class="btn btn-outline" style="padding: 0.5rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="md-modal-preview" style="flex: 1; overflow-y: auto; padding: 2rem; line-height: 1.8; font-size: 1.1rem;"></div>
                 </div>
             </div>
 
@@ -961,21 +1095,35 @@
         // --- Tools 命名空间 - 封装全局函数 ---
         const Tools = {};
         
-        // Helper: Copy
-        Tools.copyToClipboard = function(elementId) {
+        // Helper: Copy (使用现代 Clipboard API)
+        Tools.copyToClipboard = async function(elementId) {
             const el = document.getElementById(elementId);
             if (!el) return;
-            el.select();
-            document.execCommand('copy');
-            const btn = el.nextElementSibling;
-            if (btn) {
-                const originalText = btn.textContent;
-                btn.textContent = '已复制!';
-                btn.style.background = 'var(--accent-green)';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '';
-                }, 1500);
+            
+            try {
+                // 使用现代 Clipboard API
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(el.value || el.textContent);
+                } else {
+                    // 降级方案：使用传统的 execCommand
+                    el.select();
+                    document.execCommand('copy');
+                }
+                
+                // 显示复制成功反馈
+                const btn = el.nextElementSibling;
+                if (btn) {
+                    const originalText = btn.textContent;
+                    btn.textContent = '已复制!';
+                    btn.style.background = 'var(--accent-green)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                    }, 1500);
+                }
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
             }
         };
 
@@ -1014,13 +1162,18 @@
                 canvas.height = currentImg.naturalHeight;
                 
                 const ctx = canvas.getContext('2d');
-                // 使用白色背景填充（避免透明背景问题）
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const format = document.getElementById('img-format').value;
+                
+                // JPEG 格式不支持透明度，需要白色背景
+                // PNG 和 WebP 支持透明度，保持透明
+                if (format === 'image/jpeg') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
                 // 完整绘制图片到 canvas
                 ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
                 
-                const format = document.getElementById('img-format').value;
                 const quality = parseFloat(document.getElementById('img-quality').value);
                 const dataUrl = canvas.toDataURL(format, quality);
                 
@@ -1281,6 +1434,40 @@
         // 初始化示例内容
         mdInput.value = "# Hello Markdown\n\n**粗体** 和 *斜体*\n\n- 列表项 1\n- 列表项 2\n\n[链接示例](https://example.com)";
         mdPreview.innerHTML = Tools.parseMarkdown(mdInput.value);
+        
+        // Markdown 全屏预览功能
+        const mdExpandBtn = document.getElementById('md-expand-btn');
+        const mdModal = document.getElementById('md-modal');
+        const mdCloseBtn = document.getElementById('md-close-btn');
+        const mdModalPreview = document.getElementById('md-modal-preview');
+        
+        function openMdModal() {
+            mdModalPreview.innerHTML = Tools.parseMarkdown(mdInput.value);
+            mdModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMdModal() {
+            mdModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        
+        mdExpandBtn.addEventListener('click', openMdModal);
+        mdCloseBtn.addEventListener('click', closeMdModal);
+        
+        // 点击模态框背景关闭
+        mdModal.addEventListener('click', (e) => {
+            if (e.target === mdModal) {
+                closeMdModal();
+            }
+        });
+        
+        // ESC 键关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !mdModal.classList.contains('hidden')) {
+                closeMdModal();
+            }
+        });
 
         // --- 11. CSS Shadow Generator ---
         const shadowX = document.getElementById('shadow-x');

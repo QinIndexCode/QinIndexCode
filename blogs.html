@@ -369,7 +369,7 @@
                     setTimeout(() => loadGiscus(discussionId), 2000);
                 } else {
                     console.error('Giscus 加载失败，已达到最大重试次数');
-                    showGiscusError();
+                    showGiscusError(discussionId);
                 }
             });
 
@@ -386,7 +386,7 @@
         }
 
         // 显示 Giscus 错误界面
-        function showGiscusError() {
+        function showGiscusError(discussionId) {
             const container = document.getElementById('giscus-container');
             if (container) {
                 container.innerHTML = `
@@ -479,8 +479,8 @@
                 });
             }
             
-            // 页面卸载时清理
-            window.addEventListener('unload', cleanupGiscusThemeListeners);
+            // 页面卸载时清理（使用 pagehide 替代废弃的 unload）
+            window.addEventListener('pagehide', cleanupGiscusThemeListeners);
         }
 
         // 获取当前主题
