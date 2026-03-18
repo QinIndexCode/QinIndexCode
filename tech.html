@@ -8,102 +8,98 @@
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.css" rel="stylesheet">
     <script src="./js/smooth-scroll.js" defer></script>
-    <!-- 如果用户直接访问此页面，自动重定向到 index.html -->
     <script src="./js/redirect-if-standalone.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="section-title">全栈技术体系</h1>
+    <main class="container" role="main">
+        <h1 class="section-title animate-fade-in-up">全栈技术体系</h1>
         
-        <div class="grid grid-3">
-            <!-- 前端 -->
-            <div class="card">
+        <div class="grid grid-3" role="list" aria-label="技术分类">
+            <article class="card glass animate-fade-in-left delay-100" role="listitem">
                 <h3>前端开发</h3>
-                <p>构建沉浸式用户体验</p>
-                <ul class="icon-list">
+                <p class="tech-card-desc">构建沉浸式用户体验</p>
+                <ul class="icon-list" aria-label="前端技术列表">
                     <li class="icon-list-item">
-                        <img src="assets/icons/javascript.svg" alt="JS" class="icon-list-icon colored" loading="lazy">
+                        <img src="assets/icons/javascript.svg" alt="JavaScript" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
                         <span>JavaScript (ES6+)</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/typescript.svg" alt="TS" class="icon-list-icon colored" loading="lazy">
-                        <span style="flex:1">TypeScript</span>
+                        <img src="assets/icons/typescript.svg" alt="TypeScript" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
+                        <span>TypeScript</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/React.svg" alt="React" class="icon-list-icon colored" loading="lazy">
+                        <img src="assets/icons/React.svg" alt="React" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
                         <span>React 18</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/nextjs.svg" alt="Next" class="icon-list-icon" loading="lazy">
-                        <span style="flex:1">Next.js</span>
+                        <img src="assets/icons/nextjs.svg" alt="Next.js" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
+                        <span>Next.js</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/vue3.svg" alt="Vue" class="icon-list-icon colored" loading="lazy">
+                        <img src="assets/icons/vue3.svg" alt="Vue" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
                         <span>Vue 3</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/react-native.svg" alt="RN" class="icon-list-icon colored" loading="lazy">
+                        <img src="assets/icons/react-native.svg" alt="React Native" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
                         <span>React Native</span>
                     </li>
                 </ul>
-            </div>
+            </article>
 
-            <!-- 后端 -->
-            <div class="card">
+            <article class="card glass animate-fade-in-up delay-200" role="listitem">
                 <h3>后端架构</h3>
-                <p>高性能服务与数据处理</p>
-                <ul class="icon-list">
+                <p class="tech-card-desc">高性能服务与数据处理</p>
+                <ul class="icon-list" aria-label="后端技术列表">
                     <li class="icon-list-item">
-                        <img src="assets/icons/nodejs.svg" alt="Node" class="icon-list-icon colored" loading="lazy">
-                        <span style="flex:1">Node.js</span>
+                        <img src="assets/icons/nodejs.svg" alt="Node.js" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
+                        <span>Node.js</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/Express.svg" alt="Express" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/Express.svg" alt="Express" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>Express / Koa</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/laravel.svg" alt="Laravel" class="icon-list-icon colored" loading="lazy">
+                        <img src="assets/icons/laravel.svg" alt="Laravel" class="icon-list-icon colored" loading="lazy" decoding="async" width="24" height="24">
                         <span>Laravel (PHP)</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/mysql.svg" alt="MySQL" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/mysql.svg" alt="MySQL" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>MySQL</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/Prisma.svg" alt="Prisma" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/Prisma.svg" alt="Prisma" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>Prisma ORM</span>
                     </li>
                 </ul>
-            </div>
+            </article>
 
-            <!-- 工程化 & DevOps -->
-            <div class="card">
+            <article class="card glass animate-fade-in-left delay-300" role="listitem">
                 <h3>工程化 & DevOps</h3>
-                <p>自动化与部署流程</p>
-                <ul class="icon-list">
+                <p class="tech-card-desc">自动化与部署流程</p>
+                <ul class="icon-list" aria-label="工程化技术列表">
                     <li class="icon-list-item">
-                        <img src="assets/icons/github-fill.svg" alt="Git" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/github-fill.svg" alt="Git & GitHub" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>Git & GitHub</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/devops.svg" alt="DevOps" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/devops.svg" alt="DevOps" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>CI/CD Pipeline</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/performance.svg" alt="Perf" class="icon-list-icon" loading="lazy">
-                        <span style="flex:1">性能优化</span>
+                        <img src="assets/icons/performance.svg" alt="性能优化" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
+                        <span>性能优化</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/API.svg" alt="API" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/API.svg" alt="API" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>RESTful API</span>
                     </li>
                     <li class="icon-list-item">
-                        <img src="assets/icons/database.svg" alt="DB Design" class="icon-list-icon" loading="lazy">
+                        <img src="assets/icons/database.svg" alt="数据库设计" class="icon-list-icon" loading="lazy" decoding="async" width="24" height="24">
                         <span>数据库架构设计</span>
                     </li>
                 </ul>
-            </div>
+            </article>
         </div>
-    </div>
+    </main>
 </body>
 </html>

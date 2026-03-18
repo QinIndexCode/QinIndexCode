@@ -9,63 +9,58 @@
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.css" rel="stylesheet">
     <script src="./js/smooth-scroll.js" defer></script>
-    <!-- 如果用户直接访问此页面，自动重定向到 index.html -->
     <script src="./js/redirect-if-standalone.js"></script>
 </head>
 <body>
-    <div class="container">
+    <main class="container" role="main">
         <h1 class="section-title">关于</h1>
 
-        <!-- 个人信息卡片 -->
-        <div class="card" style="text-align: center; margin-bottom: 2rem;">
-            <h2>基本信息</h2>
+        <article class="card about-info-card" aria-labelledby="basic-info">
+            <h2 id="basic-info">基本信息</h2>
             <p>2004年，目前在校求学。</p>
-        </div>
+        </article>
 
         <div class="grid grid-2">
-            <!-- 技术背景 -->
-            <div class="card">
-                <h2>技术背景</h2>
+            <article class="card" aria-labelledby="tech-bg">
+                <h2 id="tech-bg">技术背景</h2>
                 <p>主要接触的技术领域包括：</p>
                 <ul class="icon-list">
                     <li class="icon-list-item">Python、JavaScript、TypeScript、PHP、MySQL、MongoDB</li>
                     <li class="icon-list-item">NextJS、Express、React、React-Native、Prisma、Laravel、Koa.js、Vue3、NestJS</li>
                     <li class="icon-list-item">Git & GitHub、RESTful API设计、数据库设计</li>
                 </ul>
-            </div>
+            </article>
 
-            <!-- 开源贡献 -->
-            <div class="card">
-                <h2>开源参与</h2>
+            <article class="card" aria-labelledby="open-source">
+                <h2 id="open-source">开源参与</h2>
                 <ul class="icon-list">
                     <li class="icon-list-item">expo-lite-data-store：Expo应用的数据存储库</li>
                     <li class="icon-list-item">烟智通(TobaccoAI)：基于本地AI模型的烟草病害智能诊断工具</li>
                     <li class="icon-list-item">参与GitHub Reference Vue3部分性能优化中文文档编写</li>
                 </ul>
-            </div>
+            </article>
         </div>
 
-        <!-- 联系方式 -->
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="text-align: center; margin-bottom: 2rem;">联系方式</h2>
+        <section class="card about-contact-card" aria-labelledby="contact-title">
+            <h2 id="contact-title">联系方式</h2>
             <div class="grid grid-3">
-                <a href="mailto:qinindexcode@gmail.com" class="card" style="align-items: center; text-align: center; background: rgba(255,255,255,0.02);">
-                    <img src="assets/icons/email.svg" alt="邮箱" style="width: 32px; height: 32px; margin-bottom: 1rem;">
+                <a href="mailto:qinindexcode@gmail.com" class="card about-contact-item" aria-label="发送邮件至 qinindexcode@gmail.com">
+                    <img src="assets/icons/email.svg" alt="" class="about-contact-icon" loading="lazy" decoding="async" width="32" height="32">
                     <h3>邮箱</h3>
-                    <p style="margin-bottom: 0;">qinindexcode@gmail.com</p>
+                    <p>qinindexcode@gmail.com</p>
                 </a>
-                <a href="https://github.com/QinIndexCode" target="_blank" class="card" style="align-items: center; text-align: center; background: rgba(255,255,255,0.02);">
-                    <img src="assets/icons/github.svg" alt="GitHub" style="width: 32px; height: 32px; margin-bottom: 1rem;">
+                <a href="https://github.com/QinIndexCode" target="_blank" rel="noopener noreferrer" class="card about-contact-item" aria-label="访问 GitHub 主页">
+                    <img src="assets/icons/github.svg" alt="" class="about-contact-icon" loading="lazy" decoding="async" width="32" height="32">
                     <h3>GitHub</h3>
-                    <p style="margin-bottom: 0;">github.com/QinIndexCode</p>
+                    <p>github.com/QinIndexCode</p>
                 </a>
-                <a href="https://discordapp.com/users/54100" target="_blank" class="card" style="align-items: center; text-align: center; background: rgba(255,255,255,0.02);">
-                    <img src="assets/icons/discord.svg" alt="Discord" style="width: 32px; height: 32px; margin-bottom: 1rem;">
+                <a href="https://discordapp.com/users/54100" target="_blank" rel="noopener noreferrer" class="card about-contact-item" aria-label="在 Discord 上联系">
+                    <img src="assets/icons/discord.svg" alt="" class="about-contact-icon" loading="lazy" decoding="async" width="32" height="32">
                     <h3>Discord</h3>
-                    <p style="margin-bottom: 0;">qinindexcode_54100</p>
+                    <p>qinindexcode_54100</p>
                 </a>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 </body>
 </html>

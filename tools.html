@@ -7,12 +7,10 @@
     <title>工具箱 - QinIndexCode</title>
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.css" rel="stylesheet">
-    <!-- QR Code Library -->
-    <script src="./js/qrcode.min.js"></script>
+    <script src="./js/qrcode.min.js" defer></script>
     <script src="./js/smooth-scroll.js" defer></script>
-    <!-- 如果用户直接访问此页面，自动重定向到 index.html -->
     <script src="./js/redirect-if-standalone.js"></script>
-</head>    <style>
+    <style>
         /* Tool Card Enhanced Styles */
         .tool-card {
             display: flex;
@@ -539,51 +537,50 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Quick Navigation -->
-        <nav class="tool-nav" id="tool-nav">
-            <a href="#tool-image" class="nav-item" data-title="图片转换">
-                <img src="assets/icons/Image_format_conversion.svg" alt="Img">
+    <main class="container" role="main">
+        <nav class="tool-nav" id="tool-nav" aria-label="工具快捷导航">
+            <a href="#tool-image" class="nav-item" data-title="图片转换" aria-label="跳转到图片转换工具">
+                <img src="assets/icons/Image_format_conversion.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-qr" class="nav-item" data-title="二维码">
-                <img src="assets/icons/QRCode.svg" alt="QR">
+            <a href="#tool-qr" class="nav-item" data-title="二维码" aria-label="跳转到二维码生成工具">
+                <img src="assets/icons/QRCode.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-timestamp" class="nav-item" data-title="时间戳">
-                <img src="assets/icons/clock.svg" alt="Time">
+            <a href="#tool-timestamp" class="nav-item" data-title="时间戳" aria-label="跳转到时间戳转换工具">
+                <img src="assets/icons/clock.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-json" class="nav-item" data-title="JSON 工具">
-                <img src="assets/icons/json.svg" alt="JSON">
+            <a href="#tool-json" class="nav-item" data-title="JSON 工具" aria-label="跳转到JSON工具">
+                <img src="assets/icons/json.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-base64" class="nav-item" data-title="Base64">
-                <img src="assets/icons/text-tool.svg" alt="Text">
+            <a href="#tool-base64" class="nav-item" data-title="Base64" aria-label="跳转到Base64转换工具">
+                <img src="assets/icons/text-tool.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-url" class="nav-item" data-title="URL 编码">
-                <img src="assets/icons/link.svg" alt="Link">
+            <a href="#tool-url" class="nav-item" data-title="URL 编码" aria-label="跳转到URL编解码工具">
+                <img src="assets/icons/link.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-color" class="nav-item" data-title="颜色转换">
-                <img src="assets/icons/palette.svg" alt="Color">
+            <a href="#tool-color" class="nav-item" data-title="颜色转换" aria-label="跳转到颜色调试器">
+                <img src="assets/icons/palette.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-password" class="nav-item" data-title="密码生成">
-                <img src="assets/icons/lock.svg" alt="Lock">
+            <a href="#tool-password" class="nav-item" data-title="密码生成" aria-label="跳转到密码生成器">
+                <img src="assets/icons/lock.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-lorem" class="nav-item" data-title="文本生成">
-                <img src="assets/icons/paragraph.svg" alt="Txt">
+            <a href="#tool-lorem" class="nav-item" data-title="文本生成" aria-label="跳转到文本生成工具">
+                <img src="assets/icons/paragraph.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-markdown" class="nav-item" data-title="Markdown">
-                <img src="assets/icons/technical.svg" alt="MD">
+            <a href="#tool-markdown" class="nav-item" data-title="Markdown" aria-label="跳转到Markdown预览工具">
+                <img src="assets/icons/technical.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-shadow" class="nav-item" data-title="阴影生成">
-                <img src="assets/icons/performance.svg" alt="Shadow">
+            <a href="#tool-shadow" class="nav-item" data-title="阴影生成" aria-label="跳转到CSS阴影生成器">
+                <img src="assets/icons/performance.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-font" class="nav-item" data-title="字体转换">
-                <img src="assets/icons/text-tool.svg" alt="Font">
+            <a href="#tool-font" class="nav-item" data-title="字体转换" aria-label="跳转到字体单位转换器">
+                <img src="assets/icons/text-tool.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
-            <a href="#tool-gradient" class="nav-item" data-title="渐变生成">
-                <img src="assets/icons/palette.svg" alt="Gradient">
+            <a href="#tool-gradient" class="nav-item" data-title="渐变生成" aria-label="跳转到CSS渐变生成器">
+                <img src="assets/icons/palette.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
         </nav>
 
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Menu">
+        <button class="nav-toggle" id="nav-toggle" aria-label="打开工具导航菜单" aria-expanded="false" aria-controls="tool-nav">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
 
@@ -597,14 +594,13 @@
 
         <div class="grid grid-3">
             
-            <!-- 1. Image Converter -->
-            <div class="card glass tool-card" id="tool-image">
+            <article class="card glass tool-card" id="tool-image" aria-labelledby="tool-image-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/Image_format_conversion.svg" alt="Image" class="tool-icon-img">
+                        <img src="assets/icons/Image_format_conversion.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">图片转换</h3>
+                        <h3 class="tool-title" id="tool-image-title">图片转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">PNG / JPG / WEBP / BMP / ICO 格式互转，支持质量调节。</p>
@@ -628,16 +624,15 @@
 
                     <div id="img-preview" class="preview-box hidden"></div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 2. QR Code -->
-            <div class="card glass tool-card" id="tool-qr">
+            <article class="card glass tool-card" id="tool-qr" aria-labelledby="tool-qr-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/QRCode.svg" alt="QR" class="tool-icon-img">
+                        <img src="assets/icons/QRCode.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">二维码生成</h3>
+                        <h3 class="tool-title" id="tool-qr-title">二维码生成</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成可自定义颜色的高清二维码图片。</p>
@@ -654,16 +649,15 @@
                         <div id="qr-output" class="qr-output-bg"></div>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 3. Timestamp -->
-            <div class="card glass tool-card" id="tool-timestamp">
+            <article class="card glass tool-card" id="tool-timestamp" aria-labelledby="tool-timestamp-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/clock.svg" alt="Time" class="tool-icon-img">
+                        <img src="assets/icons/clock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">时间戳转换</h3>
+                        <h3 class="tool-title" id="tool-timestamp-title">时间戳转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">Unix 时间戳与日期时间互转。</p>
@@ -685,16 +679,15 @@
                         <input type="text" id="ts-date-output" class="text-input" readonly placeholder="结果...">
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 4. JSON Tool -->
-            <div class="card glass tool-card" id="tool-json">
+            <article class="card glass tool-card" id="tool-json" aria-labelledby="tool-json-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/json.svg" alt="JSON" class="tool-icon-img">
+                        <img src="assets/icons/json.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">JSON 工具</h3>
+                        <h3 class="tool-title" id="tool-json-title">JSON 工具</h3>
                     </div>
                 </div>
                 <p class="tool-desc">格式化、压缩与校验 JSON 数据。</p>
@@ -710,16 +703,15 @@
                          <button class="copy-btn" onclick="Tools.copyToClipboard('json-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 5. Base64 -->
-            <div class="card glass tool-card" id="tool-base64">
+            <article class="card glass tool-card" id="tool-base64" aria-labelledby="tool-base64-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/text-tool.svg" alt="Base64" class="tool-icon-img">
+                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">Base64 转换</h3>
+                        <h3 class="tool-title" id="tool-base64-title">Base64 转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">文本与 Base64 编码互转，支持中文。</p>
@@ -735,16 +727,15 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('b64-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 6. URL Encode -->
-            <div class="card glass tool-card">
+            <article class="card glass tool-card" id="tool-url" aria-labelledby="tool-url-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/link.svg" alt="URL" class="tool-icon-img">
+                        <img src="assets/icons/link.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">URL 编解码</h3>
+                        <h3 class="tool-title" id="tool-url-title">URL 编解码</h3>
                     </div>
                 </div>
                 <p class="tool-desc">URL 参数转义与还原。</p>
@@ -760,16 +751,15 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('url-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 7. Color Converter -->
-            <div class="card glass tool-card" id="tool-color">
+            <article class="card glass tool-card" id="tool-color" aria-labelledby="tool-color-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/palette.svg" alt="Color" class="tool-icon-img">
+                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">颜色调试器</h3>
+                        <h3 class="tool-title" id="tool-color-title">颜色调试器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">HEX / RGB / RGBA 互转，支持透明度。</p>
@@ -807,16 +797,15 @@
                         <div id="color-preview-inner" class="color-preview-inner" style="background-color: #6366f1;"></div>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 8. Password Generator -->
-            <div class="card glass tool-card">
+            <article class="card glass tool-card" id="tool-password" aria-labelledby="tool-password-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/lock.svg" alt="Pwd" class="tool-icon-img">
+                        <img src="assets/icons/lock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">密码生成器</h3>
+                        <h3 class="tool-title" id="tool-password-title">密码生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成高强度随机密码。</p>
@@ -832,16 +821,15 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('pwd-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 9. Lorem Ipsum -->
-            <div class="card glass tool-card" id="tool-lorem">
+            <article class="card glass tool-card" id="tool-lorem" aria-labelledby="tool-lorem-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/paragraph.svg" alt="Lorem" class="tool-icon-img">
+                        <img src="assets/icons/paragraph.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">文本生成</h3>
+                        <h3 class="tool-title" id="tool-lorem-title">文本生成</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成 Lorem Ipsum 占位文本。</p>
@@ -857,16 +845,15 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('lorem-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 10. Markdown Preview -->
-            <div class="card glass tool-card" id="tool-markdown">
+            <article class="card glass tool-card" id="tool-markdown" aria-labelledby="tool-markdown-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/technical.svg" alt="Markdown" class="tool-icon-img">
+                        <img src="assets/icons/technical.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">Markdown 预览</h3>
+                        <h3 class="tool-title" id="tool-markdown-title">Markdown 预览</h3>
                     </div>
                 </div>
                 <p class="tool-desc">实时预览 Markdown 渲染效果。</p>
@@ -883,7 +870,7 @@
                     </div>
                     <div id="md-preview" class="preview-box" style="min-height: 250px; max-height: 400px; align-items: flex-start; padding: 1.5rem; overflow-y: auto; text-align: left; line-height: 1.6;"></div>
                 </div>
-            </div>
+            </article>
             
             <!-- Markdown Fullscreen Modal -->
             <div id="md-modal" class="modal hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 2rem;">
@@ -900,14 +887,13 @@
                 </div>
             </div>
 
-            <!-- 11. CSS Shadow Generator -->
-            <div class="card glass tool-card" id="tool-shadow">
+            <article class="card glass tool-card" id="tool-shadow" aria-labelledby="tool-shadow-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/performance.svg" alt="Shadow" class="tool-icon-img">
+                        <img src="assets/icons/performance.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">CSS 阴影生成器</h3>
+                        <h3 class="tool-title" id="tool-shadow-title">CSS 阴影生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成 box-shadow CSS 代码。</p>
@@ -943,16 +929,15 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('shadow-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 12. Font Size Converter -->
-            <div class="card glass tool-card" id="tool-font">
+            <article class="card glass tool-card" id="tool-font" aria-labelledby="tool-font-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/text-tool.svg" alt="Font" class="tool-icon-img">
+                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">字体单位转换器</h3>
+                        <h3 class="tool-title" id="tool-font-title">字体单位转换器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">px / rem / em / pt 单位互转。</p>
@@ -994,16 +979,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <!-- 13. CSS Gradient Generator -->
-            <div class="card glass tool-card" id="tool-gradient">
+            <article class="card glass tool-card" id="tool-gradient" aria-labelledby="tool-gradient-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/palette.svg" alt="Gradient" class="tool-icon-img">
+                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
                     </div>
                     <div>
-                        <h3 class="tool-title">CSS 渐变生成器</h3>
+                        <h3 class="tool-title" id="tool-gradient-title">CSS 渐变生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">创建线性渐变 CSS 代码。</p>
@@ -1029,10 +1013,10 @@
                         <button class="copy-btn" onclick="Tools.copyToClipboard('gradient-output')">复制</button>
                     </div>
                 </div>
-            </div>
+            </article>
 
         </div>
-    </div>
+    </main>
 
     <script>
         // --- Navigation Logic ---

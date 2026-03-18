@@ -5,14 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="QinIndexCode - 个人技术博客，专注于全栈开发、Web 开发、移动应用开发等技术领域">
     <meta name="theme-color" content="#0B0C15">
-    <!-- Content Security Policy -->
+    <meta name="color-scheme" content="dark light">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' https://giscus.app; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self';">
+    
     <title>个人技术博客 QinIndexCode</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://giscus.app">
+    <link rel="dns-prefetch" href="https://api.github.com">
+    
+    <link rel="preload" href="./css/main.css" as="style">
+    <link rel="preload" href="./css/css2.css" as="style">
+    <link rel="preload" href="./assets/images/avatar.jpg" as="image">
+    
+    <link rel="modulepreload" href="./js/smooth-scroll.js">
+    
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.css" rel="stylesheet">
+    
     <script src="./js/smooth-scroll.js" defer></script>
+    
     <style>
-        /* 浮动文字优化 */
+        :root {
+            --bg-primary: #0B0C15;
+            --bg-secondary: #151621;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --accent-blue: #6366F1;
+            --accent-purple: #8B5CF6;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-backdrop: blur(20px) saturate(180%);
+        }
+        
         .floating-text {
             position: absolute;
             top: -40px;
@@ -25,9 +50,9 @@
             pointer-events: none;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            white-space: normal; /* Allow wrap */
-            min-width: 120px; /* Min width */
-            max-width: 200px; /* Max width constraint */
+            white-space: normal;
+            min-width: 120px;
+            max-width: 200px;
             text-align: center;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -36,7 +61,6 @@
             line-height: 1.4;
         }
         
-        /* Triangle arrow */
         .floating-text::after {
             content: '';
             position: absolute;
@@ -53,7 +77,6 @@
             transform: translateX(-50%) scale(1) translateY(-10px);
         }
 
-        /* 主题选择器按钮 (简化版) */
         .theme-selector {
             position: fixed;
             top: 1.5rem;
@@ -62,26 +85,58 @@
         }
 
         .theme-btn {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: var(--text-primary);
-            transition: var(--transition-base);
-            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(99, 102, 241, 0);
             position: relative;
             z-index: 101;
+            overflow: hidden;
+        }
+
+        .theme-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .theme-btn:hover {
-            background: var(--glass-bg-hover);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .theme-btn:hover::before {
+            opacity: 1;
+        }
+
+        .theme-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .theme-btn svg {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn:hover svg {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
         }
 
         .stat-num {
@@ -91,7 +146,6 @@
             display: block;
         }
 
-        /* Hero Section */
         .hero {
             min-height: 60vh;
             display: flex;
@@ -108,14 +162,14 @@
             background: var(--hero-text-gradient, linear-gradient(to right, #fff, #94a3b8));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 1rem;
         }
 
         .hero p.tagline {
             font-size: 1.25rem;
             color: var(--accent-blue);
             font-weight: 500;
-            margin-bottom: var(--spacing-xl);
+            margin-bottom: 2rem;
             display: inline-block;
             padding: 0.5rem 1rem;
             background: rgba(99, 102, 241, 0.1);
@@ -124,24 +178,23 @@
         }
 
         .section-title {
-            color: var(--text-primary); /* Ensure titles adapt */
+            color: var(--text-primary);
         }
 
-        /* Skip Link - 可访问性跳转链接样式 */
         .skip-link {
             position: absolute;
             top: -100%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
             color: white;
             padding: 0.75rem 1.5rem;
-            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            border-radius: 0 0 12px 12px;
             font-weight: 600;
             z-index: 1000;
             transition: top 0.3s ease;
             text-decoration: none;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
         }
 
         .skip-link:focus {
@@ -149,7 +202,6 @@
             outline: none;
         }
 
-        /* Avatar Wrapper with Glow */
         .avatar-wrapper {
             position: relative;
             width: 280px;
@@ -157,9 +209,10 @@
             margin: 0 auto;
             border-radius: 50%;
             padding: 5px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
             box-shadow: 0 0 50px rgba(99, 102, 241, 0.3);
             animation: float 6s ease-in-out infinite;
+            will-change: transform;
         }
 
         .avatar-wrapper img {
@@ -177,94 +230,95 @@
             color: var(--profile-name-color, var(--text-primary));
             letter-spacing: 0.025em;
         }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .avatar-wrapper {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Skip to content - 可访问性跳转链接 -->
     <a href="#viewport" class="skip-link">跳转到主内容</a>
 
-    <!-- 移动端菜单按钮 (动画版) -->
-    <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu">
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="打开菜单" aria-expanded="false" aria-controls="sidebar">
         <span></span>
         <span></span>
         <span></span>
     </button>
     
-    <!-- 主题选择器 -->
     <div class="theme-selector" id="theme-selector">
-        <button class="theme-btn" id="theme-btn" aria-label="Toggle Theme">
-            <!-- Moon Icon (Dark Mode) -->
-            <svg id="icon-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            <!-- Sun Icon (Light Mode) - Hidden by default -->
-            <svg id="icon-light" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <button class="theme-btn" id="theme-btn" aria-label="切换主题" aria-pressed="true">
+            <svg id="icon-dark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="icon-light" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
     </div>
     
-    <!-- 侧边栏遮罩层 -->
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
 
     <div class="main-container">
-        <!-- 侧边栏 -->
-        <aside class="sidebar glass" id="sidebar">
+        <aside class="sidebar glass" id="sidebar" role="navigation" aria-label="主导航">
             <div class="profile-section">
-                <div class="profile-avatar" id="avatar">
-                    <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="lazy">
-                    <div class="floating-text" id="floating-text"></div>
+                <div class="profile-avatar" id="avatar" role="button" tabindex="0" aria-label="头像彩蛋">
+                    <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async">
+                    <div class="floating-text" id="floating-text" aria-live="polite"></div>
                 </div>
                 <div class="profile-name">QinIndexCode</div>
             </div>
             
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <div class="nav-link active" data-target="home" data-src="home.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/home.svg" class="nav-icon" alt="首页"></div>
+            <ul class="nav-menu" role="menubar">
+                <li class="nav-item" role="none">
+                    <div class="nav-link active" data-target="home" data-src="home.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/home.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>首页</span>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-target="tech" data-src="tech.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/technical.svg" class="nav-icon" alt="技术"></div>
+                <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="tech" data-src="tech.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/technical.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>技术</span>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-target="projects" data-src="projects.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/project.svg" class="nav-icon" alt="项目"></div>
+                <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="projects" data-src="projects.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/project.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>项目</span>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-target="blogs" data-src="blogs.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/blog.svg" class="nav-icon" alt="博客"></div>
+                <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="blogs" data-src="blogs.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/blog.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>随记</span>
                     </div>
                 </li>
-                 <li class="nav-item">
-                    <div class="nav-link" data-target="tools" data-src="tools.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/tool.svg" class="nav-icon" alt="工具"></div>
+                 <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="tools" data-src="tools.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/tool.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>工具</span>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-target="donate" data-src="donate.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/donate.svg" class="nav-icon" alt="捐赠"></div>
+                <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="donate" data-src="donate.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/donate.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>捐赠</span>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-target="about" data-src="about.html">
-                        <div class="nav-icon-wrapper"><img src="assets/icons/aboutMe.svg" class="nav-icon" alt="关于"></div>
+                <li class="nav-item" role="none">
+                    <div class="nav-link" data-target="about" data-src="about.html" role="menuitem" tabindex="0">
+                        <div class="nav-icon-wrapper"><img src="assets/icons/aboutMe.svg" class="nav-icon" alt="" aria-hidden="true"></div>
                         <span>关于</span>
                     </div>
                 </li>
-            
             </ul>
         </aside>
 
-        <!-- 视口区域 -->
-        <main class="viewport" id="viewport">
-            <!-- 骨架屏 -->
-            <div class="skeleton-screen" id="skeleton-screen">
+        <main class="viewport" id="viewport" role="main">
+            <div class="skeleton-screen" id="skeleton-screen" aria-hidden="true">
                 <div class="skeleton skeleton-header"></div>
                 <div class="skeleton-grid">
                     <div class="skeleton skeleton-card"></div>
@@ -273,59 +327,48 @@
                 </div>
             </div>
             
-            <!-- 滑动容器 -->
-            <div id="page-slider">
-                <!-- Iframes will be injected here -->
+            <div id="page-slider" aria-live="polite">
             </div>
         </main>
     </div>
 
     <script>
-        // Service Worker Registration
+        'use strict';
+        
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.warn('SW registration failed:', err));
             });
         }
 
-        // 处理 OAuth 回调和独立页面访问
-        let initialPage = 'home'; // 默认页面
+        let initialPage = 'home';
         let shouldSwitchPage = false;
 
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            
-            // 检查 OAuth 回调
             const redirect = urlParams.get('redirect');
-            // 检查独立页面访问
             const fromPage = urlParams.get('from');
             
             let targetPage = null;
             
             if (redirect) {
-                // OAuth 回调场景
                 try {
                     const redirectUrl = new URL(redirect);
                     const pathname = redirectUrl.pathname;
                     const pageName = pathname.split('/').pop().replace('.html', '') || 'home';
                     targetPage = pageName;
-                    console.log('✅ OAuth 回调，目标页面:', pageName);
                 } catch (e) {
-                    console.error('❌ 解析 redirect URL 失败:', e);
+                    console.error('Parse redirect URL failed:', e);
                 }
             } else if (fromPage) {
-                // 独立页面访问场景
                 targetPage = fromPage;
-                console.log('✅ 独立页面访问，来源页面:', fromPage);
             }
             
-            // 如果找到了目标页面
             if (targetPage) {
                 initialPage = targetPage;
                 shouldSwitchPage = true;
-                console.log('✅ 设置初始页面为:', initialPage);
-            } else {
-                console.log('ℹ️ 使用默认首页');
             }
         });
 
@@ -338,19 +381,15 @@
                     src: link.dataset.src
                 }));
                 
-                // 如果是 OAuth 回调，直接设置为目标页面
                 this.currentIndex = shouldSwitchPage 
                     ? this.pages.findIndex(p => p.id === initialPage) 
                     : 0;
                 
-                // 如果找不到目标页面，回到首页
                 if (this.currentIndex === -1) {
                     this.currentIndex = 0;
                 }
                 
                 this.isAnimating = false;
-                
-                // Touch state
                 this.startX = 0;
                 this.currentX = 0;
                 this.isDragging = false;
@@ -359,38 +398,33 @@
             }
 
             init() {
-                // 如果是目标页面访问，先设置 slider 的初始位置
                 if (shouldSwitchPage) {
                     const targetIndex = this.pages.findIndex(p => p.id === initialPage);
                     if (targetIndex !== -1) {
-                        // 在创建 iframe 之前就设置 slider 位置
                         this.slider.style.transform = `translate3d(${-targetIndex * 100}%, 0, 0)`;
-                        console.log(`📍 预设 slider 位置：${-targetIndex * 100}%`);
                     }
                 }
 
-                // Initialize iframes
                 this.pages.forEach((page, index) => {
                     const iframe = document.createElement('iframe');
                     iframe.className = 'page-frame';
                     iframe.dataset.id = page.id;
-                    iframe.title = page.id; // 添加可访问性标题
-                    iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'; // 安全沙箱 + 允许弹窗 + 允许用户触发的导航
+                    iframe.title = `${page.id} 页面`;
+                    iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation';
 
-                    // Attach load event for theme sync
                     iframe.addEventListener('load', () => {
                         if (window.getCurrentTheme) {
                             applyThemeToFrame(iframe, window.getCurrentTheme());
                         }
-                        if (index === 0) document.getElementById('skeleton-screen').classList.add('hidden');
+                        if (index === 0) {
+                            document.getElementById('skeleton-screen').classList.add('hidden');
+                        }
                     });
 
-                    // 错误处理：加载失败时显示友好提示
                     iframe.addEventListener('error', () => {
                         this.handleIframeError(iframe, page);
                     });
 
-                    // 超时处理：5 秒内未加载完成视为失败
                     const loadTimeout = setTimeout(() => {
                         if (!iframe.contentDocument || iframe.contentDocument.body.innerHTML === '') {
                             this.handleIframeError(iframe, page);
@@ -401,18 +435,11 @@
                         clearTimeout(loadTimeout);
                     }, { once: true });
 
-                    // 如果是 OAuth 回调或独立页面访问，只加载目标页面
-                    const isTargetPage = shouldSwitchPage && page.id === initialPage;
-                    
-                    // 如果有目标页面，只加载目标页面；否则加载首页
                     if (shouldSwitchPage) {
-                        // 只加载目标页面
-                        if (isTargetPage) {
-                            console.log(`🎯 加载目标页面 iframe: ${page.id}`);
+                        if (page.id === initialPage) {
                             iframe.src = page.src;
                         }
                     } else {
-                        // 默认加载首页
                         if (index === 0) {
                             iframe.src = page.src;
                         }
@@ -420,40 +447,35 @@
                     this.slider.appendChild(iframe);
                 });
 
-                // 如果是目标页面访问，确保 slider 位置正确（再次确认）
                 if (shouldSwitchPage) {
                     const targetIndex = this.pages.findIndex(p => p.id === initialPage);
                     if (targetIndex !== -1) {
-                        // 设置 currentIndex
                         this.currentIndex = targetIndex;
-                        // 再次确保 slider 位置正确
                         this.slider.style.transition = 'none';
                         this.slider.style.transform = `translate3d(${-targetIndex * 100}%, 0, 0)`;
-                        console.log(`📍 确认 slider 位置：index=${targetIndex}, page=${initialPage}`);
                     }
                 }
 
-                // Lazy load others
-                setTimeout(() => this.loadOtherPages(), 2000);
+                requestIdleCallback(() => this.loadOtherPages(), { timeout: 2000 });
 
-                // Bind Nav Events
                 this.navLinks.forEach((link, index) => {
                     link.addEventListener('click', () => this.goToPage(index));
+                    link.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.goToPage(index);
+                        }
+                    });
                 });
 
-                // 如果是 OAuth 回调或独立页面访问，设置正确的导航激活状态
                 if (shouldSwitchPage) {
                     const targetIndex = this.pages.findIndex(p => p.id === initialPage);
                     if (targetIndex !== -1) {
-                        // 移除所有激活状态
                         this.navLinks.forEach(link => link.classList.remove('active'));
-                        // 设置目标导航为激活状态
                         this.navLinks[targetIndex].classList.add('active');
-                        console.log(`✅ 已设置导航激活状态：${initialPage}`);
                     }
                 }
 
-                // Bind Touch Events
                 const viewport = document.getElementById('viewport');
                 viewport.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
                 viewport.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
@@ -530,16 +552,11 @@
             loadOtherPages() {
                 const frames = this.slider.querySelectorAll('iframe');
                 frames.forEach((frame, index) => {
-                    // 如果是目标页面访问，跳过首页（index 0）
-                    // 如果是默认访问，跳过首页（index 0）
-                    // 其他页面延迟加载
                     if (shouldSwitchPage) {
-                        // 目标页面访问：加载所有未加载的页面（除了首页）
                         if (index !== this.currentIndex && !frame.src) {
                             frame.src = this.pages[index].src;
                         }
                     } else {
-                        // 默认访问：加载所有未加载的页面（除了首页）
                         if (index !== 0 && !frame.src) {
                             frame.src = this.pages[index].src;
                         }
@@ -550,17 +567,14 @@
             goToPage(index) {
                 if (index === this.currentIndex) return;
                 
-                // Update Nav UI
                 this.navLinks.forEach(l => l.classList.remove('active'));
                 this.navLinks[index].classList.add('active');
 
-                // Animate Slider
                 this.currentIndex = index;
                 this.updateSliderPosition(true);
 
-                // Mobile Sidebar Logic (Auto close on selection)
                 if (window.innerWidth <= 768) {
-                    toggleMenu(false); // Close menu
+                    toggleMenu(false);
                 }
             }
 
@@ -568,7 +582,6 @@
                 const offset = -(this.currentIndex * 100);
                 
                 if (animate) {
-                    // Optimized cubic-bezier for silkier transition
                     this.slider.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
                 } else {
                     this.slider.style.transition = 'none';
@@ -577,7 +590,6 @@
                 this.slider.style.transform = `translate3d(${offset}%, 0, 0)`;
             }
 
-            // Touch Handlers
             handleTouchStart(e) {
                 this.startX = e.touches[0].clientX;
                 this.isDragging = true;
@@ -591,10 +603,8 @@
                 const diff = x - this.startX;
                 const width = this.slider.clientWidth;
                 
-                // Prevent overscrolling at edges
                 if ((this.currentIndex === 0 && diff > 0) || 
                     (this.currentIndex === this.pages.length - 1 && diff < 0)) {
-                    // Resistance effect
                     const resistance = diff * 0.3;
                     const offset = -(this.currentIndex * 100) + (resistance / width * 100);
                     this.slider.style.transform = `translate3d(${offset}%, 0, 0)`;
@@ -603,7 +613,6 @@
                     this.slider.style.transform = `translate3d(${offset}%, 0, 0)`;
                 }
                 
-                // Prevent default scrolling if moving horizontally
                 if (Math.abs(diff) > 5) {
                     if(e.cancelable) e.preventDefault();
                 }
@@ -615,30 +624,26 @@
                 
                 const endX = e.changedTouches[0].clientX;
                 const diff = endX - this.startX;
-                const threshold = this.slider.clientWidth * 0.2; // 20% width threshold
+                const threshold = this.slider.clientWidth * 0.2;
                 
                 if (diff > threshold && this.currentIndex > 0) {
                     this.goToPage(this.currentIndex - 1);
                 } else if (diff < -threshold && this.currentIndex < this.pages.length - 1) {
                     this.goToPage(this.currentIndex + 1);
                 } else {
-                    // Revert
                     this.updateSliderPosition(true);
                 }
             }
         }
 
-        // Initialize App - 在 DOMContentLoaded 之后初始化，确保 shouldSwitchPage 已设置
         let app = null;
         
         window.addEventListener('DOMContentLoaded', () => {
-            // 等待 shouldSwitchPage 设置完成后再初始化 PageSlider
             setTimeout(() => {
                 app = new PageSlider();
             }, 0);
         });
 
-        // --- Mobile Menu Logic ---
         const sidebar = document.getElementById('sidebar');
         const hamburger = document.getElementById('hamburger-btn');
         const overlay = document.getElementById('sidebar-overlay');
@@ -649,12 +654,16 @@
             if (isActive) {
                 sidebar.classList.add('active');
                 hamburger.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
                 overlay.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
             } else {
                 sidebar.classList.remove('active');
                 hamburger.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
                 overlay.classList.remove('active');
+                overlay.setAttribute('aria-hidden', 'true');
                 document.body.style.overflow = '';
             }
         }
@@ -662,7 +671,6 @@
         hamburger.addEventListener('click', () => toggleMenu());
         overlay.addEventListener('click', () => toggleMenu(false));
 
-        // Avatar Easter Egg
         const avatar = document.getElementById('avatar');
         const floatText = document.getElementById('floating-text');
         const messages = ['Wait!', 'Hey!', 'Stop touching!', 'I am ticklish!', 'Ow!', 'Hahaha!'];
@@ -670,41 +678,39 @@
         let floatTimeout;
 
         avatar.addEventListener('click', (e) => {
-            // Prevent default behavior to ensure fast response
             e.preventDefault();
             e.stopPropagation();
 
-            // Clear previous timer to prevent flickering
             if(floatTimeout) clearTimeout(floatTimeout);
             
-            // Randomize message slightly
             floatText.textContent = messages[msgIdx % messages.length];
             
-            // Force reflow to restart animation if needed
             floatText.classList.remove('show');
-            void floatText.offsetWidth; // Trigger reflow
+            void floatText.offsetWidth;
             floatText.classList.add('show');
             
-            // Add shake animation to avatar
             avatar.style.transform = `scale(1.05) rotate(${Math.random() * 10 - 5}deg)`;
             setTimeout(() => avatar.style.transform = '', 200);
 
             floatTimeout = setTimeout(() => {
                 floatText.classList.remove('show');
-            }, 1500); // Show for longer
+            }, 1500);
             
             msgIdx++;
         });
 
-        // ========================================
-        // Theme Switcher Logic (Light/Dark Toggle)
-        // ========================================
+        avatar.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                avatar.click();
+            }
+        });
+
         const themeBtn = document.getElementById('theme-btn');
         const iconDark = document.getElementById('icon-dark');
         const iconLight = document.getElementById('icon-light');
-        let isDarkMode = true; // Default: Dark Mode
+        let isDarkMode = true;
 
-        // Light Theme Colors
         const lightTheme = {
             '--bg-primary': '#F1F5F9',
             '--bg-secondary': '#FFFFFF',
@@ -731,7 +737,6 @@
             '--input-bg': 'rgba(255, 255, 255, 0.5)'
         };
 
-        // Dark Theme Colors (Deep Space Default)
         const darkTheme = {
             '--bg-primary': '#0B0C15',
             '--bg-secondary': '#151621',
@@ -760,7 +765,6 @@
             '--tool-nav-icon-filter': 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
         };
 
-        // Apply theme to iframe
         function applyThemeToFrame(frame, themeVars) {
             try {
                 if (frame.contentDocument) {
@@ -770,39 +774,34 @@
                     }
                 }
             } catch(e) { 
-                console.error('Theme sync failed for frame', e); 
+                console.warn('Theme sync failed for frame', e); 
             }
         }
 
-        // Create hidden input for theme state synchronization
         const themeStateInput = document.createElement('input');
         themeStateInput.type = 'hidden';
         themeStateInput.id = 'theme-state';
         themeStateInput.value = 'dark';
         document.body.appendChild(themeStateInput);
 
-        // Apply theme to document and all iframes
         function applyTheme(themeVars) {
             const root = document.documentElement;
             for (const [key, value] of Object.entries(themeVars)) {
                 root.style.setProperty(key, value);
             }
             
-            // Sync with all existing iframes
             const frames = document.querySelectorAll('iframe');
             frames.forEach(frame => applyThemeToFrame(frame, themeVars));
             
-            // Update hidden input value
             const isDark = themeVars['--bg-primary'] === '#0B0C15';
             themeStateInput.value = isDark ? 'dark' : 'light';
+            themeBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
             
-            // Dispatch custom event to notify iframes
             window.dispatchEvent(new CustomEvent('themeChanged', { 
                 detail: { theme: isDark ? 'dark' : 'light' } 
             }));
         }
 
-        // Theme toggle button click handler
         themeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             isDarkMode = !isDarkMode;
@@ -810,7 +809,6 @@
             const currentTheme = isDarkMode ? darkTheme : lightTheme;
             applyTheme(currentTheme);
             
-            // Toggle icons
             if (isDarkMode) {
                 iconDark.style.display = 'block';
                 iconLight.style.display = 'none';
@@ -820,8 +818,11 @@
             }
         });
 
-        // Expose to PageSlider
         window.getCurrentTheme = () => isDarkMode ? darkTheme : lightTheme;
+        
+        if (typeof requestIdleCallback === 'undefined') {
+            window.requestIdleCallback = (cb) => setTimeout(cb, 1);
+        }
     </script>
 </body>
 </html>

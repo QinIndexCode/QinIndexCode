@@ -505,27 +505,59 @@
         }
     </script>
     <style>
-        /* 博客详情页 Markdown 样式增强 */
+        /* ========================================
+           博客详情页 Markdown 样式增强
+           ======================================== */
+        
+        /* --- 标题系统 --- */
         .card h1 {
             color: var(--accent-blue);
             font-size: 2rem;
             margin-bottom: 1.5rem;
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--glass-border);
         }
 
         .card h2 {
             color: var(--accent-purple);
             font-size: 1.5rem;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             margin-bottom: 1rem;
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .card h3 {
             color: var(--text-primary);
             font-size: 1.25rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             margin-bottom: 1rem;
         }
 
+        .card h4 {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* --- 段落与文本 --- */
+        .card p {
+            margin-bottom: 1.25rem;
+            line-height: 1.75;
+        }
+
+        .card strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .card em {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* --- 列表系统 --- */
         .card ul,
         .card ol {
             margin-left: 1.5rem;
@@ -535,30 +567,131 @@
 
         .card li {
             margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
         }
 
+        .card li::marker {
+            color: var(--accent-blue);
+        }
+
+        /* --- 代码块与行内代码 --- */
         .card pre {
             background: var(--bg-primary);
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: var(--border-radius);
             overflow-x: auto;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .card pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-primary);
+            opacity: 0.5;
         }
 
         .card code {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9em;
+            font-family: 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+            font-size: 0.875em;
+            line-height: 1.6;
         }
 
         .card p code {
-            background: var(--bg-primary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            color: var(--accent-pink);
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            color: var(--accent-cyan);
+            border: 1px solid var(--glass-border);
+            font-size: 0.9em;
         }
 
-        /* Back Link Style */
+        /* --- 引用块 --- */
+        .card blockquote {
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent-blue);
+            background: var(--bg-tertiary);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            color: var(--text-secondary);
+        }
+
+        .card blockquote p {
+            margin-bottom: 0.5rem;
+        }
+
+        .card blockquote:last-child {
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- 表格样式 --- */
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+        }
+
+        .card table th,
+        .card table td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--glass-border);
+            text-align: left;
+        }
+
+        .card table th {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .card table tr:nth-child(even) {
+            background: var(--glass-bg);
+        }
+
+        .card table tr:hover {
+            background: var(--glass-bg-hover);
+        }
+
+        /* --- 分割线 --- */
+        .card hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+            margin: 2rem 0;
+        }
+
+        /* --- 链接样式 --- */
+        .card a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: all var(--transition-base);
+        }
+
+        .card a:hover {
+            color: var(--accent-purple);
+            text-decoration-thickness: 2px;
+        }
+
+        /* --- 图片样式 --- */
+        .card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- Back Link Style --- */
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -581,14 +714,55 @@
         .back-link .arrow {
             margin-right: 0.5rem;
             font-family: system-ui;
-            /* Ensure arrow renders consistently */
         }
 
-        /* Mobile specific fixes */
+        /* --- 淡入淡出动画 --- */
+        .fade-in {
+            animation: fadeIn 0.3s var(--ease-out);
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Mobile specific fixes --- */
         @media (max-width: 768px) {
             .container {
                 padding-top: 6rem;
-                /* Increased top padding to clear fixed hamburger menu */
+            }
+            
+            .card h1 {
+                font-size: 1.75rem;
+            }
+            
+            .card h2 {
+                font-size: 1.5rem;
+            }
+            
+            .card pre {
+                padding: 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .card table {
+                font-size: 0.875rem;
+            }
+            
+            .card table th,
+            .card table td {
+                padding: 0.5rem;
             }
         }
 

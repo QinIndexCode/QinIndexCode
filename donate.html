@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="支持 QinIndexCode - 请我喝杯咖啡，支持开源项目持续发展">
     <title>捐赠 - QinIndexCode</title>
     <link href="./css/css2.css" rel="stylesheet" />
     <link href="./css/main.css" rel="stylesheet" />
-    <!-- 如果用户直接访问此页面，自动重定向到 index.html -->
     <script src="./js/redirect-if-standalone.js"></script>
     <style>
       .donate-wrapper {
@@ -278,12 +278,12 @@
     </style>
   </head>
   <body>
-    <div class="donate-wrapper">
-      <div class="bg-glow"></div>
+    <main class="donate-wrapper" role="main">
+      <div class="bg-glow" aria-hidden="true"></div>
 
-      <div class="card donate-card glass">
+      <article class="card donate-card glass">
         <div class="kofi-logo-wrapper">
-          <img src="assets/images/ko-fi.png" alt="Ko-fi" class="kofi-logo" />
+          <img src="assets/images/ko-fi.png" alt="Ko-fi" class="kofi-logo" loading="lazy" decoding="async" width="48" height="48" />
         </div>
 
         <h1 class="donate-title">请我喝杯咖啡</h1>
@@ -292,29 +292,29 @@
           欢迎通过 Ko-fi 进行捐赠支持。您的鼓励是我持续创作的最大动力！
         </p>
 
-        <!-- Ko-fi Button -->
         <a
           href="https://ko-fi.com/qinindexcode"
           target="_blank"
           rel="noopener noreferrer"
           class="btn-payment btn-kofi"
+          aria-label="前往 Ko-fi 捐赠页面"
         >
-          <img src="./assets/icons/coffee.svg" alt="coffee" width="24px" height="24px" class="heart-icon">
+          <img src="./assets/icons/coffee.svg" alt="" width="24" height="24" class="heart-icon" loading="lazy" decoding="async">
           <span>前往 Ko-fi 捐赠</span>
         </a>
 
-        <div class="divider">
+        <div class="divider" role="separator">
           <span>或使用扫码支付</span>
         </div>
 
         <div class="payment-grid">
-          <!-- WeChat Pay Button -->
-          <button class="btn-payment btn-wechat" onclick="showQR('wechat')">
+          <button class="btn-payment btn-wechat" onclick="showQR('wechat')" aria-label="显示微信支付二维码">
             <svg
               t="1770389141400"
               viewBox="0 0 1024 1024"
               width="24"
               height="24"
+              aria-hidden="true"
             >
               <path
                 d="M390.382933 645.3248c-61.303467 36.9664-70.382933-20.753067-70.382933-20.753067l-76.8-193.877333c-29.559467-92.16 25.565867-41.540267 25.565867-41.540267s47.3088 38.7072 83.217066 62.293334c35.874133 23.620267 76.8 6.929067 76.8 6.929066l502.1696-250.709333C838.280533 82.978133 685.226667 1.4336 511.965867 1.4336 229.205333 1.4336 0 218.4192 0 486.126933c0 153.941333 75.8784 290.986667 194.116267 379.8016l-21.333334 132.573867s-10.376533 38.7072 25.634134 20.753067c24.576-12.253867 87.108267-56.1152 124.347733-82.773334A535.825067 535.825067 0 0 0 512 970.752c282.760533 0 512-216.9856 512-484.693333 0-77.5168-19.319467-150.7328-53.5552-215.722667-159.982933 104.106667-532.138667 346.112-580.061867 374.954667z"
@@ -325,13 +325,13 @@
             <span>微信支付</span>
           </button>
 
-          <!-- Alipay Button -->
-          <button class="btn-payment btn-alipay" onclick="showQR('alipay')">
+          <button class="btn-payment btn-alipay" onclick="showQR('alipay')" aria-label="显示支付宝二维码">
             <svg
               t="1770389179042"
               viewBox="0 0 1024 1024"
               width="24"
               height="24"
+              aria-hidden="true"
             >
               <path
                 d="M860.009412 1.445647H164.020706A163.779765 163.779765 0 0 0 0 165.044706v693.940706c0 90.322824 73.396706 163.568941 164.020706 163.568941h695.988706A163.749647 163.749647 0 0 0 1024 858.985412v-6.686118s-266.360471-110.712471-400.835765-175.194353c-90.202353 110.682353-206.576941 177.844706-327.378823 177.844706-204.318118 0-273.709176-178.266353-176.941177-295.634823 21.082353-25.6 56.982588-49.995294 112.670118-63.698824 87.100235-21.323294 225.761882 13.312 355.689412 56.079059a709.993412 709.993412 0 0 0 57.675294-140.559059H244.404706v-40.448h206.486588V298.164706H200.824471V257.686588h250.096941V154.262588s0-17.438118 17.709176-17.438117h100.924236v120.862117h247.265882V298.164706h-247.265882v72.493176h201.84847c-19.305412 78.878118-48.670118 151.491765-85.473882 215.250824 61.259294 22.106353 116.254118 43.038118 157.214117 56.711529C990.539294 691.832471 1024 694.512941 1024 694.512941V165.044706A163.749647 163.749647 0 0 0 860.009412 1.445647zM248.892235 556.122353c-25.569882 2.529882-73.607529 13.824-99.870117 36.954353-78.727529 68.457412-31.623529 193.566118 127.668706 193.566118 92.581647 0 185.133176-59.030588 257.807058-153.569883-103.363765-50.266353-190.976-86.256941-285.605647-76.950588z"
@@ -344,8 +344,8 @@
             <span>支付宝</span>
           </button>
         </div>
-      </div>
-    </div>
+      </article>
+    </main>
 
     <!-- QR Code Modal -->
     <div class="qr-modal" id="qrModal" onclick="closeQR(event)" role="dialog" aria-modal="true" aria-labelledby="qrTitle" aria-describedby="qrDesc">
