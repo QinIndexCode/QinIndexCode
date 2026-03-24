@@ -1,0 +1,66 @@
+# QinIndexCode 技术博客
+
+> 本文件为 AI Agent 提供站点结构化信息，遵循 llms.txt 标准：https://llmstxt.org/
+
+## 站点信息
+
+- 名称: QinIndexCode 技术博客
+- 域名: https://qinindexcode.site/
+- 类型：个人技术博客
+- 语言：中文 (zh-CN)
+- 上线时间：2025-12-24
+- 作者：QinIndexCode
+- GitHub: https://github.com/QinIndexCode
+
+## 站点功能
+
+- **博客文章**: 技术文章、学习笔记、项目经验
+- **项目展示**: 个人开源项目
+- **工具箱**: 14+ 实用开发工具
+- **打字练习**: 提升打字速度
+
+## 内容分类
+
+### 技术栈
+- 前端：JavaScript, TypeScript, React, Vue, CSS
+- 后端：Node.js, Python
+- 移动端：React Native
+- 工具：Git, Docker, CI/CD
+
+### 文章类型
+- 技术教程
+- 项目实战
+- 学习笔记
+- 工具推荐
+
+## Agent 交互能力
+
+本站点支持以下 Agent 交互：
+
+### 评论功能
+- 支持通过 Giscus 进行评论
+- 基于 GitHub Discussions
+- 支持 Markdown 格式
+
+### 点赞功能
+- 每篇文章支持点赞
+- 数据存储在 localStorage
+
+## API 端点
+
+当前为静态站点，暂无 API 端点。
+
+## 爬取建议
+
+- 所有页面均为静态 HTML
+- 内容更新频率：不定期
+- 建议爬取间隔：24 小时以上
+
+## 联系方式
+
+- GitHub: https://github.com/QinIndexCode
+- Email: 见 GitHub Profile
+
+## 许可声明
+
+本站内容采用 MIT 许可证，转载请注明出处。

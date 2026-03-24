@@ -534,6 +534,602 @@
                 font-weight: 600;
             }
         }
+
+        /* ========================================
+           Typing Practice Modal Styles
+           ======================================== */
+
+        .typing-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-modal:not(.hidden) {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+        }
+
+        .typing-modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .typing-modal:not(.hidden) .typing-modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .typing-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .typing-close-btn:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Setup Panel */
+        .typing-setup {
+            padding: 3rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-setup.hidden {
+            opacity: 0;
+            transform: translateX(-30px);
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .typing-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .typing-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .typing-articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .typing-articles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .typing-articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .typing-article-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-article-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px -8px rgba(99, 102, 241, 0.4);
+        }
+
+        .typing-article-card.selected {
+            border-color: var(--accent-blue);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .typing-article-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            opacity: 0.6;
+            line-height: 1;
+        }
+
+        .typing-article-card.selected .typing-article-number {
+            opacity: 1;
+        }
+
+        .typing-article-content h4 {
+            margin: 0 0 0.35rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .typing-article-content p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .typing-settings {
+            margin-bottom: 2rem;
+        }
+
+        .typing-setting-group {
+            margin-bottom: 1rem;
+        }
+
+        .typing-setting-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .typing-time-options {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .typing-time-btn {
+            padding: 0.6rem 1.25rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-time-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .typing-time-btn.selected {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        .typing-custom-time {
+            margin-top: 0.75rem;
+        }
+
+        .typing-custom-time .text-input {
+            max-width: 200px;
+        }
+
+        .typing-begin-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .typing-begin-btn svg {
+            transition: transform 0.2s;
+        }
+
+        .typing-begin-btn:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* Practice Panel */
+        .typing-practice {
+            padding: 2rem 3rem 3rem;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 90vh;
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-practice.hidden {
+            opacity: 0;
+            transform: translateX(30px);
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .typing-stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .typing-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .typing-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .typing-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .typing-text-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .typing-text-display {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 1.35rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+            max-height: 350px;
+            overflow-x: auto;
+            overflow-y: auto;
+            user-select: none;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .typing-char {
+            position: relative;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing-char.current {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 2px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .typing-char.correct {
+            color: var(--accent-green);
+            animation: correctPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes correctPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .typing-char.incorrect {
+            color: var(--accent-red);
+            animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+        }
+
+        .typing-char.pending {
+            color: var(--text-muted);
+        }
+
+        .typing-char.space {
+            color: var(--text-muted);
+        }
+
+        /* Combo Effects */
+        .typing-combo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            pointer-events: none;
+            animation: comboFloat 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            z-index: 100;
+            text-shadow: 0 0 20px var(--accent-blue);
+        }
+
+        @keyframes comboFloat {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+        }
+
+        /* Achievement Toast */
+        .achievement-toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: achievementSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1001;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        @keyframes achievementSlide {
+            0% { opacity: 0; transform: translateX(100px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .achievement-toast.hide {
+            animation: achievementHide 0.3s ease forwards;
+        }
+
+        @keyframes achievementHide {
+            0% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(100px); }
+        }
+
+        /* Progress Bar Animation */
+        .typing-progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 1002;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+        }
+
+        .typing-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .typing-keyboard-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .typing-keyboard-hint kbd {
+            padding: 0.2rem 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.8rem;
+        }
+
+        /* Results Panel */
+        .typing-results {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .typing-results.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .typing-results-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--accent-green);
+            animation: success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes success-pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .typing-results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .typing-results-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .typing-result-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+            min-width: 120px;
+        }
+
+        .typing-result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .typing-result-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .typing-results-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .typing-results-actions .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .typing-modal {
+                padding: 1rem;
+            }
+
+            .typing-setup, .typing-results {
+                padding: 2rem 1.5rem;
+            }
+
+            .typing-practice {
+                padding: 1.5rem;
+            }
+
+            .typing-stats-bar {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+
+            .typing-text-display {
+                font-size: 1.2rem;
+                padding: 1.5rem;
+            }
+
+            .typing-results-stats {
+                gap: 1rem;
+            }
+
+            .typing-result-stat {
+                padding: 1rem 1.5rem;
+                min-width: 100px;
+            }
+
+            .typing-result-value {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -578,6 +1174,19 @@
             <a href="#tool-gradient" class="nav-item" data-title="渐变生成" aria-label="跳转到CSS渐变生成器">
                 <img src="assets/icons/palette.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
+            <a href="#tool-typing" class="nav-item" data-title="打字练习" aria-label="跳转到打字练习工具">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                    <path d="M6 8h.001"></path>
+                    <path d="M10 8h.001"></path>
+                    <path d="M14 8h.001"></path>
+                    <path d="M18 8h.001"></path>
+                    <path d="M8 12h.001"></path>
+                    <path d="M12 12h.001"></path>
+                    <path d="M16 12h.001"></path>
+                    <path d="M7 16h10"></path>
+                </svg>
+            </a>
         </nav>
 
         <button class="nav-toggle" id="nav-toggle" aria-label="打开工具导航菜单" aria-expanded="false" aria-controls="tool-nav">
@@ -589,7 +1198,7 @@
             <span style="color: var(--accent-blue);">●</span> 本地运行
             <span style="color: var(--accent-blue); margin: 0 0.5rem;">●</span> 数据安全
             <span style="color: var(--accent-blue); margin: 0 0.5rem;">●</span> 极速响应
-            <span style="color: var(--accent-blue); margin: 0 0.5rem;">●</span> 13 款工具
+            <span style="color: var(--accent-blue); margin: 0 0.5rem;">●</span> 14 款工具
         </p>
 
         <div class="grid grid-3">
@@ -1015,8 +1624,197 @@
                 </div>
             </article>
 
+            <article class="card glass tool-card" id="tool-typing" aria-labelledby="tool-typing-title">
+                <div class="tool-header">
+                    <div class="tool-icon-wrapper">
+                        <svg class="tool-icon-img" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                            <path d="M6 8h.001"></path>
+                            <path d="M10 8h.001"></path>
+                            <path d="M14 8h.001"></path>
+                            <path d="M18 8h.001"></path>
+                            <path d="M8 12h.001"></path>
+                            <path d="M12 12h.001"></path>
+                            <path d="M16 12h.001"></path>
+                            <path d="M7 16h10"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="tool-title" id="tool-typing-title">打字练习</h3>
+                    </div>
+                </div>
+                <p class="tool-desc">提升打字速度与准确性，支持多种练习模式。</p>
+                
+                <div class="tool-content">
+                    <button id="typing-start-btn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        开始练习
+                    </button>
+                </div>
+            </article>
+
         </div>
     </main>
+
+    <!-- Typing Practice Fullscreen Modal -->
+    <div id="typing-modal" class="typing-modal hidden" role="dialog" aria-modal="true" aria-labelledby="typing-modal-title">
+        <div class="typing-modal-content">
+            <button id="typing-close-btn" class="typing-close-btn" aria-label="关闭打字练习">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Setup Panel -->
+            <div id="typing-setup" class="typing-setup">
+                <h2 id="typing-modal-title" class="typing-title">打字练习</h2>
+                <p class="typing-subtitle">选择文章并开始练习</p>
+
+                <div class="typing-articles-grid">
+                    <div class="typing-article-card selected" data-article="0">
+                        <div class="typing-article-number">01</div>
+                        <div class="typing-article-content">
+                            <h4>The Art of Programming</h4>
+                            <p>探索编程的本质与美学的交汇点</p>
+                        </div>
+                    </div>
+                    <div class="typing-article-card" data-article="1">
+                        <div class="typing-article-number">02</div>
+                        <div class="typing-article-content">
+                            <h4>Space Exploration</h4>
+                            <p>人类对宇宙未知领域的永恒追求</p>
+                        </div>
+                    </div>
+                    <div class="typing-article-card" data-article="2">
+                        <div class="typing-article-number">03</div>
+                        <div class="typing-article-content">
+                            <h4>The Digital Age</h4>
+                            <p>数字化时代如何重塑我们的生活方式</p>
+                        </div>
+                    </div>
+                    <div class="typing-article-card" data-article="3">
+                        <div class="typing-article-number">04</div>
+                        <div class="typing-article-content">
+                            <h4>Environmental Challenges</h4>
+                            <p>地球面临的紧迫环境问题与解决方案</p>
+                        </div>
+                    </div>
+                    <div class="typing-article-card" data-article="4">
+                        <div class="typing-article-number">05</div>
+                        <div class="typing-article-content">
+                            <h4>The Future of AI</h4>
+                            <p>人工智能的发展前景与思考</p>
+                        </div>
+                    </div>
+                    <div class="typing-article-card" data-article="5">
+                        <div class="typing-article-number">06</div>
+                        <div class="typing-article-content">
+                            <h4>Mindfulness Practice</h4>
+                            <p>正念冥想与心理健康的奥秘</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-settings">
+                    <div class="typing-setting-group">
+                        <label class="typing-setting-label">时间限制</label>
+                        <div class="typing-time-options">
+                            <button class="typing-time-btn selected" data-time="0">无限</button>
+                            <button class="typing-time-btn" data-time="60">1 分钟</button>
+                            <button class="typing-time-btn" data-time="120">2 分钟</button>
+                            <button class="typing-time-btn" data-time="300">5 分钟</button>
+                        </div>
+                        <div class="typing-custom-time hidden">
+                            <input type="number" id="typing-custom-time-input" class="text-input" placeholder="输入秒数" min="10" max="3600" value="60">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="typing-begin-btn" class="btn btn-primary typing-begin-btn">
+                    <span>开始打字</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Practice Panel -->
+            <div id="typing-practice" class="typing-practice hidden">
+                <div class="typing-stats-bar">
+                    <div class="typing-stat">
+                        <span class="typing-stat-label">时间</span>
+                        <span id="typing-time-display" class="typing-stat-value">--:--</span>
+                    </div>
+                    <div class="typing-stat">
+                        <span class="typing-stat-label">WPM</span>
+                        <span id="typing-wpm-display" class="typing-stat-value">0</span>
+                    </div>
+                    <div class="typing-stat">
+                        <span class="typing-stat-label">准确率</span>
+                        <span id="typing-accuracy-display" class="typing-stat-value">100%</span>
+                    </div>
+                    <div class="typing-stat">
+                        <span class="typing-stat-label">进度</span>
+                        <span id="typing-progress-display" class="typing-stat-value">0%</span>
+                    </div>
+                </div>
+
+                <div class="typing-text-container">
+                    <div id="typing-text-display" class="typing-text-display"></div>
+                    <input type="text" id="typing-input" class="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="打字输入区域">
+                </div>
+
+                <div class="typing-keyboard-hint">
+                    <span>按下</span>
+                    <kbd>Tab</kbd>
+                    <span>或</span>
+                    <kbd>Esc</kbd>
+                    <span>键结束练习</span>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div id="typing-results" class="typing-results hidden">
+                <div class="typing-results-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <h2 class="typing-results-title">练习完成!</h2>
+                <div class="typing-results-stats">
+                    <div class="typing-result-stat">
+                        <span class="typing-result-value" id="typing-result-wpm">0</span>
+                        <span class="typing-result-label">WPM</span>
+                    </div>
+                    <div class="typing-result-stat">
+                        <span class="typing-result-value" id="typing-result-accuracy">0%</span>
+                        <span class="typing-result-label">准确率</span>
+                    </div>
+                    <div class="typing-result-stat">
+                        <span class="typing-result-value" id="typing-result-time">0s</span>
+                        <span class="typing-result-label">用时</span>
+                    </div>
+                    <div class="typing-result-stat">
+                        <span class="typing-result-value" id="typing-result-chars">0</span>
+                        <span class="typing-result-label">字符</span>
+                    </div>
+                </div>
+                <div class="typing-results-actions">
+                    <button id="typing-restart-btn" class="btn btn-outline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 4v6h6M23 20v-6h-6"/>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                        </svg>
+                        再试一次
+                    </button>
+                    <button id="typing-change-article-btn" class="btn btn-primary">
+                        更换文章
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- Navigation Logic ---
@@ -1558,6 +2356,396 @@
         });
         
         updateGradient();
+
+        // --- 14. Typing Practice Tool ---
+        const typingArticles = [
+            {
+                title: "The Art of Programming",
+                content: `Programming is not merely about writing code that computers can understand. It is about expressing ideas with precision and clarity, about solving problems in elegant ways that future developers can comprehend and maintain. The best programmers are not those who write the most clever or complex code, but those who can take seemingly insurmountable challenges and break them down into simple, digestible pieces that can be implemented step by step.
+
+When we think about programming as an art form, we begin to appreciate the craftsmanship involved in software development. Just as a skilled carpenter carefully selects each piece of wood and plans every joint, a skilled programmer carefully considers each function, each variable name, and each architectural decision. The code we write is a reflection of our thinking process, and like any form of communication, it can be clear or confusing, beautiful or ugly.
+
+The journey to becoming a master programmer is long and requires constant learning. New languages, frameworks, and paradigms emerge regularly, and what was considered best practice yesterday may be obsolete tomorrow. Yet despite all these changes, the fundamental principles of good software design remain constant. Writing code that is easy to read, understand, and modify will always be valuable.
+
+Testing is another crucial aspect of programming that separates amateur efforts from professional work. Tests serve as documentation for your code, showing exactly what behavior is expected and ensuring that changes don't break existing functionality. A well-tested codebase gives developers the confidence to refactor and improve their work without fear of introducing bugs.
+
+Debugging is where many programmers truly learn their craft. When something goes wrong, you must systematically eliminate possibilities until you find the root cause. This process teaches you more about how systems work than any tutorial or documentation ever could. Every bug you fix makes you a better programmer.`
+            },
+            {
+                title: "Space Exploration",
+                content: `The vast emptiness of space has captivated human imagination since the dawn of civilization. For millennia, we gazed at the stars and wondered what lay beyond our small blue planet. The invention of the telescope in the early seventeenth century marked the beginning of our scientific exploration of the cosmos, allowing us to see distant planets and galaxies as more than just points of light in the night sky.
+
+The mid-twentieth century brought the Space Age, a period of unprecedented technological achievement and competitive spirit between nations. The Soviet Union launched Sputnik, the first artificial satellite, in 1957, shocking the world and sparking the space race. Just twelve years later, Neil Armstrong became the first human to walk on the Moon, fulfilling President Kennedy's ambitious goal and marking a triumph for all of humanity.
+
+Today, space exploration has evolved far beyond national competitions to become a collaborative effort involving multiple countries and even private companies. The International Space Station serves as a symbol of what humanity can achieve when we work together, hosting astronauts from various nations for extended missions that advance our understanding of how humans can live and work in space for prolonged periods.
+
+Mars remains the next great frontier in our exploration of the solar system. With its relatively Earth-like conditions and potential for future colonization, the Red Planet captures our collective imagination. Several space agencies and private companies are actively developing the technology needed to send humans to Mars, though significant challenges remain regarding life support, radiation protection, and the psychological demands of such a long journey.
+
+The search for extraterrestrial life continues to drive much of our exploration efforts. From the icy moons of Jupiter to the methane lakes of Titan, our solar system offers many promising targets for investigation. The discovery of thousands of exoplanets in recent years has only intensified this interest, suggesting that the conditions for life may be far more common in the universe than we once believed.`
+            },
+            {
+                title: "The Digital Age",
+                content: `The digital revolution has transformed virtually every aspect of modern life in ways our ancestors could scarcely have imagined. From how we communicate and work to how we learn and entertain ourselves, digital technology has fundamentally altered the fabric of human society. This transformation did not happen overnight but rather evolved gradually over several decades, accelerating dramatically as computing power increased and connectivity became ubiquitous.
+
+The internet stands as perhaps the most significant technological achievement of our time, creating a global network that connects billions of people and devices. This vast digital infrastructure enables instant communication across continents, facilitates global commerce, and provides access to an unprecedented amount of information. Yet this same technology has also created new challenges, from concerns about privacy and security to the spread of misinformation and the concentration of power in the hands of a few tech giants.
+
+Social media platforms have revolutionized how we interact with one another, creating new forms of community and self-expression while simultaneously raising concerns about their impact on mental health and social cohesion. The algorithms that power these platforms are designed to maximize engagement, often showing us content that reinforces our existing beliefs and preferences, potentially creating echo chambers that divide rather than unite us.
+
+Artificial intelligence and machine learning have emerged as transformative technologies with applications spanning healthcare, transportation, finance, and countless other industries. These systems can now diagnose diseases, drive cars, and generate creative content with remarkable proficiency. As AI capabilities continue to advance, questions about automation, employment, and the very nature of intelligence become increasingly pressing.
+
+The concept of digital identity has become central to modern life, with online accounts and digital credentials shaping how we access services, establish trust, and participate in the digital economy. This reliance on digital systems has created new vulnerabilities, as cyberattacks and data breaches can have devastating consequences for individuals and organizations alike. Navigating this complex digital landscape requires both technological solutions and thoughtful policies that balance innovation with protection.`
+            },
+            {
+                title: "Environmental Challenges",
+                content: `Our planet faces a constellation of environmental challenges that threaten the delicate balance of ecosystems upon which all life depends. Climate change, driven primarily by human activities releasing greenhouse gases into the atmosphere, stands as perhaps the most pressing issue of our time. Rising global temperatures lead to melting ice caps, rising sea levels, and increasingly severe weather events that displace communities and devastate livelihoods across the globe.
+
+The loss of biodiversity represents another crisis unfolding before our eyes. Species are going extinct at rates unseen since the dinosaur extinction, with approximately one million plant and animal species facing extinction within decades. This loss of biodiversity disrupts ecosystem services that sustain human life, including pollination, water purification, and climate regulation. The interconnectedness of natural systems means that each species lost can trigger cascading effects throughout entire ecosystems.
+
+Deforestation continues at alarming rates, with forests that took millennia to develop being cleared in mere decades for agriculture, logging, and urban expansion. These forests are not merely collections of trees but complex ecosystems home to countless species and vital carbon sinks that help regulate the global climate. Their destruction releases stored carbon into the atmosphere while eliminating habitats and resources upon which local communities depend.
+
+Ocean acidification, a direct consequence of absorbing excess carbon dioxide from the atmosphere, poses a grave threat to marine ecosystems. Coral reefs, often called the rainforests of the sea due to their incredible biodiversity, are particularly vulnerable. As ocean chemistry changes, the organisms that build coral skeletons struggle to form their calcium carbonate structures, threatening entire reef ecosystems and the countless species that call them home.
+
+Despite these challenges, there are reasons for optimism. Renewable energy technologies have advanced dramatically, with solar and wind power becoming increasingly cost-competitive with fossil fuels. International cooperation has led to agreements like the Paris Climate Accord, demonstrating that nations can work together to address global challenges. Grassroots movements around the world are demanding action, and innovative solutions are emerging from unexpected places. The path forward requires collective action, sustainable practices, and a fundamental shift in how we relate to the natural world.`
+            },
+            {
+                title: "The Future of AI",
+                content: `Artificial intelligence has transitioned from science fiction to everyday reality, permeating nearly every aspect of modern life. The algorithms that recommend what we watch, shop for, and read are all forms of AI, constantly learning from our behaviors to deliver increasingly personalized experiences. This technology has brought remarkable conveniences but also raised profound questions about privacy, autonomy, and the nature of intelligence itself.
+
+Machine learning, particularly deep learning, has driven most recent advances in AI. By training neural networks on vast datasets, researchers have created systems that can recognize images, translate languages, and even generate creative content with superhuman proficiency. These achievements, while impressive, represent narrow intelligence rather than the general intelligence that humans possess. An AI can beat world champions at chess but cannot understand why the game matters to us.
+
+The development of large language models represents a significant milestone in AI progress. These systems can engage in natural conversation, answer questions, and assist with creative and analytical tasks. They demonstrate emergent capabilities that surprise even their creators, suggesting that as AI systems grow larger and more complex, they may develop new forms of intelligence that we do not fully understand.
+
+Concerns about AI safety and alignment have grown alongside these advances. Ensuring that AI systems act in accordance with human values and intentions becomes crucial as these tools become more powerful and autonomous. Researchers grapple with questions about how to specify human preferences in ways that AI systems can understand and respect, and how to build AI that remains beneficial even as capabilities increase.
+
+The economic implications of AI are profound and far-reaching. While automation has historically created new jobs even as it eliminated others, the scope of AI capabilities raises questions about whether this pattern will continue. Entire categories of work, from data entry to even some forms of professional analysis, may be susceptible to automation. Preparing society for these changes requires thoughtful policies, education reforms, and safety nets that can support workers transitioning between industries.`
+            },
+            {
+                title: "Mindfulness Practice",
+                content: `In our fast-paced world filled with constant notifications, endless tasks, and relentless demands on our attention, the ancient practice of mindfulness offers a sanctuary of stillness and clarity. Mindfulness, at its core, is the simple act of paying attention to the present moment with intention and without judgment. While this concept has roots in Buddhist meditation traditions, modern science has validated its benefits and developed accessible methods for incorporating mindfulness into daily life.
+
+Research has demonstrated that regular mindfulness practice can produce measurable changes in brain structure and function. Studies using magnetic resonance imaging have shown that mindfulness meditation can increase gray matter density in regions associated with attention, emotional regulation, and self-awareness. These findings suggest that mindfulness is not merely a subjective experience but produces genuine neurological changes that enhance cognitive function and emotional wellbeing.
+
+The applications of mindfulness extend far beyond personal meditation practice. Healthcare professionals have integrated mindfulness-based interventions into treatment protocols for conditions ranging from chronic pain to depression to anxiety disorders. Corporations have adopted mindfulness programs to reduce stress and improve employee wellbeing. Schools are experimenting with mindfulness education to help students develop focus and emotional resilience.
+
+Starting a mindfulness practice requires no special equipment or significant time investment. Even brief periods of deliberate attention, practiced consistently, can yield benefits. The key is approaching the practice with patience and self-compassion, recognizing that the wandering mind is not a failure but an opportunity to practice the skill of gently returning attention to the present moment.
+
+The challenges of modern life make mindfulness more relevant than ever. Our devices fragment our attention, pulling us in countless directions and rarely allowing us to fully engage with any single experience. Cultivating mindful awareness offers a path to deeper engagement with life, richer relationships, and greater equanimity in the face of inevitable difficulties. In a world that constantly demands our attention, choosing where to direct that attention may be the most powerful choice we can make.`
+            }
+        ];
+
+        const typingModal = document.getElementById('typing-modal');
+        const typingSetup = document.getElementById('typing-setup');
+        const typingPractice = document.getElementById('typing-practice');
+        const typingResults = document.getElementById('typing-results');
+        const typingStartBtn = document.getElementById('typing-start-btn');
+        const typingCloseBtn = document.getElementById('typing-close-btn');
+        const typingBeginBtn = document.getElementById('typing-begin-btn');
+        const typingInput = document.getElementById('typing-input');
+        const typingTextDisplay = document.getElementById('typing-text-display');
+        const typingArticleCards = document.querySelectorAll('.typing-article-card');
+        const typingTimeBtns = document.querySelectorAll('.typing-time-btn');
+        const typingRestartBtn = document.getElementById('typing-restart-btn');
+        const typingChangeArticleBtn = document.getElementById('typing-change-article-btn');
+        const customTimeInput = document.getElementById('typing-custom-time-input');
+
+        let selectedArticleIndex = 0;
+        let selectedTime = 0;
+        let currentCharIndex = 0;
+        let correctChars = 0;
+        let incorrectChars = 0;
+        let startTime = null;
+        let timerInterval = null;
+        let isTyping = false;
+        let timerStarted = false;
+
+        function openTypingModal() {
+            typingModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            showTypingSetup();
+        }
+
+        function closeTypingModal() {
+            typingModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            stopTyping();
+        }
+
+        function showTypingSetup() {
+            typingSetup.classList.remove('hidden');
+            typingPractice.classList.add('hidden');
+            typingResults.classList.add('hidden');
+            stopTyping();
+        }
+
+        function showTypingPractice() {
+            typingSetup.classList.add('hidden');
+            typingPractice.classList.remove('hidden');
+            typingResults.classList.add('hidden');
+        }
+
+        function showTypingResults() {
+            typingSetup.classList.add('hidden');
+            typingPractice.classList.add('hidden');
+            typingResults.classList.remove('hidden');
+        }
+
+        function selectArticle(index) {
+            selectedArticleIndex = index;
+            typingArticleCards.forEach((card, i) => {
+                card.classList.toggle('selected', i === index);
+            });
+        }
+
+        function selectTime(time, isCustom = false) {
+            selectedTime = time;
+            typingTimeBtns.forEach(btn => {
+                btn.classList.toggle('selected', parseInt(btn.dataset.time) === time);
+            });
+            if (isCustom) {
+                document.querySelector('.typing-custom-time').classList.remove('hidden');
+            } else {
+                document.querySelector('.typing-custom-time').classList.add('hidden');
+            }
+        }
+
+        function initTypingDisplay() {
+            const article = typingArticles[selectedArticleIndex];
+            const chars = article.content.split('');
+            let html = '';
+            chars.forEach((char, index) => {
+                let className = 'typing-char';
+                if (index === 0) className += ' current';
+                else className += ' pending';
+                if (char === ' ') className += ' space';
+                const displayChar = char === ' ' ? '&nbsp;' : (char === '\n' ? '<br>' : char);
+                html += `<span class="${className}" data-index="${index}">${displayChar}</span>`;
+            });
+            typingTextDisplay.innerHTML = html;
+        }
+
+        function startTyping() {
+            const timeSetting = selectedTime > 0 ? selectedTime : (customTimeInput.value ? parseInt(customTimeInput.value) : 0);
+            if (timeSetting > 0) {
+                selectedTime = timeSetting;
+            }
+
+            currentCharIndex = 0;
+            correctChars = 0;
+            incorrectChars = 0;
+            startTime = null;
+            isTyping = true;
+            timerStarted = false;
+
+            initTypingDisplay();
+            showTypingPractice();
+
+            if (selectedTime > 0) {
+                updateTimerDisplay(selectedTime);
+            } else {
+                document.getElementById('typing-time-display').textContent = '--:--';
+            }
+
+            setTimeout(() => {
+                typingInput.focus();
+            }, 100);
+        }
+
+        function startTimer() {
+            if (timerStarted) return;
+            timerStarted = true;
+            let remaining = selectedTime;
+            updateTimerDisplay(remaining);
+            timerInterval = setInterval(() => {
+                remaining--;
+                updateTimerDisplay(remaining);
+                if (remaining <= 0) {
+                    endTyping();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('typing-time-display').textContent =
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function stopTyping() {
+            isTyping = false;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function endTyping() {
+            stopTyping();
+            const results = calculateResults();
+            displayResults(results);
+            showTypingResults();
+        }
+
+        function calculateResults() {
+            const elapsedSeconds = startTime ? (Date.now() - startTime) / 1000 : 0;
+            const words = correctChars / 5;
+            const wpm = elapsedSeconds > 0 ? Math.round(words / (elapsedSeconds / 60)) : 0;
+            const accuracy = (correctChars + incorrectChars) > 0
+                ? Math.round((correctChars / (correctChars + incorrectChars)) * 100)
+                : 100;
+            return {
+                wpm,
+                accuracy,
+                time: Math.round(elapsedSeconds),
+                chars: correctChars
+            };
+        }
+
+        function displayResults(results) {
+            document.getElementById('typing-result-wpm').textContent = results.wpm;
+            document.getElementById('typing-result-accuracy').textContent = results.accuracy + '%';
+            document.getElementById('typing-result-time').textContent = results.time + 's';
+            document.getElementById('typing-result-chars').textContent = results.chars;
+        }
+
+        function updateTypingDisplay() {
+            const chars = typingTextDisplay.querySelectorAll('.typing-char');
+            chars.forEach((charSpan, index) => {
+                charSpan.classList.remove('current', 'correct', 'incorrect', 'pending');
+                if (index < currentCharIndex) {
+                    charSpan.classList.add(charSpan.dataset.correct === 'true' ? 'correct' : 'incorrect');
+                } else if (index === currentCharIndex) {
+                    charSpan.classList.add('current');
+                } else {
+                    charSpan.classList.add('pending');
+                }
+            });
+
+            const progress = Math.round((currentCharIndex / chars.length) * 100);
+            document.getElementById('typing-progress-display').textContent = progress + '%';
+
+            const results = calculateResults();
+            document.getElementById('typing-wpm-display').textContent = results.wpm;
+            document.getElementById('typing-accuracy-display').textContent = results.accuracy + '%';
+
+            if (currentCharIndex < chars.length) {
+                const currentChar = chars[currentCharIndex];
+                currentChar.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }
+        }
+
+        function handleTyping(e) {
+            if (!isTyping) return;
+
+            const article = typingArticles[selectedArticleIndex];
+            const typedChar = e.data;
+
+            if (typedChar !== null && currentCharIndex < article.content.length) {
+                if (!startTime) {
+                    startTime = Date.now();
+                    if (selectedTime > 0) {
+                        startTimer();
+                    }
+                }
+
+                const chars = typingTextDisplay.querySelectorAll('.typing-char');
+                const currentSpan = chars[currentCharIndex];
+                const expectedChar = article.content[currentCharIndex];
+
+                if (typedChar === expectedChar) {
+                    currentSpan.dataset.correct = 'true';
+                    correctChars++;
+                } else {
+                    currentSpan.dataset.correct = 'false';
+                    incorrectChars++;
+                }
+
+                currentCharIndex++;
+                updateTypingDisplay();
+
+                if (currentCharIndex >= article.content.length) {
+                    endTyping();
+                }
+            }
+        }
+
+        function handleKeydown(e) {
+            if (!isTyping) return;
+
+            if (e.key === 'Tab' || e.key === 'Escape') {
+                e.preventDefault();
+                endTyping();
+                return;
+            }
+
+            if (e.key === 'Backspace' && currentCharIndex > 0) {
+                e.preventDefault();
+                currentCharIndex--;
+                const chars = typingTextDisplay.querySelectorAll('.typing-char');
+                const prevSpan = chars[currentCharIndex];
+                
+                if (prevSpan.dataset.correct === 'true') {
+                    correctChars = Math.max(0, correctChars - 1);
+                } else {
+                    incorrectChars = Math.max(0, incorrectChars - 1);
+                }
+                
+                prevSpan.dataset.correct = '';
+                updateTypingDisplay();
+            }
+        }
+
+        typingArticleCards.forEach((card, index) => {
+            card.addEventListener('click', () => selectArticle(index));
+        });
+
+        typingTimeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const time = parseInt(btn.dataset.time);
+                selectTime(time, time < 0);
+            });
+        });
+
+        customTimeInput.addEventListener('focus', () => {
+            typingTimeBtns.forEach(btn => btn.classList.remove('selected'));
+            document.querySelector('.typing-custom-time').classList.remove('hidden');
+        });
+
+        typingStartBtn.addEventListener('click', openTypingModal);
+        typingCloseBtn.addEventListener('click', closeTypingModal);
+        typingBeginBtn.addEventListener('click', startTyping);
+        typingRestartBtn.addEventListener('click', () => {
+            showTypingSetup();
+            setTimeout(startTyping, 100);
+        });
+        typingChangeArticleBtn.addEventListener('click', () => {
+            showTypingSetup();
+        });
+
+        typingModal.addEventListener('click', (e) => {
+            if (e.target === typingModal) {
+                closeTypingModal();
+            }
+        });
+
+        typingTextDisplay.addEventListener('click', () => {
+            if (isTyping) {
+                typingInput.focus();
+            }
+        });
+
+        typingInput.addEventListener('input', handleTyping);
+        typingInput.addEventListener('keydown', handleKeydown);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !typingModal.classList.contains('hidden')) {
+                if (isTyping) {
+                    endTyping();
+                } else {
+                    closeTypingModal();
+                }
+            }
+        });
     </script>
 </body>
 </html>

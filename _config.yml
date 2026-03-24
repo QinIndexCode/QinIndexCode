@@ -1,0 +1,37 @@
+# Jekyll SEO 配置
+title: QinIndexCode - 个人技术博客
+description: 专注于全栈开发、Web 开发、移动应用开发等技术领域，分享高质量的技术文章和实战经验
+url: "https://qinindexcode.github.io"
+baseurl: ""
+language: zh-CN
+
+# SEO 相关
+tagline: 个人技术博客 - 专注于全栈开发
+keywords: 技术博客，JavaScript, 前端开发，后端开发，React, Vue, Node.js, Python, 全栈开发
+author:
+  name: QinIndexCode
+  twitter: QinIndexCode
+  github: QinIndexCode
+
+# Jekyll 配置
+markdown: kramdown
+highlighter: rouge
+permalink: /blogs/:title/
+
+# 插件
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO 图片
+logo: /assets/images/avatar.jpg
+social:
+  name: QinIndexCode
+  links:
+    - https://github.com/QinIndexCode/QinIndexCode
+
+# 搜索引擎验证
+webmaster_verifications:
+  google: ""  # 在 Google Search Console 获取
+  bing: ""    # 在 Bing Webmaster Tools 获取
