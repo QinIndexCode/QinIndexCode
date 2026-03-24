@@ -1001,7 +1001,7 @@
         let konamiIndex = 0;
         let konamiActive = false;
 
-        document.addEventListener('keydown', (e) => {
+        window.addEventListener('keydown', (e) => {
             if (e.code === konamiCode[konamiIndex]) {
                 konamiIndex++;
                 if (konamiIndex === konamiCode.length) {
