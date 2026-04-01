@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,39 @@
     <script src="./js/smooth-scroll.js" defer></script>
     <script src="./js/redirect-if-standalone.js"></script>
     <style>
+        /* 图标颜色统一 - 适配主题 */
+        :root {
+            --icon-color: #6366F1; /* 默认强调色 */
+            --icon-color-hover: #8B5CF6; /* 悬停颜色 */
+            --icon-color-dark: #818CF8; /* 暗色主题颜色 */
+            --icon-color-dark-hover: #A5B4FC; /* 暗色主题悬停 */
+        }
+        
+        /* 通用图标样式类 */
+        .tool-icon {
+            width: 32px;
+            height: 32px;
+            transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 亮色主题图标 */
+        .tool-icon {
+            filter: brightness(0) saturate(100%) invert(60%) sepia(17%) saturate(1969%) hue-rotate(228deg) brightness(101%) contrast(96%);
+        }
+        
+        /* 暗色主题图标 */
+        body.dark-theme .tool-icon,
+        [data-theme="dark"] .tool-icon {
+            filter: brightness(0) saturate(100%) invert(85%) sepia(10%) saturate(749%) hue-rotate(199deg) brightness(108%) contrast(105%);
+        }
+        
         /* Tool Card Enhanced Styles */
         .tool-card {
             display: flex;
             flex-direction: column;
-            min-height: 380px; /* 确保最小高度一致 */
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            min-height: 380px;
+            /* 确保最小高度一致 */
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
             border: 1px solid var(--glass-border);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -45,6 +73,87 @@
             opacity: 1;
         }
 
+        /* 工具卡片内容区域动画优化 */
+        .tool-card .tool-content>* {
+            animation: fadeInUp 0.4s ease-out backwards;
+        }
+
+        .tool-card .tool-content>*:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .tool-card .tool-content>*:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .tool-card .tool-content>*:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .tool-card .tool-content>*:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 工具图标动画 */
+        .tool-icon-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-icon-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tool-card:hover .tool-icon-wrapper::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 按钮点击波纹效果 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
         .tool-header {
             display: flex;
             align-items: center;
@@ -61,12 +170,32 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(99, 102, 241, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         .tool-icon-img {
             width: 32px;
             height: 32px;
-            filter: var(--tool-card-icon-filter, drop-shadow(0 0 5px rgba(99, 102, 241, 0.5)));
+            /* 继承通用图标样式 */
+            filter: inherit;
+            transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 悬停时增强图标亮度 */
+        .tool-card:hover .tool-icon-img {
+            filter: brightness(0) saturate(100%) invert(73%) sepia(25%) saturate(1694%) hue-rotate(228deg) brightness(105%) contrast(102%);
+        }
+
+        /* 暗色主题优化 */
+        body.dark-theme .tool-icon-img,
+        [data-theme="dark"] .tool-icon-img {
+            filter: brightness(0) saturate(100%) invert(85%) sepia(10%) saturate(749%) hue-rotate(199deg) brightness(108%) contrast(105%);
+        }
+
+        body.dark-theme .tool-card:hover .tool-icon-img,
+        [data-theme="dark"] .tool-card:hover .tool-icon-img {
+            filter: brightness(0) saturate(100%) invert(92%) sepia(5%) saturate(362%) hue-rotate(186deg) brightness(115%) contrast(110%);
         }
 
         .tool-title {
@@ -75,7 +204,8 @@
             background: var(--tool-title-gradient, linear-gradient(to right, #fff, #94a3b8));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: var(--text-primary); /* Fallback */
+            color: var(--text-primary);
+            /* Fallback */
         }
 
         .tool-desc {
@@ -84,7 +214,7 @@
             margin-bottom: 1.5rem;
             line-height: 1.5;
         }
-        
+
         .tool-content {
             display: flex;
             flex-direction: column;
@@ -107,7 +237,10 @@
             letter-spacing: 0.05em;
         }
 
-        .text-input, .select-input, .textarea-input, .file-input {
+        .text-input,
+        .select-input,
+        .textarea-input,
+        .file-input {
             width: 100%;
             padding: 0.75rem 1rem;
             background: var(--input-bg, rgba(0, 0, 0, 0.2));
@@ -126,7 +259,9 @@
             line-height: 1.5;
         }
 
-        .text-input:focus, .select-input:focus, .textarea-input:focus {
+        .text-input:focus,
+        .select-input:focus,
+        .textarea-input:focus {
             border-color: var(--accent-blue);
             background: rgba(0, 0, 0, 0.4);
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
@@ -149,24 +284,28 @@
             border-radius: 4px;
             cursor: pointer;
             color: var(--text-secondary);
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .copy-btn:hover {
             background: var(--accent-blue);
             color: white;
             border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
         }
 
         /* Preview Areas */
         .preview-box {
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(255,255,255,0.03),
-                rgba(255,255,255,0.03) 10px,
-                rgba(255,255,255,0.05) 10px,
-                rgba(255,255,255,0.05) 20px
-            );
+            background: repeating-linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.03),
+                    rgba(255, 255, 255, 0.03) 10px,
+                    rgba(255, 255, 255, 0.05) 10px,
+                    rgba(255, 255, 255, 0.05) 20px);
             border-radius: var(--border-radius);
             min-height: 100px;
             display: flex;
@@ -190,9 +329,13 @@
             margin: 1rem auto;
         }
 
-        .hidden { display: none !important; }
-        
-        .output-wrapper { position: relative; }
+        .hidden {
+            display: none !important;
+        }
+
+        .output-wrapper {
+            position: relative;
+        }
 
         /* Color Preview */
         .color-preview {
@@ -205,7 +348,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         /* Checkerboard background for transparency */
         .color-preview::before {
             content: '';
@@ -214,17 +357,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(45deg, #ccc 25%, transparent 25%), 
-                linear-gradient(-45deg, #ccc 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #ccc 75%), 
+            background-image:
+                linear-gradient(45deg, #ccc 25%, transparent 25%),
+                linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ccc 75%),
                 linear-gradient(-45deg, transparent 75%, #ccc 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
             z-index: 0;
-            opacity: 0.1; /* Subtle checkerboard */
+            opacity: 0.1;
+            /* Subtle checkerboard */
         }
-        
+
         .color-preview-inner {
             position: absolute;
             top: 0;
@@ -243,34 +387,44 @@
         /* --- Navigation Menu --- */
         .tool-nav {
             position: fixed;
-            right: 1.5rem; /* Slightly reduced margin to avoid overflow */
+            right: 1.5rem;
+            /* Slightly reduced margin to avoid overflow */
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-            z-index: 90; /* Lower z-index to sit behind overlays if needed, but above cards */
+            z-index: 90;
+            /* Lower z-index to sit behind overlays if needed, but above cards */
             background: rgba(255, 255, 255, 0.03);
-            padding: 0.5rem; /* Reduced padding */
+            padding: 0.5rem;
+            /* Reduced padding */
             border-radius: 2rem;
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 90vh; /* Prevent overflow on small vertical screens */
-            overflow-y: auto; /* Allow scrolling within nav if needed */
-            scrollbar-width: none; /* Hide scrollbar */
+            max-height: 90vh;
+            /* Prevent overflow on small vertical screens */
+            overflow-y: auto;
+            /* Allow scrolling within nav if needed */
+            scrollbar-width: none;
+            /* Hide scrollbar */
         }
-        
-        .tool-nav::-webkit-scrollbar { display: none; }
+
+        .tool-nav::-webkit-scrollbar {
+            display: none;
+        }
 
         /* Ensure container has padding-right to prevent overlap */
         .container {
-            padding-right: 5rem; /* Add space for the sidebar */
+            padding-right: 5rem;
+            /* Add space for the sidebar */
         }
 
         @media (max-width: 1024px) {
             .container {
-                padding-right: var(--spacing-xl); /* Reset padding on mobile */
+                padding-right: var(--spacing-xl);
+                /* Reset padding on mobile */
             }
         }
 
@@ -282,13 +436,15 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             position: relative;
             cursor: pointer;
             text-decoration: none;
         }
 
-        .nav-item:hover, .nav-item.active, .nav-item.hover-sync {
+        .nav-item:hover,
+        .nav-item.active,
+        .nav-item.hover-sync {
             background: var(--accent-blue);
             transform: scale(1.15);
             box-shadow: 0 0 15px var(--accent-blue-glow);
@@ -297,12 +453,31 @@
         .nav-item img {
             width: 22px;
             height: 22px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-            transition: filter 0.3s;
+            /* 使用 CSS filter 统一图标颜色 */
+            filter: brightness(0) saturate(100%) invert(60%) sepia(17%) saturate(1969%) hue-rotate(228deg) brightness(101%) contrast(96%);
+            transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .nav-item:hover img, .nav-item.active img, .nav-item.hover-sync img {
-            filter: brightness(0) invert(1);
+
+        .nav-item:hover img,
+        .nav-item.active img,
+        .nav-item.hover-sync img {
+            /* 悬停/激活时变为白色 */
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+
+        /* 暗色主题下的导航图标 */
+        body.dark-theme .nav-item img,
+        [data-theme="dark"] .nav-item img {
+            filter: brightness(0) saturate(100%) invert(85%) sepia(10%) saturate(749%) hue-rotate(199deg) brightness(108%) contrast(105%);
+        }
+
+        body.dark-theme .nav-item:hover img,
+        body.dark-theme .nav-item.active img,
+        body.dark-theme .nav-item.hover-sync img,
+        [data-theme="dark"] .nav-item:hover img,
+        [data-theme="dark"] .nav-item.active img,
+        [data-theme="dark"] .nav-item.hover-sync img {
+            filter: brightness(0) saturate(100%) invert(100%);
         }
 
         /* Tooltip */
@@ -310,7 +485,7 @@
             content: attr(data-title);
             position: absolute;
             right: 60px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 4px 8px;
             border-radius: 4px;
@@ -332,6 +507,7 @@
             display: none;
         }
 
+        /* 响应式优化 - 增强移动端体验 */
         @media (max-width: 1024px) {
             .tool-nav {
                 position: fixed;
@@ -340,11 +516,15 @@
                 top: auto;
                 transform: translateY(20px) scale(0.9);
                 flex-direction: column-reverse;
-                background: rgba(15, 23, 42, 0.9);
+                background: rgba(15, 23, 42, 0.95);
+                /* 提高不透明度 */
                 opacity: 0;
                 pointer-events: none;
                 transform-origin: bottom right;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(20px);
+                /* 增强毛玻璃效果 */
+                -webkit-backdrop-filter: blur(20px);
             }
 
             .tool-nav.open {
@@ -352,7 +532,7 @@
                 pointer-events: auto;
                 transform: translateY(0) scale(1);
             }
-            
+
             .nav-item::before {
                 right: 55px;
             }
@@ -385,155 +565,430 @@
             .nav-toggle.active {
                 transform: rotate(90deg);
             }
-            
+
             .nav-toggle.active svg {
                 transform: rotate(45deg);
             }
-            
-            /* Markdown Preview Styles */
-            #md-preview h1, #md-preview h2, #md-preview h3 {
-                margin-top: 0.5rem;
-                margin-bottom: 0.5rem;
-                color: var(--text-primary);
+        }
+
+        /* 小屏幕手机优化 */
+        @media (max-width: 640px) {
+            .tool-nav {
+                bottom: 5rem;
+                right: 1rem;
             }
-            
-            #md-preview h1 { font-size: 1.5rem; }
-            #md-preview h2 { font-size: 1.25rem; }
-            #md-preview h3 { font-size: 1rem; }
-            
-            #md-preview strong { color: var(--accent-blue); }
-            #md-preview em { color: var(--text-secondary); }
-            
-            #md-preview a {
-                color: var(--accent-blue);
-                text-decoration: underline;
+
+            .nav-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 52px;
+                height: 52px;
             }
-            
-            #md-preview code {
-                background: var(--bg-tertiary);
-                padding: 0.2rem 0.4rem;
-                border-radius: 4px;
-                font-family: 'Fira Code', monospace;
-                font-size: 0.85em;
+
+            .nav-toggle svg {
+                width: 24px;
+                height: 24px;
             }
-            
-            #md-preview ul {
-                list-style: disc;
-                margin-left: 1.5rem;
-                color: var(--text-secondary);
+
+            /* 移动端工具卡片优化 */
+            .tool-card {
+                min-height: auto;
+                margin-bottom: 1.5rem;
             }
-            
-            #md-preview {
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-                white-space: pre-wrap;
+
+            /* 移动端按钮全宽 */
+            .btn-row {
+                flex-direction: column;
             }
-            
-            #md-preview p {
-                margin-bottom: 0.75rem;
-            }
-            
-            /* Markdown Modal Styles */
-            #md-modal {
-                backdrop-filter: blur(10px);
-            }
-            
-            #md-modal .modal-content {
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-                border: 1px solid var(--glass-border);
-            }
-            
-            #md-modal-preview {
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-                white-space: pre-wrap;
-            }
-            
-            #md-modal-preview h1, #md-modal-preview h2, #md-modal-preview h3 {
-                margin-top: 1rem;
-                margin-bottom: 0.75rem;
-                color: var(--text-primary);
-            }
-            
-            #md-modal-preview h1 { font-size: 2rem; border-bottom: 2px solid var(--glass-border); padding-bottom: 0.5rem; }
-            #md-modal-preview h2 { font-size: 1.5rem; }
-            #md-modal-preview h3 { font-size: 1.25rem; }
-            
-            #md-modal-preview p {
-                margin-bottom: 1rem;
-                color: var(--text-secondary);
-            }
-            
-            #md-modal-preview strong { color: var(--accent-blue); }
-            #md-modal-preview em { color: var(--text-secondary); font-style: italic; }
-            
-            #md-modal-preview a {
-                color: var(--accent-blue);
-                text-decoration: underline;
-            }
-            
-            #md-modal-preview code {
-                background: var(--bg-tertiary);
-                padding: 0.2rem 0.5rem;
-                border-radius: 4px;
-                font-family: 'Fira Code', monospace;
-                font-size: 0.9em;
-            }
-            
-            #md-modal-preview pre {
-                background: var(--bg-tertiary);
-                padding: 1rem;
-                border-radius: var(--border-radius);
-                overflow-x: auto;
-                margin: 1rem 0;
-            }
-            
-            #md-modal-preview pre code {
-                background: transparent;
-                padding: 0;
-            }
-            
-            #md-modal-preview ul, #md-modal-preview ol {
-                margin-left: 2rem;
-                margin-bottom: 1rem;
-                color: var(--text-secondary);
-            }
-            
-            #md-modal-preview li {
-                margin-bottom: 0.5rem;
-            }
-            
-            #md-modal-preview blockquote {
-                border-left: 4px solid var(--accent-blue);
-                padding-left: 1rem;
-                margin: 1rem 0;
-                color: var(--text-secondary);
-                font-style: italic;
-            }
-            
-            #md-modal-preview hr {
-                border: none;
-                border-top: 1px solid var(--glass-border);
-                margin: 1.5rem 0;
-            }
-            
-            #md-modal-preview table {
+
+            .btn-row .btn {
                 width: 100%;
-                border-collapse: collapse;
-                margin: 1rem 0;
-            }
-            
-            #md-modal-preview th, #md-modal-preview td {
-                border: 1px solid var(--glass-border);
-                padding: 0.75rem;
-                text-align: left;
-            }
-            
-            #md-modal-preview th {
-                background: var(--bg-tertiary);
-                font-weight: 600;
             }
         }
+
+        /* 添加平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 优化容器内边距，防止导航遮挡 */
+        .container {
+            padding-right: 5rem;
+            padding-left: var(--spacing-lg);
+            padding-right: var(--spacing-lg);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding-right: var(--spacing-lg);
+                padding-left: var(--spacing-lg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding-right: 1rem;
+                padding-left: 1rem;
+            }
+        }
+
+        /* 添加骨架屏加载动画 */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.03) 0%,
+                    rgba(255, 255, 255, 0.08) 50%,
+                    rgba(255, 255, 255, 0.03) 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+            border-radius: var(--border-radius);
+        }
+
+        /* 工具卡片内部元素优化 */
+        .tool-card .input-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .tool-card .btn {
+            white-space: nowrap;
+        }
+
+        /* 输出框样式优化 */
+        .output-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            resize: vertical;
+            transition: all 0.2s;
+        }
+
+        .output-textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        /* 文件上传区域优化 */
+        .file-drop-zone {
+            border: 2px dashed var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .file-drop-zone:hover {
+            border-color: var(--accent-blue);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .file-drop-zone.dragover {
+            border-color: var(--accent-blue);
+            background: rgba(99, 102, 241, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* 二维码输出优化 */
+        .qr-output-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .qr-output-container canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 颜色选择器优化 */
+        .color-picker-input {
+            width: 100%;
+            height: 50px;
+            padding: 0.25rem;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+
+        .color-picker-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker-input::-webkit-color-swatch {
+            border: none;
+            border-radius: calc(var(--border-radius) - 2px);
+        }
+
+        .color-picker-input::-moz-color-swatch {
+            border: none;
+            border-radius: calc(var(--border-radius) - 2px);
+        }
+
+        /* 时间戳工具优化 */
+        .timestamp-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+        }
+
+        /* Markdown 预览优化 */
+        #md-preview {
+            line-height: 1.7;
+        }
+
+        #md-preview h1,
+        #md-preview h2,
+        #md-preview h3 {
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        #md-preview p {
+            margin-bottom: 1em;
+        }
+
+        #md-preview code {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        #md-preview pre {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #md-preview blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.5);
+
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        #md-preview h1 {
+            font-size: 1.5rem;
+        }
+
+        #md-preview h2 {
+            font-size: 1.25rem;
+        }
+
+        #md-preview h3 {
+            font-size: 1rem;
+        }
+
+        #md-preview strong {
+            color: var(--accent-blue);
+        }
+
+        #md-preview em {
+            color: var(--text-secondary);
+        }
+
+        #md-preview a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        #md-preview code {
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+        }
+
+        #md-preview ul {
+            list-style: disc;
+            margin-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        #md-preview {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        #md-preview p {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Markdown Modal Styles */
+        #md-modal {
+            backdrop-filter: blur(10px);
+        }
+
+        #md-modal .modal-content {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+        }
+
+        #md-modal-preview {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        #md-modal-preview h1,
+        #md-modal-preview h2,
+        #md-modal-preview h3 {
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        #md-modal-preview h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+
+        #md-modal-preview h2 {
+            font-size: 1.5rem;
+        }
+
+        #md-modal-preview h3 {
+            font-size: 1.25rem;
+        }
+
+        #md-modal-preview p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        #md-modal-preview strong {
+            color: var(--accent-blue);
+        }
+
+        #md-modal-preview em {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        #md-modal-preview a {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        #md-modal-preview code {
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        #md-modal-preview pre {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #md-modal-preview pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        #md-modal-preview ul,
+        #md-modal-preview ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        #md-modal-preview li {
+            margin-bottom: 0.5rem;
+        }
+
+        #md-modal-preview blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        #md-modal-preview hr {
+            border: none;
+            border-top: 1px solid var(--glass-border);
+            margin: 1.5rem 0;
+        }
+
+        #md-modal-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        #md-modal-preview th,
+        #md-modal-preview td {
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        #md-modal-preview th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+        }
+        
 
         /* ========================================
            Typing Practice Modal Styles
@@ -861,8 +1316,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
         }
 
         .typing-char.correct {
@@ -871,9 +1333,17 @@
         }
 
         @keyframes correctPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .typing-char.incorrect {
@@ -882,11 +1352,27 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-3px); }
-            40% { transform: translateX(3px); }
-            60% { transform: translateX(-2px); }
-            80% { transform: translateX(2px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-3px);
+            }
+
+            40% {
+                transform: translateX(3px);
+            }
+
+            60% {
+                transform: translateX(-2px);
+            }
+
+            80% {
+                transform: translateX(2px);
+            }
         }
 
         .typing-char.pending {
@@ -913,9 +1399,20 @@
         }
 
         @keyframes comboFloat {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -80%) scale(1);
+            }
         }
 
         /* Achievement Toast */
@@ -936,8 +1433,15 @@
         }
 
         @keyframes achievementSlide {
-            0% { opacity: 0; transform: translateX(100px); }
-            100% { opacity: 1; transform: translateX(0); }
+            0% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .achievement-toast.hide {
@@ -945,8 +1449,15 @@
         }
 
         @keyframes achievementHide {
-            0% { opacity: 1; transform: translateX(0); }
-            100% { opacity: 0; transform: translateX(100px); }
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
         }
 
         /* Progress Bar Animation */
@@ -971,8 +1482,15 @@
         }
 
         @keyframes confettiFall {
-            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
         }
 
         .typing-input {
@@ -1035,8 +1553,15 @@
         }
 
         @keyframes success-pop {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .typing-results-title {
@@ -1099,7 +1624,8 @@
                 padding: 1rem;
             }
 
-            .typing-setup, .typing-results {
+            .typing-setup,
+            .typing-results {
                 padding: 2rem 1.5rem;
             }
 
@@ -1132,11 +1658,13 @@
         }
     </style>
 </head>
+
 <body>
     <main class="container" role="main">
         <nav class="tool-nav" id="tool-nav" aria-label="工具快捷导航">
             <a href="#tool-image" class="nav-item" data-title="图片转换" aria-label="跳转到图片转换工具">
-                <img src="assets/icons/Image_format_conversion.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
+                <img src="assets/icons/Image_format_conversion.svg" alt="" loading="lazy" decoding="async" width="22"
+                    height="22">
             </a>
             <a href="#tool-qr" class="nav-item" data-title="二维码" aria-label="跳转到二维码生成工具">
                 <img src="assets/icons/QRCode.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
@@ -1175,22 +1703,16 @@
                 <img src="assets/icons/palette.svg" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
             <a href="#tool-typing" class="nav-item" data-title="打字练习" aria-label="跳转到打字练习工具">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
-                    <path d="M6 8h.001"></path>
-                    <path d="M10 8h.001"></path>
-                    <path d="M14 8h.001"></path>
-                    <path d="M18 8h.001"></path>
-                    <path d="M8 12h.001"></path>
-                    <path d="M12 12h.001"></path>
-                    <path d="M16 12h.001"></path>
-                    <path d="M7 16h10"></path>
-                </svg>
+                <img src="assets/icons/keyBoard.svg?v=1" alt="" loading="lazy" decoding="async" width="22" height="22">
             </a>
         </nav>
 
         <button class="nav-toggle" id="nav-toggle" aria-label="打开工具导航菜单" aria-expanded="false" aria-controls="tool-nav">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
         </button>
 
         <h1 class="section-title">开发者工具箱</h1>
@@ -1202,21 +1724,22 @@
         </p>
 
         <div class="grid grid-3">
-            
+
             <article class="card glass tool-card" id="tool-image" aria-labelledby="tool-image-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/Image_format_conversion.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/Image_format_conversion.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-image-title">图片转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">PNG / JPG / WEBP / BMP / ICO 格式互转，支持质量调节。</p>
-                
+
                 <div class="tool-content">
                     <input type="file" id="img-upload" accept="image/*" class="file-input">
-                    
+
                     <div id="img-controls" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
                         <div class="btn-row">
                             <select id="img-format" class="select-input" style="flex:2;">
@@ -1226,7 +1749,8 @@
                                 <option value="image/bmp">BMP</option>
                                 <option value="image/x-icon">ICO</option>
                             </select>
-                            <input type="number" id="img-quality" class="text-input" value="0.9" step="0.1" min="0.1" max="1" style="flex:1;" title="质量 (0-1)">
+                            <input type="number" id="img-quality" class="text-input" value="0.9" step="0.1" min="0.1"
+                                max="1" style="flex:1;" title="质量 (0-1)">
                         </div>
                         <button id="img-convert-btn" class="btn btn-primary" style="width: 100%;">转换并下载</button>
                     </div>
@@ -1238,22 +1762,25 @@
             <article class="card glass tool-card" id="tool-qr" aria-labelledby="tool-qr-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/QRCode.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/QRCode.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-qr-title">二维码生成</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成可自定义颜色的高清二维码图片。</p>
-                
+
                 <div class="tool-content">
                     <input type="text" id="qr-text" placeholder="输入链接或文本" class="text-input">
                     <div class="btn-row" style="align-items: center;">
-                        <input type="color" id="qr-color-dark" value="#000000" style="height: 38px; flex:1; cursor: pointer; border:none; padding:0; background:none;">
-                        <input type="color" id="qr-color-light" value="#ffffff" style="height: 38px; flex:1; cursor: pointer; border:none; padding:0; background:none;">
+                        <input type="color" id="qr-color-dark" value="#000000"
+                            style="height: 38px; flex:1; cursor: pointer; border:none; padding:0; background:none;">
+                        <input type="color" id="qr-color-light" value="#ffffff"
+                            style="height: 38px; flex:1; cursor: pointer; border:none; padding:0; background:none;">
                         <button id="qr-gen-btn" class="btn btn-primary" style="flex:2;">生成</button>
                     </div>
-                    
+
                     <div id="qr-container" class="preview-box hidden">
                         <div id="qr-output" class="qr-output-bg"></div>
                     </div>
@@ -1263,14 +1790,15 @@
             <article class="card glass tool-card" id="tool-timestamp" aria-labelledby="tool-timestamp-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/clock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/clock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-timestamp-title">时间戳转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">Unix 时间戳与日期时间互转。</p>
-                
+
                 <div class="tool-content">
                     <div class="input-group">
                         <label class="input-label">当前时间戳 (ms)</label>
@@ -1293,14 +1821,15 @@
             <article class="card glass tool-card" id="tool-json" aria-labelledby="tool-json-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/json.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/json.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-json-title">JSON 工具</h3>
                     </div>
                 </div>
                 <p class="tool-desc">格式化、压缩与校验 JSON 数据。</p>
-                
+
                 <div class="tool-content">
                     <textarea id="json-input" class="textarea-input" placeholder="粘贴 JSON..."></textarea>
                     <div class="btn-row">
@@ -1308,8 +1837,8 @@
                         <button id="json-minify-btn" class="btn btn-outline" style="flex:1;">压缩</button>
                     </div>
                     <div class="output-wrapper">
-                         <textarea id="json-output" class="textarea-input" placeholder="结果..." readonly></textarea>
-                         <button class="copy-btn" onclick="Tools.copyToClipboard('json-output')">复制</button>
+                        <textarea id="json-output" class="textarea-input" placeholder="结果..." readonly></textarea>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('json-output')">复制</button>
                     </div>
                 </div>
             </article>
@@ -1317,14 +1846,15 @@
             <article class="card glass tool-card" id="tool-base64" aria-labelledby="tool-base64-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-base64-title">Base64 转换</h3>
                     </div>
                 </div>
                 <p class="tool-desc">文本与 Base64 编码互转，支持中文。</p>
-                
+
                 <div class="tool-content">
                     <textarea id="b64-input" class="textarea-input" placeholder="输入内容..."></textarea>
                     <div class="btn-row">
@@ -1341,14 +1871,15 @@
             <article class="card glass tool-card" id="tool-url" aria-labelledby="tool-url-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/link.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/link.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-url-title">URL 编解码</h3>
                     </div>
                 </div>
                 <p class="tool-desc">URL 参数转义与还原。</p>
-                
+
                 <div class="tool-content">
                     <textarea id="url-input" class="textarea-input" placeholder="输入 URL..."></textarea>
                     <div class="btn-row">
@@ -1365,26 +1896,30 @@
             <article class="card glass tool-card" id="tool-color" aria-labelledby="tool-color-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-color-title">颜色调试器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">HEX / RGB / RGBA 互转，支持透明度。</p>
-                
+
                 <div class="tool-content">
                     <div class="input-group">
                         <label class="input-label">颜色选择器</label>
                         <div class="color-picker-row">
-                            <input type="color" id="color-picker" value="#6366f1" style="height: 38px; width: 50px; cursor: pointer; border: none; padding: 0; background: none;">
+                            <input type="color" id="color-picker" value="#6366f1"
+                                style="height: 38px; width: 50px; cursor: pointer; border: none; padding: 0; background: none;">
                             <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                                <label class="input-label" style="font-size: 0.7rem;">透明度 (Alpha): <span id="alpha-val">1.0</span></label>
-                                <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="1" style="width: 100%;">
+                                <label class="input-label" style="font-size: 0.7rem;">透明度 (Alpha): <span
+                                        id="alpha-val">1.0</span></label>
+                                <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="1"
+                                    style="width: 100%;">
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="input-group">
                         <label class="input-label">输出格式</label>
                         <select id="color-format" class="select-input">
@@ -1403,7 +1938,8 @@
                     </div>
 
                     <div id="color-preview-box" class="color-preview">
-                        <div id="color-preview-inner" class="color-preview-inner" style="background-color: #6366f1;"></div>
+                        <div id="color-preview-inner" class="color-preview-inner" style="background-color: #6366f1;">
+                        </div>
                     </div>
                 </div>
             </article>
@@ -1411,14 +1947,15 @@
             <article class="card glass tool-card" id="tool-password" aria-labelledby="tool-password-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/lock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/lock.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-password-title">密码生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成高强度随机密码。</p>
-                
+
                 <div class="tool-content">
                     <div class="btn-row" style="align-items: center;">
                         <label class="input-label" style="flex:1;">长度: <span id="pwd-len-val">16</span></label>
@@ -1435,14 +1972,15 @@
             <article class="card glass tool-card" id="tool-lorem" aria-labelledby="tool-lorem-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/paragraph.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/paragraph.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-lorem-title">文本生成</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成 Lorem Ipsum 占位文本。</p>
-                
+
                 <div class="tool-content">
                     <div class="btn-row">
                         <button onclick="Tools.genLorem(1)" class="btn btn-outline" style="flex:1;">1 句</button>
@@ -1450,7 +1988,8 @@
                         <button onclick="Tools.genLorem(5)" class="btn btn-outline" style="flex:1;">5 句</button>
                     </div>
                     <div class="output-wrapper">
-                        <textarea id="lorem-output" class="textarea-input" readonly placeholder="点击按钮生成..." style="height: 150px;"></textarea>
+                        <textarea id="lorem-output" class="textarea-input" readonly placeholder="点击按钮生成..."
+                            style="height: 150px;"></textarea>
                         <button class="copy-btn" onclick="Tools.copyToClipboard('lorem-output')">复制</button>
                     </div>
                 </div>
@@ -1459,54 +1998,67 @@
             <article class="card glass tool-card" id="tool-markdown" aria-labelledby="tool-markdown-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/technical.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/technical.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-markdown-title">Markdown 预览</h3>
                     </div>
                 </div>
                 <p class="tool-desc">实时预览 Markdown 渲染效果。</p>
-                
+
                 <div class="tool-content">
-                    <textarea id="md-input" class="textarea-input" placeholder="# 标题&#10;&#10;**粗体** *斜体*&#10;- 列表项 1&#10;- 列表项 2&#10;&#10;[链接](https://example.com)" style="height: 200px; min-height: 200px;"></textarea>
+                    <textarea id="md-input" class="textarea-input"
+                        placeholder="# 标题&#10;&#10;**粗体** *斜体*&#10;- 列表项 1&#10;- 列表项 2&#10;&#10;[链接](https://example.com)"
+                        style="height: 200px; min-height: 200px;"></textarea>
                     <div style="display: flex; justify-content: flex-end; margin: 0.5rem 0;">
-                        <button id="md-expand-btn" class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        <button id="md-expand-btn" class="btn btn-outline"
+                            style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
                             </svg>
                             全屏预览
                         </button>
                     </div>
-                    <div id="md-preview" class="preview-box" style="min-height: 250px; max-height: 400px; align-items: flex-start; padding: 1.5rem; overflow-y: auto; text-align: left; line-height: 1.6;"></div>
+                    <div id="md-preview" class="preview-box"
+                        style="min-height: 250px; max-height: 400px; align-items: flex-start; padding: 1.5rem; overflow-y: auto; text-align: left; line-height: 1.6;">
+                    </div>
                 </div>
             </article>
-            
+
             <!-- Markdown Fullscreen Modal -->
-            <div id="md-modal" class="modal hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-                <div class="modal-content" style="background: var(--bg-primary); border-radius: var(--border-radius); max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--glass-border);">
+            <div id="md-modal" class="modal hidden"
+                style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+                <div class="modal-content"
+                    style="background: var(--bg-primary); border-radius: var(--border-radius); max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--glass-border);">
                         <h3 style="margin: 0; color: var(--text-primary);">Markdown 全屏预览</h3>
                         <button id="md-close-btn" class="btn btn-outline" style="padding: 0.5rem;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 6L6 18M6 6l12 12"/>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
-                    <div id="md-modal-preview" style="flex: 1; overflow-y: auto; padding: 2rem; line-height: 1.8; font-size: 1.1rem;"></div>
+                    <div id="md-modal-preview"
+                        style="flex: 1; overflow-y: auto; padding: 2rem; line-height: 1.8; font-size: 1.1rem;"></div>
                 </div>
             </div>
 
             <article class="card glass tool-card" id="tool-shadow" aria-labelledby="tool-shadow-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/performance.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/performance.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-shadow-title">CSS 阴影生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">生成 box-shadow CSS 代码。</p>
-                
+
                 <div class="tool-content">
                     <div class="input-group">
                         <label class="input-label">X 偏移：<span id="shadow-x-val">4</span>px</label>
@@ -1531,7 +2083,9 @@
                         <span id="shadow-opacity-val" style="font-size: 0.75rem; color: var(--text-muted);">0.30</span>
                     </div>
                     <div id="shadow-preview" class="preview-box" style="height: 100px;">
-                        <div id="shadow-box" style="width: 100px; height: 100px; background: var(--accent-blue); border-radius: 8px;"></div>
+                        <div id="shadow-box"
+                            style="width: 100px; height: 100px; background: var(--accent-blue); border-radius: 8px;">
+                        </div>
                     </div>
                     <div class="output-wrapper">
                         <input type="text" id="shadow-output" class="text-input" readonly>
@@ -1543,14 +2097,15 @@
             <article class="card glass tool-card" id="tool-font" aria-labelledby="tool-font-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/text-tool.svg" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-font-title">字体单位转换器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">px / rem / em / pt 单位互转。</p>
-                
+
                 <div class="tool-content">
                     <div class="input-group">
                         <label class="input-label">基础字体大小 (px):</label>
@@ -1572,19 +2127,23 @@
                     <div id="font-results" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
                         <div class="output-wrapper">
                             <input type="text" id="font-px" class="text-input" readonly placeholder="px">
-                            <button class="copy-btn" style="position: static; padding: 0.25rem;" onclick="Tools.copyToClipboard('font-px')">复制</button>
+                            <button class="copy-btn" style="position: static; padding: 0.25rem;"
+                                onclick="Tools.copyToClipboard('font-px')">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-rem" class="text-input" readonly placeholder="rem">
-                            <button class="copy-btn" style="position: static; padding: 0.25rem;" onclick="Tools.copyToClipboard('font-rem')">复制</button>
+                            <button class="copy-btn" style="position: static; padding: 0.25rem;"
+                                onclick="Tools.copyToClipboard('font-rem')">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-em" class="text-input" readonly placeholder="em">
-                            <button class="copy-btn" style="position: static; padding: 0.25rem;" onclick="Tools.copyToClipboard('font-em')">复制</button>
+                            <button class="copy-btn" style="position: static; padding: 0.25rem;"
+                                onclick="Tools.copyToClipboard('font-em')">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-pt" class="text-input" readonly placeholder="pt">
-                            <button class="copy-btn" style="position: static; padding: 0.25rem;" onclick="Tools.copyToClipboard('font-pt')">复制</button>
+                            <button class="copy-btn" style="position: static; padding: 0.25rem;"
+                                onclick="Tools.copyToClipboard('font-pt')">复制</button>
                         </div>
                     </div>
                 </div>
@@ -1593,14 +2152,15 @@
             <article class="card glass tool-card" id="tool-gradient" aria-labelledby="tool-gradient-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async" width="32" height="32">
+                        <img src="assets/icons/palette.svg" alt="" class="tool-icon-img" loading="lazy" decoding="async"
+                            width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-gradient-title">CSS 渐变生成器</h3>
                     </div>
                 </div>
                 <p class="tool-desc">创建线性渐变 CSS 代码。</p>
-                
+
                 <div class="tool-content">
                     <div class="input-group">
                         <label class="input-label">角度：<span id="gradient-angle-val">45</span>°</label>
@@ -1609,14 +2169,18 @@
                     <div class="color-picker-row" style="justify-content: space-between;">
                         <div style="flex: 1;">
                             <label class="input-label">起始颜色</label>
-                            <input type="color" id="gradient-color-1" value="#6366F1" style="width: 100%; height: 40px; border: none; cursor: pointer;">
+                            <input type="color" id="gradient-color-1" value="#6366F1"
+                                style="width: 100%; height: 40px; border: none; cursor: pointer;">
                         </div>
                         <div style="flex: 1;">
                             <label class="input-label">结束颜色</label>
-                            <input type="color" id="gradient-color-2" value="#8B5CF6" style="width: 100%; height: 40px; border: none; cursor: pointer;">
+                            <input type="color" id="gradient-color-2" value="#8B5CF6"
+                                style="width: 100%; height: 40px; border: none; cursor: pointer;">
                         </div>
                     </div>
-                    <div id="gradient-preview" style="height: 100px; border-radius: var(--border-radius); border: 1px solid var(--glass-border);"></div>
+                    <div id="gradient-preview"
+                        style="height: 100px; border-radius: var(--border-radius); border: 1px solid var(--glass-border);">
+                    </div>
                     <div class="output-wrapper">
                         <input type="text" id="gradient-output" class="text-input" readonly>
                         <button class="copy-btn" onclick="Tools.copyToClipboard('gradient-output')">复制</button>
@@ -1627,24 +2191,15 @@
             <article class="card glass tool-card" id="tool-typing" aria-labelledby="tool-typing-title">
                 <div class="tool-header">
                     <div class="tool-icon-wrapper">
-                        <svg class="tool-icon-img" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
-                            <path d="M6 8h.001"></path>
-                            <path d="M10 8h.001"></path>
-                            <path d="M14 8h.001"></path>
-                            <path d="M18 8h.001"></path>
-                            <path d="M8 12h.001"></path>
-                            <path d="M12 12h.001"></path>
-                            <path d="M16 12h.001"></path>
-                            <path d="M7 16h10"></path>
-                        </svg>
+                        <img src="assets/icons/keyBoard.svg?v=1" alt="" class="tool-icon-img" loading="lazy"
+                            decoding="async" width="32" height="32">
                     </div>
                     <div>
                         <h3 class="tool-title" id="tool-typing-title">打字练习</h3>
                     </div>
                 </div>
                 <p class="tool-desc">提升打字速度与准确性，支持多种练习模式。</p>
-                
+
                 <div class="tool-content">
                     <button id="typing-start-btn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
                         开始练习
@@ -1656,10 +2211,12 @@
     </main>
 
     <!-- Typing Practice Fullscreen Modal -->
-    <div id="typing-modal" class="typing-modal hidden" role="dialog" aria-modal="true" aria-labelledby="typing-modal-title">
+    <div id="typing-modal" class="typing-modal hidden" role="dialog" aria-modal="true"
+        aria-labelledby="typing-modal-title">
         <div class="typing-modal-content">
             <button id="typing-close-btn" class="typing-close-btn" aria-label="关闭打字练习">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -1725,7 +2282,8 @@
                             <button class="typing-time-btn" data-time="300">5 分钟</button>
                         </div>
                         <div class="typing-custom-time hidden">
-                            <input type="number" id="typing-custom-time-input" class="text-input" placeholder="输入秒数" min="10" max="3600" value="60">
+                            <input type="number" id="typing-custom-time-input" class="text-input" placeholder="输入秒数"
+                                min="10" max="3600" value="60">
                         </div>
                     </div>
                 </div>
@@ -1733,7 +2291,7 @@
                 <button id="typing-begin-btn" class="btn btn-primary typing-begin-btn">
                     <span>开始打字</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                        <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                 </button>
             </div>
@@ -1761,7 +2319,8 @@
 
                 <div class="typing-text-container">
                     <div id="typing-text-display" class="typing-text-display"></div>
-                    <input type="text" id="typing-input" class="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="打字输入区域">
+                    <input type="text" id="typing-input" class="typing-input" autocomplete="off" autocorrect="off"
+                        autocapitalize="off" spellcheck="false" aria-label="打字输入区域">
                 </div>
 
                 <div class="typing-keyboard-hint">
@@ -1776,9 +2335,10 @@
             <!-- Results Panel -->
             <div id="typing-results" class="typing-results hidden">
                 <div class="typing-results-icon">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
                     </svg>
                 </div>
                 <h2 class="typing-results-title">练习完成!</h2>
@@ -1802,9 +2362,10 @@
                 </div>
                 <div class="typing-results-actions">
                     <button id="typing-restart-btn" class="btn btn-outline">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 4v6h6M23 20v-6h-6"/>
-                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M1 4v6h6M23 20v-6h-6" />
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
                         </svg>
                         再试一次
                     </button>
@@ -1820,7 +2381,7 @@
         // --- Navigation Logic ---
         const navToggle = document.getElementById('nav-toggle');
         const toolNav = document.getElementById('tool-nav');
-        
+
         navToggle.addEventListener('click', () => {
             navToggle.classList.toggle('active');
             toolNav.classList.toggle('open');
@@ -1829,7 +2390,7 @@
         // Close menu when clicking a link (mobile)
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
-                if(window.innerWidth <= 1024) {
+                if (window.innerWidth <= 1024) {
                     navToggle.classList.remove('active');
                     toolNav.classList.remove('open');
                 }
@@ -1839,7 +2400,7 @@
         // Scroll Spy - 使用 requestAnimationFrame 优化性能
         const sections = document.querySelectorAll('.tool-card');
         const navItems = document.querySelectorAll('.nav-item');
-        
+
         let scrollTick = false;
         window.addEventListener('scroll', () => {
             if (!scrollTick) {
@@ -1858,10 +2419,10 @@
                             item.classList.add('active');
                         }
                     });
-                    
+
                     scrollTick = false;
                 });
-                
+
                 scrollTick = true;
             }
         });
@@ -1877,7 +2438,7 @@
                     }
                 });
             });
-            
+
             section.addEventListener('mouseleave', () => {
                 navItems.forEach(item => item.classList.remove('hover-sync'));
             });
@@ -1885,16 +2446,16 @@
 
         // --- Tools 命名空间 - 封装全局函数 ---
         const Tools = {};
-        
+
         // Helper: Copy (使用现代 Clipboard API)
-        Tools.copyToClipboard = async function(elementId) {
+        Tools.copyToClipboard = async function (elementId) {
             const el = document.getElementById(elementId);
             if (!el || !el.value) {
                 // 显示提示
                 showToast('⚠️ 内容为空，无法复制', 'warning');
                 return;
             }
-            
+
             try {
                 // 使用现代 Clipboard API
                 if (navigator.clipboard && window.isSecureContext) {
@@ -1904,7 +2465,7 @@
                     el.select();
                     document.execCommand('copy');
                 }
-                
+
                 // 显示复制成功反馈
                 const btn = el.nextElementSibling;
                 if (btn && btn.classList.contains('copy-btn')) {
@@ -1918,7 +2479,7 @@
                         btn.style.color = '';
                     }, 1500);
                 }
-                
+
                 showToast('✓ 复制成功', 'success');
             } catch (err) {
                 console.error('复制失败:', err);
@@ -1926,12 +2487,12 @@
                 alert('复制失败，请手动复制');
             }
         };
-        
+
         // Toast 提示函数
         function showToast(message, type = 'info') {
             const existing = document.querySelector('.toast-notification');
             if (existing) existing.remove();
-            
+
             const toast = document.createElement('div');
             toast.className = `toast-notification toast-${type}`;
             toast.textContent = message;
@@ -1948,15 +2509,15 @@
                 z-index: 10000;
                 animation: toastSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             `;
-            
+
             document.body.appendChild(toast);
-            
+
             setTimeout(() => {
                 toast.style.animation = 'toastSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 2000);
         }
-        
+
         // 添加 Toast 动画 CSS
         const style = document.createElement('style');
         style.textContent = `
@@ -1995,30 +2556,30 @@
 
         imgConvertBtn.addEventListener('click', () => {
             if (!currentImg) return;
-            
+
             try {
                 const canvas = document.createElement('canvas');
                 canvas.width = currentImg.naturalWidth;
                 canvas.height = currentImg.naturalHeight;
-                
+
                 const ctx = canvas.getContext('2d');
                 const format = document.getElementById('img-format').value;
-                
+
                 // JPEG 格式不支持透明度，需要白色背景
                 // PNG 和 WebP 支持透明度，保持透明
                 if (format === 'image/jpeg') {
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                 }
-                
+
                 // 完整绘制图片到 canvas
                 ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
-                
+
                 const quality = parseFloat(document.getElementById('img-quality').value);
                 const dataUrl = canvas.toDataURL(format, quality);
-                
+
                 let ext = format.split('/')[1];
-                if(ext === 'x-icon') ext = 'ico';
+                if (ext === 'x-icon') ext = 'ico';
 
                 const link = document.createElement('a');
                 link.download = `converted.${ext}`;
@@ -2042,9 +2603,9 @@
                     text: text,
                     width: 200,
                     height: 200,
-                    colorDark : document.getElementById('qr-color-dark').value,
-                    colorLight : document.getElementById('qr-color-light').value,
-                    correctLevel : QRCode.CorrectLevel.H
+                    colorDark: document.getElementById('qr-color-dark').value,
+                    colorLight: document.getElementById('qr-color-light').value,
+                    correctLevel: QRCode.CorrectLevel.H
                 });
             } catch (e) { container.textContent = 'Err'; }
         });
@@ -2056,9 +2617,9 @@
 
         document.getElementById('ts-to-date-btn').addEventListener('click', () => {
             let val = document.getElementById('ts-input').value.trim();
-            if(!val) return;
+            if (!val) return;
             // Guess if seconds or ms
-            if(val.length === 10) val *= 1000;
+            if (val.length === 10) val *= 1000;
             const date = new Date(parseInt(val));
             document.getElementById('ts-date-output').value = date.toLocaleString();
         });
@@ -2067,11 +2628,11 @@
         const jsonIn = document.getElementById('json-input');
         const jsonOut = document.getElementById('json-output');
         document.getElementById('json-fmt-btn').addEventListener('click', () => {
-            try { jsonOut.value = JSON.stringify(JSON.parse(jsonIn.value), null, 2); } 
+            try { jsonOut.value = JSON.stringify(JSON.parse(jsonIn.value), null, 2); }
             catch (e) { jsonOut.value = "Invalid JSON"; }
         });
         document.getElementById('json-minify-btn').addEventListener('click', () => {
-            try { jsonOut.value = JSON.stringify(JSON.parse(jsonIn.value)); } 
+            try { jsonOut.value = JSON.stringify(JSON.parse(jsonIn.value)); }
             catch (e) { jsonOut.value = "Invalid JSON"; }
         });
 
@@ -2097,10 +2658,10 @@
         }
 
         document.getElementById('b64-encode-btn').addEventListener('click', () => {
-            try { b64Out.value = utf8ToBase64(b64In.value); } catch(e){ b64Out.value = "编码错误: " + e.message; }
+            try { b64Out.value = utf8ToBase64(b64In.value); } catch (e) { b64Out.value = "编码错误: " + e.message; }
         });
         document.getElementById('b64-decode-btn').addEventListener('click', () => {
-            try { b64Out.value = base64ToUtf8(b64In.value); } catch(e){ b64Out.value = "解码错误: " + e.message; }
+            try { b64Out.value = base64ToUtf8(b64In.value); } catch (e) { b64Out.value = "解码错误: " + e.message; }
         });
 
         const urlIn = document.getElementById('url-input');
@@ -2132,11 +2693,11 @@
             const hex = colorPicker.value;
             const alpha = parseFloat(alphaSlider.value);
             alphaVal.textContent = alpha.toFixed(2);
-            
+
             const rgb = hexToRgb(hex);
             const format = colorFormat.value;
             let result = "";
-            
+
             if (format === 'rgb') {
                 // Force RGB/RGBA
                 result = alpha === 1 ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
@@ -2152,7 +2713,7 @@
                     result = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
                 }
             }
-            
+
             colorInput.value = result;
             colorPreviewInner.style.backgroundColor = result;
         }
@@ -2164,7 +2725,7 @@
 
             if (val.startsWith('#')) {
                 // HEX
-                if(val.length === 4 || val.length === 7) {
+                if (val.length === 4 || val.length === 7) {
                     hex = val;
                 } else if (val.length === 9) {
                     // #RRGGBBAA
@@ -2183,7 +2744,7 @@
                         return h.length == 1 ? "0" + h : h;
                     };
                     hex = "#" + toHex(r) + toHex(g) + toHex(b);
-                    
+
                     if (parts.length >= 4) {
                         alpha = parseFloat(parts[3]);
                     }
@@ -2201,7 +2762,7 @@
         alphaSlider.addEventListener('input', updateColorFromControls);
         colorFormat.addEventListener('change', updateColorFromControls); // Listen for format changes
         colorInput.addEventListener('input', updateControlsFromInput);
-        
+
         // Init
         updateColorFromControls();
 
@@ -2209,12 +2770,12 @@
         // --- 8. Password Generator ---
         const pwdLen = document.getElementById('pwd-len');
         pwdLen.addEventListener('input', (e) => document.getElementById('pwd-len-val').textContent = e.target.value);
-        
+
         document.getElementById('pwd-gen-btn').addEventListener('click', () => {
             const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
             const len = parseInt(pwdLen.value);
             let pwd = "";
-            for(let i=0; i<len; i++) {
+            for (let i = 0; i < len; i++) {
                 pwd += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             document.getElementById('pwd-output').value = pwd;
@@ -2228,9 +2789,9 @@
             "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
             "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         ];
-        Tools.genLorem = function(count) {
+        Tools.genLorem = function (count) {
             let res = "";
-            for(let i=0; i<count; i++) {
+            for (let i = 0; i < count; i++) {
                 res += loremText[i % loremText.length] + " ";
             }
             document.getElementById('lorem-output').value = res;
@@ -2239,7 +2800,7 @@
         // --- 10. Markdown Preview ---
         const mdInput = document.getElementById('md-input');
         const mdPreview = document.getElementById('md-preview');
-        
+
         // 使用已有的 markdown-it 库（如果已加载）
         let mdParser = null;
         if (window.markdownit) {
@@ -2249,8 +2810,8 @@
                 typographer: true
             });
         }
-        
-        Tools.parseMarkdown = function(text) {
+
+        Tools.parseMarkdown = function (text) {
             if (mdParser) {
                 return mdParser.render(text);
             }
@@ -2266,42 +2827,42 @@
                 .replace(/`(.*?)`/gim, '<code>$1</code>')
                 .replace(/\n/gim, '<br>');
         };
-        
+
         mdInput.addEventListener('input', () => {
             mdPreview.innerHTML = Tools.parseMarkdown(mdInput.value);
         });
-        
+
         // 初始化示例内容
         mdInput.value = "# Hello Markdown\n\n**粗体** 和 *斜体*\n\n- 列表项 1\n- 列表项 2\n\n[链接示例](https://example.com)";
         mdPreview.innerHTML = Tools.parseMarkdown(mdInput.value);
-        
+
         // Markdown 全屏预览功能
         const mdExpandBtn = document.getElementById('md-expand-btn');
         const mdModal = document.getElementById('md-modal');
         const mdCloseBtn = document.getElementById('md-close-btn');
         const mdModalPreview = document.getElementById('md-modal-preview');
-        
+
         function openMdModal() {
             mdModalPreview.innerHTML = Tools.parseMarkdown(mdInput.value);
             mdModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
-        
+
         function closeMdModal() {
             mdModal.classList.add('hidden');
             document.body.style.overflow = '';
         }
-        
+
         mdExpandBtn.addEventListener('click', openMdModal);
         mdCloseBtn.addEventListener('click', closeMdModal);
-        
+
         // 点击模态框背景关闭
         mdModal.addEventListener('click', (e) => {
             if (e.target === mdModal) {
                 closeMdModal();
             }
         });
-        
+
         // ESC 键关闭模态框
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !mdModal.classList.contains('hidden')) {
@@ -2318,7 +2879,7 @@
         const shadowOpacity = document.getElementById('shadow-opacity');
         const shadowBox = document.getElementById('shadow-box');
         const shadowOutput = document.getElementById('shadow-output');
-        
+
         function updateShadow() {
             const x = parseInt(shadowX.value);
             const y = parseInt(shadowY.value);
@@ -2326,28 +2887,28 @@
             const spread = parseInt(shadowSpread.value);
             const color = shadowColor.value;
             const opacity = parseFloat(shadowOpacity.value);
-            
+
             // 更新显示值
             document.getElementById('shadow-x-val').textContent = x;
             document.getElementById('shadow-y-val').textContent = y;
             document.getElementById('shadow-blur-val').textContent = blur;
             document.getElementById('shadow-spread-val').textContent = spread;
             document.getElementById('shadow-opacity-val').textContent = opacity.toFixed(2);
-            
+
             // 转换 hex 为 rgba
             const r = parseInt(color.slice(1, 3), 16);
             const g = parseInt(color.slice(3, 5), 16);
             const b = parseInt(color.slice(5, 7), 16);
-            
+
             const shadowValue = `${x}px ${y}px ${blur}px ${spread}px rgba(${r}, ${g}, ${b}, ${opacity})`;
             shadowBox.style.boxShadow = shadowValue;
             shadowOutput.value = `box-shadow: ${shadowValue};`;
         }
-        
+
         [shadowX, shadowY, shadowBlur, shadowSpread, shadowColor, shadowOpacity].forEach(el => {
             el.addEventListener('input', updateShadow);
         });
-        
+
         updateShadow();
 
         // --- 12. Font Size Converter ---
@@ -2355,38 +2916,38 @@
         const fontValue = document.getElementById('font-value');
         const fontUnit = document.getElementById('font-unit');
         const fontConvertBtn = document.getElementById('font-convert-btn');
-        
+
         function convertFontSize() {
             const base = parseFloat(baseFontSize.value) || 16;
             const value = parseFloat(fontValue.value) || 0;
             const unit = fontUnit.value;
-            
+
             let pxValue;
-            
+
             // 转换为 px
-            switch(unit) {
+            switch (unit) {
                 case 'px': pxValue = value; break;
                 case 'rem': pxValue = value * base; break;
                 case 'em': pxValue = value * base; break;
                 case 'pt': pxValue = value * 1.333; break;
                 default: pxValue = value;
             }
-            
+
             // 转换为所有单位
             const remValue = pxValue / base;
             const emValue = pxValue / base;
             const ptValue = pxValue / 1.333;
-            
+
             // 显示结果
             document.getElementById('font-px').value = `${pxValue.toFixed(2)}px`;
             document.getElementById('font-rem').value = `${remValue.toFixed(4)}rem`;
             document.getElementById('font-em').value = `${emValue.toFixed(4)}em`;
             document.getElementById('font-pt').value = `${ptValue.toFixed(2)}pt`;
         }
-        
+
         fontConvertBtn.addEventListener('click', convertFontSize);
         baseFontSize.addEventListener('input', convertFontSize);
-        
+
         // 初始转换
         convertFontSize();
 
@@ -2396,23 +2957,23 @@
         const gradientColor2 = document.getElementById('gradient-color-2');
         const gradientPreview = document.getElementById('gradient-preview');
         const gradientOutput = document.getElementById('gradient-output');
-        
+
         function updateGradient() {
             const angle = parseInt(gradientAngle.value);
             const color1 = gradientColor1.value;
             const color2 = gradientColor2.value;
-            
+
             document.getElementById('gradient-angle-val').textContent = angle;
-            
+
             const gradientValue = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
             gradientPreview.style.background = gradientValue;
             gradientOutput.value = `background: ${gradientValue};`;
         }
-        
+
         [gradientAngle, gradientColor1, gradientColor2].forEach(el => {
             el.addEventListener('input', updateGradient);
         });
-        
+
         updateGradient();
 
         // --- 14. Typing Practice Tool ---
@@ -2569,11 +3130,11 @@ The challenges of modern life make mindfulness more relevant than ever. Our devi
         function initTypingDisplay() {
             const article = typingArticles[selectedArticleIndex];
             const chars = article.content.split('');
-            
+
             // 使用 DocumentFragment 优化性能
             const fragment = document.createDocumentFragment();
             const tempContainer = document.createElement('div');
-            
+
             chars.forEach((char, index) => {
                 const span = document.createElement('span');
                 span.className = 'typing-char' + (index === 0 ? ' current' : ' pending');
@@ -2582,7 +3143,7 @@ The challenges of modern life make mindfulness more relevant than ever. Our devi
                 span.innerHTML = char === ' ' ? '&nbsp;' : (char === '\n' ? '<br>' : char);
                 tempContainer.appendChild(span);
             });
-            
+
             // 一次性添加所有元素
             typingTextDisplay.innerHTML = '';
             typingTextDisplay.appendChild(tempContainer);
@@ -2748,13 +3309,13 @@ The challenges of modern life make mindfulness more relevant than ever. Our devi
                 currentCharIndex--;
                 const chars = typingTextDisplay.querySelectorAll('.typing-char');
                 const prevSpan = chars[currentCharIndex];
-                
+
                 if (prevSpan.dataset.correct === 'true') {
                     correctChars = Math.max(0, correctChars - 1);
                 } else {
                     incorrectChars = Math.max(0, incorrectChars - 1);
                 }
-                
+
                 prevSpan.dataset.correct = '';
                 updateTypingDisplay();
             }
@@ -2813,4 +3374,5 @@ The challenges of modern life make mindfulness more relevant than ever. Our devi
         });
     </script>
 </body>
+
 </html>
