@@ -15,7 +15,7 @@
         .tool-card {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            min-height: 380px; /* 确保最小高度一致 */
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid var(--glass-border);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1836,25 +1836,34 @@
             });
         });
 
-        // Scroll Spy
+        // Scroll Spy - 使用 requestAnimationFrame 优化性能
         const sections = document.querySelectorAll('.tool-card');
         const navItems = document.querySelectorAll('.nav-item');
-
+        
+        let scrollTick = false;
         window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
+            if (!scrollTick) {
+                window.requestAnimationFrame(() => {
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        if (scrollY >= sectionTop - 200) {
+                            current = section.getAttribute('id');
+                        }
+                    });
 
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href').slice(1) === current) {
-                    item.classList.add('active');
-                }
-            });
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href').slice(1) === current) {
+                            item.classList.add('active');
+                        }
+                    });
+                    
+                    scrollTick = false;
+                });
+                
+                scrollTick = true;
+            }
         });
 
         // Hover Interaction Sync
@@ -1880,12 +1889,16 @@
         // Helper: Copy (使用现代 Clipboard API)
         Tools.copyToClipboard = async function(elementId) {
             const el = document.getElementById(elementId);
-            if (!el) return;
+            if (!el || !el.value) {
+                // 显示提示
+                showToast('⚠️ 内容为空，无法复制', 'warning');
+                return;
+            }
             
             try {
                 // 使用现代 Clipboard API
                 if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(el.value || el.textContent);
+                    await navigator.clipboard.writeText(el.value);
                 } else {
                     // 降级方案：使用传统的 execCommand
                     el.select();
@@ -1894,20 +1907,65 @@
                 
                 // 显示复制成功反馈
                 const btn = el.nextElementSibling;
-                if (btn) {
+                if (btn && btn.classList.contains('copy-btn')) {
                     const originalText = btn.textContent;
-                    btn.textContent = '已复制!';
+                    btn.textContent = '✓ 已复制!';
                     btn.style.background = 'var(--accent-green)';
+                    btn.style.color = 'white';
                     setTimeout(() => {
                         btn.textContent = originalText;
                         btn.style.background = '';
+                        btn.style.color = '';
                     }, 1500);
                 }
+                
+                showToast('✓ 复制成功', 'success');
             } catch (err) {
                 console.error('复制失败:', err);
+                showToast('✗ 复制失败，请手动复制', 'error');
                 alert('复制失败，请手动复制');
             }
         };
+        
+        // Toast 提示函数
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? 'var(--accent-green)' : type === 'error' ? 'var(--accent-red)' : 'var(--accent-blue)'};
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: var(--border-radius);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: toastSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+        
+        // 添加 Toast 动画 CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes toastSlide {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
 
         // --- 1. Image Converter ---
         const imgUpload = document.getElementById('img-upload');
@@ -2511,16 +2569,23 @@ The challenges of modern life make mindfulness more relevant than ever. Our devi
         function initTypingDisplay() {
             const article = typingArticles[selectedArticleIndex];
             const chars = article.content.split('');
-            let html = '';
+            
+            // 使用 DocumentFragment 优化性能
+            const fragment = document.createDocumentFragment();
+            const tempContainer = document.createElement('div');
+            
             chars.forEach((char, index) => {
-                let className = 'typing-char';
-                if (index === 0) className += ' current';
-                else className += ' pending';
-                if (char === ' ') className += ' space';
-                const displayChar = char === ' ' ? '&nbsp;' : (char === '\n' ? '<br>' : char);
-                html += `<span class="${className}" data-index="${index}">${displayChar}</span>`;
+                const span = document.createElement('span');
+                span.className = 'typing-char' + (index === 0 ? ' current' : ' pending');
+                if (char === ' ') span.classList.add('space');
+                span.dataset.index = index;
+                span.innerHTML = char === ' ' ? '&nbsp;' : (char === '\n' ? '<br>' : char);
+                tempContainer.appendChild(span);
             });
-            typingTextDisplay.innerHTML = html;
+            
+            // 一次性添加所有元素
+            typingTextDisplay.innerHTML = '';
+            typingTextDisplay.appendChild(tempContainer);
         }
 
         function startTyping() {

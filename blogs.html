@@ -172,6 +172,13 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 保存初始页面结构（用于返回列表功能）
+            setTimeout(() => {
+                const container = document.getElementById('container');
+                if (container) {
+                    initialPageHTML = container.innerHTML;
+                }
+            }, 100);
             loadBlogsSequentially();
         });
 
@@ -218,7 +225,7 @@
             filteredBlogs = [...blogData];
             
             renderBlogList();
-            setupSearchAndFilters();
+            initSearchAndFilters();
         }
 
         function parseBlogContent(fileName, content) {
@@ -316,8 +323,31 @@
             countEl.textContent = likeStorage.getCount(blogId);
         }
 
+        // 保存初始页面结构
+        let initialPageHTML = null;
+        
         // 渲染博客列表
         function renderBlogList() {
+            const container = document.getElementById('container');
+            if (!container) return;
+            
+            // 如果是从详情页返回，恢复初始页面结构
+            const blogDetail = container.querySelector('.blog-detail-card');
+            if (blogDetail) {
+                if (initialPageHTML) {
+                    container.innerHTML = initialPageHTML;
+                    // 重新渲染过滤标签（因为 innerHTML 被重置了）
+                    renderFilterTags();
+                    renderBlogListContent();
+                    return;
+                }
+            }
+            
+            renderBlogListContent();
+        }
+        
+        // 渲染博客列表内容
+        function renderBlogListContent() {
             const blogList = document.getElementById('blog-list');
             if (!blogList) return;
             
@@ -360,14 +390,23 @@
         }
 
         // ========== 搜索和过滤功能 ==========
+        // 使用事件委托，避免重复绑定
         function setupSearchAndFilters() {
-            const searchInput = document.getElementById('search-input');
-            const clearSearch = document.getElementById('clear-search');
-            const sortSelect = document.getElementById('sort-select');
             const filterTags = document.getElementById('filter-tags');
             
             // 渲染过滤标签
             renderFilterTags();
+            
+            // 搜索输入（使用数据绑定，不需要重复绑定事件）
+            // 事件已经在页面初始化时绑定，这里只更新状态
+        }
+        
+        // 初始化搜索和过滤事件（只调用一次）
+        function initSearchAndFilters() {
+            const searchInput = document.getElementById('search-input');
+            const clearSearch = document.getElementById('clear-search');
+            const sortSelect = document.getElementById('sort-select');
+            const filterTags = document.getElementById('filter-tags');
             
             // 搜索输入（带防抖）
             const handleSearch = debounce((e) => {
@@ -506,10 +545,20 @@
                 tagsHTML;
         }
 
+        // 防止重复打开同一篇博客
+        let isOpeningBlog = false;
+
         function openBlog(blogId) {
+            // 防止重复点击
+            if (isOpeningBlog) {
+                console.log('正在加载博客，请稍候...');
+                return;
+            }
+            
             const blog = blogData.find(b => b.id === blogId);
             if (!blog) return;
 
+            isOpeningBlog = true;
             const htmlContent = md.render(blog.content);
 
             // 生成唯一的讨论 ID（使用博客 ID）
@@ -520,6 +569,12 @@
             const tags = extractTags(blog.content);
 
             const container = document.getElementById('container');
+            
+            // 保存当前列表页状态（如果还没保存）
+            if (!initialPageHTML) {
+                initialPageHTML = container.innerHTML;
+            }
+            
             container.classList.add('fade-out');
 
             setTimeout(() => {
@@ -528,6 +583,13 @@
                 <div class="reading-progress-bar" id="reading-progress">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
+                
+                <!-- 回到顶部按钮 -->
+                <button class="back-to-top" id="back-to-top" onclick="scrollToTop()" aria-label="回到顶部">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m18 15-6-6-6 6"/>
+                    </svg>
+                </button>
                 
                 <button class="back-link" onclick="renderBlogList()">
                     <span class="arrow">←</span> 返回列表
@@ -581,7 +643,7 @@
                 
                 <!-- Giscus 评论区域 -->
                 <div class="card comments-card" id="comments-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div class="comments-header">
                         <h2>💬 评论讨论</h2>
                         <a href="../index.html" target="_top" class="back-to-main">
                             <span class="arrow">←</span> 返回主站
@@ -594,21 +656,26 @@
                 container.classList.add('fade-in');
 
                 // 初始化功能
-            loadLikeCount(discussionId);
-            loadGiscus(discussionId);
-            setupGiscusThemeListener();
-            generateTOC();
-            setupReadingProgress();
-            setupCodeCopyButtons();
-            setupImageLazyLoad();
-            setupSmoothScroll();
-            
-            // 渲染过滤标签（在列表页）
-            if (typeof renderFilterTags === 'function') {
-                renderFilterTags();
-            }
+                loadLikeCount(discussionId);
+                loadGiscus(discussionId);
+                setupGiscusThemeListener();
+                generateTOC();
+                setupReadingProgress();
+                setupCodeCopyButtons();
+                setupImageLazyLoad();
+                setupSmoothScroll();
+                setupBackToTop();
+                setupBlogLinks();
+                
+                // 渲染过滤标签（在列表页）
+                if (typeof renderFilterTags === 'function') {
+                    renderFilterTags();
+                }
 
-                setTimeout(() => container.classList.remove('fade-in'), 300);
+                setTimeout(() => {
+                    container.classList.remove('fade-in');
+                    isOpeningBlog = false; // 重置标志
+                }, 300);
             }, 300);
         }
 
@@ -633,27 +700,57 @@
 
         // 动态加载 Giscus 评论系统
         let giscusRetryCount = 0;
-        const maxGiscusRetries = 3;
+        const maxGiscusRetries = 2;
+        const GISCUS_TIMEOUT = 15000; // 15 秒超时
+        let giscusScriptLoaded = false; // 标记脚本是否已加载
 
         function loadGiscus(discussionId) {
-            // 检查是否已存在
+            const container = document.getElementById('giscus-container');
+            if (!container) return;
+            
+            // 如果脚本已加载，只移除旧的 iframe，不重新加载
+            if (giscusScriptLoaded) {
+                console.log('Giscus 脚本已加载，重新创建 iframe');
+                const existingFrame = document.querySelector('iframe.giscus-frame');
+                if (existingFrame) {
+                    existingFrame.remove();
+                }
+                // 重新创建 script 标签以刷新 iframe
+                const existing = document.querySelector('script[src*="giscus.app"]');
+                if (existing) {
+                    existing.remove();
+                    giscusScriptLoaded = false;
+                }
+                // 继续加载
+            }
+            
+            // 显示加载状态（优化：避免频繁 DOM 操作）
+            if (!container.querySelector('.loading-state')) {
+                container.innerHTML = `
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>正在加载评论...</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7;">正在连接 GitHub Discussions</p>
+                    </div>
+                `;
+            }
+            
+            // 检查是否已存在脚本
             const existing = document.querySelector('script[src*="giscus.app"]');
-            if (existing) {
-                existing.remove();
+            if (existing && !giscusScriptLoaded) {
+                console.log('Giscus 脚本已存在，跳过加载');
+                // 移除旧的 iframe 以重新加载
+                const existingFrame = document.querySelector('iframe.giscus-frame');
+                if (existingFrame) {
+                    existingFrame.remove();
+                }
+                return;
             }
 
-            // 同时移除可能存在的 iframe
-            const existingFrame = document.querySelector('iframe.giscus-frame');
-            if (existingFrame) {
-                existingFrame.remove();
-            }
-
-            // 构建回调 URL - 使用统一的 auth-callback.html 处理 OAuth 回调
-            const backLink = `${window.location.origin}/auth-callback.html?redirect=${encodeURIComponent(window.location.href)}`;
-
-            // 检测当前主题
-            const isDark = document.body.classList.contains('dark-theme') || 
-                          getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').includes('#0B0C15');
+            // 检测当前主题（优化：使用 CSS 变量检测）
+            const rootStyles = getComputedStyle(document.documentElement);
+            const bgPrimary = rootStyles.getPropertyValue('--bg-primary').trim();
+            const isDark = bgPrimary === '#0B0C15' || bgPrimary.includes('0B0C15');
             const theme = isDark ? 'dark' : 'light';
 
             const script = document.createElement('script');
@@ -670,32 +767,91 @@
             script.setAttribute('data-reactions-enabled', '1');
             script.setAttribute('data-emit-metadata', '0');
             script.setAttribute('data-input-position', 'top');
-            // 使用检测到的主题，而不是跟随系统
             script.setAttribute('data-theme', theme);
             script.setAttribute('data-lang', 'zh-CN');
-            // 设置回调链接，让 OAuth 后返回到统一的处理页面
-            script.setAttribute('data-backlink', backLink);
-            // 移除 lazy loading，确保立即加载
-            // script.setAttribute('data-loading', 'lazy');
+            
+            // 设置超时处理
+            const timeoutId = setTimeout(() => {
+                console.warn('Giscus 加载超时（15 秒）');
+                script.remove();
+                if (giscusRetryCount < maxGiscusRetries) {
+                    giscusRetryCount++;
+                    console.log(`正在重试加载 Giscus (${giscusRetryCount}/${maxGiscusRetries})...`);
+                    setTimeout(() => loadGiscus(discussionId), 2000);
+                } else {
+                    showGiscusError(discussionId, 'timeout');
+                }
+            }, GISCUS_TIMEOUT);
 
             // 错误处理 - 带重试机制
             script.addEventListener('error', () => {
+                clearTimeout(timeoutId);
                 console.error(`Giscus 脚本加载失败 (尝试 ${giscusRetryCount + 1}/${maxGiscusRetries})`);
                 
                 if (giscusRetryCount < maxGiscusRetries) {
                     giscusRetryCount++;
                     console.log(`正在重试加载 Giscus...`);
-                    setTimeout(() => loadGiscus(discussionId), 2000);
+                    // 使用 requestIdleCallback 避免阻塞主线程
+                    if (typeof requestIdleCallback !== 'undefined') {
+                        requestIdleCallback(() => {
+                            setTimeout(() => loadGiscus(discussionId), 2000);
+                        });
+                    } else {
+                        setTimeout(() => loadGiscus(discussionId), 2000);
+                    }
                 } else {
-                    console.error('Giscus 加载失败，已达到最大重试次数');
-                    showGiscusError(discussionId);
+                    showGiscusError(discussionId, 'error');
                 }
             });
 
             // 成功加载后重置重试计数
             script.addEventListener('load', () => {
                 giscusRetryCount = 0;
+                giscusScriptLoaded = true;
                 console.log('Giscus 加载成功');
+                
+                // 监听 Giscus iframe 加载完成，移除 loading 状态
+                const checkGiscusLoaded = () => {
+                    const giscusFrame = document.querySelector('iframe.giscus-frame');
+                    if (giscusFrame) {
+                        // 等待 iframe 内容加载完成（带超时）
+                        const iframeLoadTimeout = setTimeout(() => {
+                            console.warn('Giscus iframe 加载超时');
+                            const container = document.getElementById('giscus-container');
+                            if (container) {
+                                const loadingState = container.querySelector('.loading-state');
+                                if (loadingState) {
+                                    loadingState.style.display = 'none';
+                                }
+                            }
+                        }, 10000);
+                        
+                        giscusFrame.addEventListener('load', () => {
+                            clearTimeout(iframeLoadTimeout);
+                            const container = document.getElementById('giscus-container');
+                            if (container) {
+                                const loadingState = container.querySelector('.loading-state');
+                                if (loadingState) {
+                                    loadingState.remove();
+                                }
+                            }
+                            console.log('✅ Giscus 评论已就绪');
+                        }, { once: true });
+                    } else {
+                        // 轮询检查（最多 20 次，10 秒）
+                        let pollCount = 0;
+                        const pollCheck = () => {
+                            pollCount++;
+                            if (pollCount > 20) {
+                                console.warn('Giscus iframe 未找到，停止轮询');
+                                return;
+                            }
+                            setTimeout(checkGiscusLoaded, 500);
+                        };
+                        pollCheck();
+                    }
+                };
+                setTimeout(checkGiscusLoaded, 100);
             });
 
             document.body.appendChild(script);
@@ -705,9 +861,13 @@
         }
 
         // 显示 Giscus 错误界面
-        function showGiscusError(discussionId) {
+        function showGiscusError(discussionId, errorType = 'error') {
             const container = document.getElementById('giscus-container');
             if (container) {
+                const errorMsg = errorType === 'timeout' 
+                    ? '连接 GitHub 超时，请检查网络连接后重试。'
+                    : '评论系统暂时不可用，可能是网络连接问题或 Giscus 服务暂时不可用。';
+                
                 container.innerHTML = `
                     <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 1rem; opacity: 0.5;">
@@ -715,16 +875,19 @@
                             <line x1="12" y1="8" x2="12" y2="12"/>
                             <line x1="12" y1="16" x2="12.01" y2="16"/>
                         </svg>
-                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">评论系统暂时不可用</h3>
-                        <p style="margin-bottom: 1.5rem;">可能是网络连接问题或 Giscus 服务暂时不可用。</p>
-                        <div style="display: flex; gap: 1rem; justify-content: center;">
-                            <button onclick="giscusRetryCount=0; loadGiscus('${discussionId}');" style="padding: 0.5rem 1rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">评论加载失败</h3>
+                        <p style="margin-bottom: 1.5rem;">${errorMsg}</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="giscusRetryCount=0; loadGiscus('${discussionId}');" style="padding: 0.5rem 1.5rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;">
                                 重新加载
                             </button>
-                            <a href="https://github.com/QinIndexCode/QinIndexCode/discussions" target="_blank" style="padding: 0.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); text-decoration: none; border-radius: 8px;">
-                                在 GitHub 上讨论
+                            <a href="https://github.com/QinIndexCode/QinIndexCode/discussions" target="_blank" style="padding: 0.5rem 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s;">
+                                前往 GitHub 讨论
                             </a>
                         </div>
+                        <p style="margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.6;">
+                            💡 提示：本地开发环境可能无法访问 Giscus，请在生产环境测试
+                        </p>
                     </div>
                 `;
             }
@@ -844,6 +1007,90 @@
                 const scrollPercent = (scrollTop / docHeight) * 100;
                 
                 progressFill.style.width = `${scrollPercent}%`;
+                
+                // 控制回到顶部按钮的显示/隐藏
+                const backToTopBtn = document.getElementById('back-to-top');
+                if (backToTopBtn) {
+                    if (scrollTop > 300) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                }
+            });
+        }
+
+        // 回到顶部功能
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 设置回到顶部按钮
+        function setupBackToTop() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            if (!backToTopBtn) return;
+            
+            // 初始检查是否应该显示
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            }
+            
+            // 添加键盘快捷键支持（按 Home 键回到顶部）
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Home' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+                    e.preventDefault();
+                    scrollToTop();
+                }
+            });
+        }
+
+        // 处理博客内容中的链接，确保在新窗口打开
+        function setupBlogLinks() {
+            const blogContent = document.getElementById('blog-content');
+            if (!blogContent) return;
+            
+            const links = blogContent.querySelectorAll('a');
+            
+            links.forEach(link => {
+                // 为所有外部链接添加 target="_blank" 和 rel 属性
+                const href = link.getAttribute('href');
+                
+                // 判断是否为外部链接（不是站内锚点或相对路径）
+                const isExternal = href && (
+                    href.startsWith('http://') || 
+                    href.startsWith('https://') || 
+                    href.startsWith('//')
+                );
+                
+                if (isExternal) {
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener noreferrer');
+                    link.classList.add('external-link');
+                    
+                    // 可选：添加外部链接图标
+                    const icon = document.createElement('span');
+                    icon.className = 'external-link-icon';
+                    icon.innerHTML = ' ↗';
+                    icon.style.fontSize = '0.75em';
+                    icon.style.marginLeft = '0.25em';
+                    icon.style.verticalAlign = 'super';
+                    
+                    // 只在没有子元素时添加图标
+                    if (!link.querySelector('svg') && !link.querySelector('img')) {
+                        // 检查是否已有图标
+                        if (!link.querySelector('.external-link-icon')) {
+                            link.appendChild(icon);
+                        }
+                    }
+                } else if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+                    // 对于非锚点的内部链接，也建议在新窗口打开
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener');
+                }
             });
         }
 
@@ -1132,6 +1379,30 @@
             text-decoration-thickness: 2px;
         }
 
+        /* 外部链接样式 */
+        .card a.external-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .card a.external-link:hover {
+            color: var(--accent-purple);
+        }
+
+        .external-link-icon {
+            display: inline-block;
+            margin-left: 0.25em;
+            font-size: 0.75em;
+            vertical-align: super;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .card a.external-link:hover .external-link-icon {
+            opacity: 1;
+        }
+
         /* --- 图片样式 --- */
         .card img {
             max-width: 100%;
@@ -1323,8 +1594,25 @@
             border-top: 1px solid var(--glass-border);
         }
 
+        /* 评论卡片样式 */
         .comments-card {
             margin-top: 2rem;
+            padding: 2rem;
+        }
+
+        .comments-card h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .loading-state {
@@ -1355,10 +1643,12 @@
         /* Giscus 容器样式 */
         #giscus-container {
             margin-top: 1rem;
+            min-height: 300px;
         }
 
         #giscus-container iframe {
             border-radius: var(--border-radius);
+            width: 100%;
         }
 
         /* 返回主站链接样式 */
@@ -1385,6 +1675,86 @@
 
         .back-to-main .arrow {
             font-family: system-ui;
+        }
+
+        /* 回到顶部按钮样式 */
+        .back-to-top {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-backdrop);
+            -webkit-backdrop-filter: var(--glass-backdrop);
+            border: 1px solid var(--glass-border);
+            color: var(--accent-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            box-shadow: var(--shadow-md);
+            padding: 0;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .back-to-top:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+            color: var(--accent-purple);
+        }
+
+        .back-to-top:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        .back-to-top svg {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .back-to-top:hover svg {
+            transform: translateY(-2px);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .back-to-top {
+                right: 1rem;
+                bottom: 1rem;
+                width: 44px;
+                height: 44px;
+            }
+            
+            .comments-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .comments-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .comments-header h2 {
+                font-size: 1.25rem;
+            }
+            
+            .back-to-main {
+                font-size: 0.8125rem;
+                padding: 0.4375rem 0.875rem;
+            }
         }
 
         /* ========== 新增：阅读进度条 ========== */

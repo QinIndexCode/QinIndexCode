@@ -9,6 +9,30 @@
  */
 
 (function() {
+    // 🚫 重要：检测是否为搜索引擎爬虫
+    // 如果是爬虫，不执行重定向，让爬虫正常索引页面
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const botPatterns = [
+        /googlebot/i,
+        /bingbot/i,
+        /baiduspider/i,
+        /yandexbot/i,
+        /duckduckbot/i,
+        /slurp/i,  // Yahoo
+        /facebookexternalhit/i,
+        /twitterbot/i,
+        /linkedinbot/i,
+        /crawler/i,
+        /spider/i,
+        /bot/i
+    ];
+    
+    const isBot = botPatterns.some(pattern => pattern.test(userAgent));
+    if (isBot) {
+        console.log('检测到搜索引擎爬虫，跳过重定向');
+        return;
+    }
+    
     // 检查是否在 iframe 中加载
     const isInIframe = window.self !== window.top;
     
