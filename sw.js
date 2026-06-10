@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mygitblog-v9';
-const STATIC_CACHE_NAME = 'mygitblog-static-v9';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v9';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v9';
+const CACHE_NAME = 'mygitblog-v10';
+const STATIC_CACHE_NAME = 'mygitblog-static-v10';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v10';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v10';
 
 const STATIC_ASSETS = [
     './',
@@ -127,6 +127,10 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    if (/\.md$/i.test(url.pathname)) {
+        return;
+    }
+
     event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE_NAME));
 });
 
@@ -175,11 +179,11 @@ async function cacheFirst(request, cacheName = CACHE_NAME) {
 async function cacheFirstWithFallback(request, cacheName) {
     const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(request);
-    
+
     if (cachedResponse) {
         return cachedResponse;
     }
-    
+
     try {
         const networkResponse = await fetch(request);
         if (networkResponse.ok) {
@@ -187,7 +191,8 @@ async function cacheFirstWithFallback(request, cacheName) {
         }
         return networkResponse;
     } catch (error) {
-        return caches.match('./assets/images/avatar.jpg');
+        return caches.match('./assets/images/avatar.jpg')
+            || new Response('Offline', { status: 503 });
     }
 }
 
@@ -238,7 +243,7 @@ async function networkFirstWithCache(request, cacheName = CACHE_NAME) {
 async function staleWhileRevalidate(request, cacheName = DYNAMIC_CACHE_NAME) {
     const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(request);
-    
+
     const fetchPromise = fetch(request).then((networkResponse) => {
         if (networkResponse.ok) {
             cache.put(request, networkResponse.clone());
@@ -246,9 +251,9 @@ async function staleWhileRevalidate(request, cacheName = DYNAMIC_CACHE_NAME) {
         return networkResponse;
     }).catch((error) => {
         console.error('[SW] Stale while revalidate fetch failed:', error);
-        return cachedResponse;
+        return cachedResponse || new Response('Not Found', { status: 404 });
     });
-    
+
     return cachedResponse || fetchPromise;
 }
 
@@ -279,4 +284,4 @@ self.addEventListener('sync', (event) => {
     }
 });
 
-console.log('[SW] Service Worker loaded - v9');
+console.log('[SW] Service Worker loaded - v10');

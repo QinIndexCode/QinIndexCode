@@ -16,7 +16,11 @@ author:
 # Jekyll 配置
 markdown: kramdown
 highlighter: rouge
-permalink: /blogs/:title/
+
+# 排除 blogs 目录，由前端 JS 直接加载 .md 文件
+exclude:
+  - blogs
+  - "*.md"
 
 # 插件
 plugins:
