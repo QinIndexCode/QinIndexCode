@@ -1,70 +1,50 @@
-# QinIndexCode 技术博客
+# QinIndexCode
 
-> 本文件为 AI Agent 提供站点结构化信息，遵循 llms.txt 标准：https://llmstxt.org/
+> QinIndexCode 个人技术博客，专注于分享全栈开发、Web 开发、移动应用开发等技术文章和实战经验
 
 ## 站点信息
 
-- 名称: QinIndexCode 技术博客
-- 域名: https://qinindexcode.site/
-- 类型：个人技术博客
-- 语言：中文 (zh-CN)
-- 上线时间：2025-12-24
-- 作者：QinIndexCode
+- 站点名称: QinIndexCode
+- URL: https://qinindexcode.site/
+- 语言: zh-CN
+- 作者: QinIndexCode
 - GitHub: https://github.com/QinIndexCode
+- 技术栈: 纯前端静态站点，iframe SPA 架构，Service Worker 离线缓存
 
-## 站点功能
+## 页面列表
 
-- **博客文章**: 技术文章、学习笔记、项目经验
-- **项目展示**: 个人开源项目
-- **工具箱**: 14+ 实用开发工具
-- **打字练习**: 提升打字速度
+- / (首页): 个人介绍、核心技术栈展示（Web开发、移动端、后端、数据库）
+- /tech (技术): 技术栈详细分类（前端开发、后端架构、工程化&DevOps）
+- /projects (项目): 开源项目展示
+  - 烟智通 (TobaccoAI): 基于本地 AI 模型的烟草病害智能诊断工具
+  - expo-lite-data-store: Expo 应用的轻量级数据存储库
+  - GitHub Reference 中文文档: Reference 速查表中文文档
+- /blogs (随记): 技术博客文章列表
+- /tools (工具): 在线开发工具集
+  - 图片转换、二维码生成、时间戳转换、JSON 工具、Base64 转换
+  - URL 编解码、颜色调试器、密码生成器、文本生成
+  - Markdown 预览、CSS 阴影生成器、字体单位转换器、CSS 渐变生成器、打字练习
+- /about (关于): 基本信息、技术背景、开源参与、联系方式
+- /donate (捐赠): 支持与捐赠
 
-## 内容分类
+## 博客文章
 
-### 技术栈
-- 前端：JavaScript, TypeScript, React, Vue, CSS
-- 后端：Node.js, Python
-- 移动端：React Native
-- 工具：Git, Docker, CI/CD
+- 博客详情页通过 hash 路由访问，格式为 /blogs.html#{id}（如 /blogs.html#001）
+- 刷新页面可恢复到当前文章，浏览器后退键返回列表
 
-### 文章类型
-- 技术教程
-- 项目实战
-- 学习笔记
-- 工具推荐
+1. JS索引数据 (2025-12-24): JavaScript 中快速索引数据的方法，Object 与 Map 的 O(1) 查找 - 标签: JavaScript, 数据结构, 性能优化 - /blogs.html#001
+2. JS原型污染漏洞 (2025-12-24): JavaScript 原型污染攻击原理与防御 - 标签: JavaScript, 安全, 漏洞 - /blogs.html#002
+3. 2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新） (2025-12-24): Node.js 安全漏洞按时间倒序整理 - 标签: Node.js, 安全, 漏洞, 年度总结 - /blogs.html#003
+4. AI Agent 在 Node.js 中的可行性与实践分享 (2026-01-22): Node.js 环境中构建 AI Agent 的可行性分析 - 标签: AI, Node.js, Agent, 实践 - /blogs.html#004
+5. AI 时代下的理性思考：警惕"AI 谗言"，保持独立判断 (2026-03-01): 警惕AI"谗言"，保持独立判断 - 标签: AI, 思考, 批判性思维 - /blogs.html#005
+6. 致未来的你 (To The Future) (2026-03-17): 随笔 - 标签: 随笔, 未来, 技术思考 - /blogs.html#006
+7. Agent的上下文处理 (2026-03-23): AI Agent 上下文管理策略 - 标签: AI, Agent, 上下文, LLM - /blogs.html#007
+8. 精读 Anthropic《Building Effective Agents》2025 更新版 (2026-03-23): Anthropic Agent 构建指南精读 - 标签: AI, Agent, Anthropic, 精读 - /blogs.html#008
+9. Axios 供应链攻击事件分析 (2026-03-30): npm 供应链安全事件分析 - 标签: 安全, npm, 供应链, Axios - /blogs.html#009
 
-## Agent 交互能力
+## 交互说明
 
-本站点支持以下 Agent 交互：
-
-### 评论功能
-- 基于 **Giscus** 实现评论系统
-- 使用 GitHub Discussions 作为后端存储
-- 支持 Markdown 格式编辑
-- 实时评论通知和回复功能
-- 需要 GitHub 账号登录
-
-### 点赞功能
-- 每篇文章支持点赞（基于 GitHub Reactions）
-- 使用 localStorage 缓存点赞状态
-- 实时显示点赞数量
-- 支持取消点赞
-
-## API 端点
-
-当前为静态站点，暂无 API 端点。
-
-## 爬取建议
-
-- 所有页面均为静态 HTML
-- 内容更新频率：不定期
-- 建议爬取间隔：24 小时以上
-
-## 联系方式
-
-- GitHub: https://github.com/QinIndexCode
-- Email: 见 GitHub Profile
-
-## 许可声明
-
-本站内容采用 MIT 许可证，转载请注明出处。
+- 评论系统: Giscus (基于 GitHub Discussions)
+- 主题: 支持亮色/暗色模式切换
+- 导航: iframe SPA，子页面通过 postMessage 同步主题
+- 离线: Service Worker 支持离线访问

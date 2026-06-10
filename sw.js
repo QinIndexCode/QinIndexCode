@@ -1,11 +1,12 @@
-const CACHE_NAME = 'mygitblog-v2';
-const STATIC_CACHE_NAME = 'mygitblog-static-v2';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v2';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v2';
+const CACHE_NAME = 'mygitblog-v9';
+const STATIC_CACHE_NAME = 'mygitblog-static-v9';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v9';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v9';
 
 const STATIC_ASSETS = [
     './',
     './index.html',
+    './404.html',
     './home.html',
     './tech.html',
     './projects.html',
@@ -13,18 +14,24 @@ const STATIC_ASSETS = [
     './about.html',
     './tools.html',
     './donate.html',
+    './auth-callback.html',
+    './feed.xml',
     './css/main.css',
     './css/css2.css',
     './css/atom-one-dark.min.css',
-    './js/smooth-scroll.js',
+    './css/tools.css',
+    './js/theme-tokens.js',
+    './js/theme-listener.js',
     './js/redirect-if-standalone.js'
 ];
 
 const CRITICAL_ASSETS = [
     './',
     './index.html',
+    './404.html',
     './css/main.css',
-    './css/css2.css'
+    './css/css2.css',
+    './js/theme-tokens.js'
 ];
 
 const IMAGE_ASSETS = [
@@ -272,4 +279,4 @@ self.addEventListener('sync', (event) => {
     }
 });
 
-console.log('[SW] Service Worker loaded - v2');
+console.log('[SW] Service Worker loaded - v9');

@@ -1,11 +1,12 @@
 # robots.txt for QinIndexCode Blog
-# https://qinindexcode.github.io/
+# https://qinindexcode.site/
 
 User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://qinindexcode.github.io/sitemap.xml
+Sitemap: https://qinindexcode.site/sitemap.xml
+Llms-txt: /llms.txt
 
 # Crawl-delay (optional, for polite crawling)
 Crawl-delay: 1
