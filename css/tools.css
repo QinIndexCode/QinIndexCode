@@ -1862,3 +1862,220 @@ html {
         font-size: 2rem;
     }
 }
+
+/* ========================================
+   Extracted Inline Styles
+   ======================================== */
+
+/* Noscript fallback */
+.noscript-fallback {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: system-ui, sans-serif;
+}
+
+/* Tools subtitle */
+.tools-subtitle {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-secondary);
+}
+
+/* Accent dot - colored bullet point */
+.accent-dot {
+    color: var(--accent-blue);
+}
+
+/* Accent dot with spacing */
+.accent-dot-spaced {
+    color: var(--accent-blue);
+    margin: 0 0.5rem;
+}
+
+/* Flex column with gap */
+.flex-col-gap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Flex:2 for select/input */
+.flex-2 {
+    flex: 2;
+}
+
+/* Flex:1 */
+.flex-1 {
+    flex: 1;
+}
+
+/* Width 100% */
+.w-full {
+    width: 100%;
+}
+
+/* Btn-row with align-items center */
+.btn-row-center {
+    align-items: center;
+}
+
+/* QR color picker input */
+.qr-color-input {
+    height: 38px;
+    flex: 1;
+    cursor: pointer;
+    border: 2px solid var(--glass-border);
+    border-radius: 6px;
+    padding: 2px;
+    background: var(--bg-primary);
+}
+
+/* Color picker small (color tool) */
+.color-picker-small {
+    height: 38px;
+    width: 50px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Flex column with small gap */
+.flex-col-gap-xs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Small label text */
+.label-xs {
+    font-size: 0.7rem;
+}
+
+/* Range full width */
+.range-full {
+    width: 100%;
+}
+
+/* Color preview initial background */
+.color-preview-bg {
+    background-color: #6366f1;
+}
+
+/* Small muted text */
+.text-xs-muted {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Textarea fixed height */
+.textarea-h-150 {
+    height: 150px;
+}
+
+/* Markdown compact preview */
+.md-compact-style {
+    min-height: 120px;
+    max-height: 300px;
+    align-items: flex-start;
+    padding: 1rem;
+    overflow: auto;
+    text-align: left;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+/* Full width button with top margin */
+.btn-full-mt {
+    width: 100%;
+    margin-top: 0.75rem;
+}
+
+/* Icon margin right */
+.icon-mr {
+    margin-right: 0.5rem;
+}
+
+/* Shadow color picker small */
+.shadow-color-input {
+    height: 32px;
+    width: 50px;
+}
+
+/* Shadow preview box height */
+.shadow-preview-h {
+    height: 100px;
+}
+
+/* Shadow demo box */
+.shadow-demo-box {
+    width: 100px;
+    height: 100px;
+    background: var(--accent-blue);
+    border-radius: 8px;
+}
+
+/* Grid 2-column layout */
+.grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+/* Copy button static position (font tool) */
+.copy-btn-static {
+    position: static;
+    padding: 0.25rem;
+}
+
+/* Color picker row with space-between */
+.color-picker-row-between {
+    justify-content: space-between;
+}
+
+/* Gradient color input */
+.gradient-color-input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Gradient preview */
+.gradient-preview {
+    height: 100px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--glass-border);
+}
+
+/* Full width button with small top margin */
+.btn-full-mt-sm {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Typing results icon large */
+.icon-lg {
+    width: 64px;
+    height: 64px;
+}
+
+/* Flex row with gap and center */
+.flex-gap-center {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Small button with compact padding */
+.btn-compact {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Icon-only button padding */
+.btn-icon-only {
+    padding: 0.5rem;
+}

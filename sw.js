@@ -49,19 +49,15 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         Promise.all([
             caches.open(STATIC_CACHE_NAME).then((cache) => {
-                console.log('[SW] Caching static assets');
                 return cache.addAll(STATIC_ASSETS);
             }),
             caches.open(CACHE_NAME).then((cache) => {
-                console.log('[SW] Caching critical assets');
                 return cache.addAll(CRITICAL_ASSETS);
             }),
             caches.open(IMAGE_CACHE_NAME).then((cache) => {
-                console.log('[SW] Caching image assets');
                 return cache.addAll(IMAGE_ASSETS);
             })
         ]).then(() => {
-            console.log('[SW] All caches installed');
             return self.skipWaiting();
         })
     );
@@ -78,13 +74,11 @@ self.addEventListener('activate', (event) => {
                         cacheName !== DYNAMIC_CACHE_NAME &&
                         cacheName !== IMAGE_CACHE_NAME
                     ) {
-                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => {
-            console.log('[SW] Cache cleanup complete');
             return self.clients.claim();
         })
     );
@@ -171,7 +165,6 @@ async function cacheFirst(request, cacheName = CACHE_NAME) {
         }
         return networkResponse;
     } catch (error) {
-        console.error('[SW] Cache first failed:', error);
         return new Response('Offline', { status: 503 });
     }
 }
@@ -210,7 +203,6 @@ async function networkFirst(request, cacheName = DYNAMIC_CACHE_NAME) {
         if (cachedResponse) {
             return cachedResponse;
         }
-        console.error('[SW] Network first failed:', error);
         return new Response('Offline', { status: 503 });
     }
 }
@@ -235,7 +227,6 @@ async function networkFirstWithCache(request, cacheName = CACHE_NAME) {
             return offlineResponse;
         }
         
-        console.error('[SW] Network first with cache failed:', error);
         return new Response('Offline', { status: 503 });
     }
 }
@@ -250,7 +241,6 @@ async function staleWhileRevalidate(request, cacheName = DYNAMIC_CACHE_NAME) {
         }
         return networkResponse;
     }).catch((error) => {
-        console.error('[SW] Stale while revalidate fetch failed:', error);
         return cachedResponse || new Response('Not Found', { status: 404 });
     });
 
@@ -280,8 +270,5 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-blogs') {
-        console.log('[SW] Background sync: sync-blogs');
     }
 });
-
-console.log('[SW] Service Worker loaded - v10');
