@@ -13,11 +13,6 @@
 
 </div>
 
-<br/>
-
-<div align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=QinIndexCode&theme=tokyonight&no-frame=true&no-bg=false&column=4&margin-w=4&margin-h=4" alt="Trophies" />
-</div>
 
 <br/>
 
