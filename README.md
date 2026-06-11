@@ -5,25 +5,25 @@
 <br/>
 
 <div align="center">
-  
-  ### 🚀 About Me
-  
+
+  ### About Me
+
   > *"Code is poetry, and the screen is my canvas."*
 
-  🔭 I’m currently working on **Modern Web Applications & UI/UX Design**
-  
-  🌱 I’m currently learning **LLM/Agent & Ai application Performance Optimization**
-  
-  💬 Ask me about **Vue 3, React, Node.js, NestJS, and System Architecture**
-  
-  ⚡ Fun fact **I prefer Dark Mode in IDEs but Light Mode in real life (Sunlight!)**
+  - Currently working on **Modern Web Applications & UI/UX Design**
+
+  - Currently learning **LLM/Agent & AI Application Performance Optimization**
+
+  - Ask me about **Vue 3, React, Node.js, NestJS, and System Architecture**
+
+  - Fun fact: **I prefer Dark Mode in IDEs but Light Mode in real life (Sunlight!)**
 
 </div>
 
 <br/>
 
-<div align="center"> 
-  <h3>🛠️ Tech Stack</h3>
+<div align="center">
+  <h3>Tech Stack</h3>
 </div>
 
 <div align="center">
@@ -34,7 +34,7 @@
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
   <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" />
   <br/>
-  
+
   <!-- Frontend -->
   <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" />
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
@@ -60,7 +60,7 @@
 <br/>
 
 <div align="center">
-  <h3>📊 GitHub Stats</h3>
+  <h3>GitHub Stats</h3>
   <img src="https://streak-stats.demolab.com?user=QinIndexCode&theme=tokyonight&hide_border=true" height="180" alt="streak stats" />
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=QinIndexCode&theme=tokyonight" height="180" alt="languages graph" />
 </div>
@@ -68,7 +68,7 @@
 <br/>
 
 <div align="center">
-  <h3>🤝 Support Me</h3>
+  <h3>Support Me</h3>
   <a href="https://ko-fi.com/qinindexcode">
     <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="ko-fi" />
   </a>
