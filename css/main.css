@@ -3471,6 +3471,10 @@ textarea {
     .glow-border::after { transition: none; }
 }
 
+@media (hover: none), (pointer: coarse) {
+    .glow-border::after { display: none; }
+}
+
 /* ========================================
    Standalone Nav (独立页面导航栏)
    为直接访问 /blogs、/tools 等 clean URL 的独立页面

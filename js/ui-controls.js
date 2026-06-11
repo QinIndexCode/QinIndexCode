@@ -263,10 +263,12 @@
     }
 
     function initGlowBorder() {
+        var _isMobile = window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches;
         var cards = document.querySelectorAll('.glow-border');
         Array.prototype.forEach.call(cards, function (card) {
             if (card._glowInitialized) return;
             card._glowInitialized = true;
+            if (_isMobile) return;
 
             var cs = window.getComputedStyle(card);
             var r = parseFloat(cs.getPropertyValue('--glow-radius').trim());
@@ -275,7 +277,7 @@
             _glowCards.push(card);
         });
 
-        if (!_glowRaf) {
+        if (!_glowRaf && !_isMobile) {
             function onPointer(mx, my) {
                 if (_glowRaf) return;
                 _glowRaf = requestAnimationFrame(function () {
@@ -301,11 +303,6 @@
             document.addEventListener('mousemove', function (e) {
                 onPointer(e.clientX, e.clientY);
             });
-
-            document.addEventListener('touchmove', function (e) {
-                var touch = e.touches[0];
-                if (touch) onPointer(touch.clientX, touch.clientY);
-            }, { passive: true });
         }
     }
 
