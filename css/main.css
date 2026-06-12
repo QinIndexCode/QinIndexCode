@@ -3476,6 +3476,57 @@ textarea {
 }
 
 /* ========================================
+   Performance-Adaptive Styles
+   根据 perf-detect.js 检测结果自动降级
+   ======================================== */
+
+/* --- 低性能设备：最小化所有动画 --- */
+.perf-low * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    will-change: auto !important;
+}
+.perf-low .card {
+    contain: layout style;
+    box-shadow: none;
+}
+.perf-low .card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--accent);
+}
+.perf-low .btn,
+.perf-low .theme-btn,
+.perf-low .nav-link {
+    transition-duration: 0.01ms !important;
+}
+.perf-low .glow-border::after {
+    display: none;
+}
+
+/* --- 中等性能设备：禁用 JS 光晕，保留 CSS hover --- */
+.no-glow-js .glow-border::after {
+    display: none;
+}
+.perf-medium .card {
+    will-change: auto;
+}
+.perf-medium .glow-border {
+    overflow: hidden;
+}
+.perf-medium .glow-border::after {
+    display: none;
+}
+/* 中等设备保留基本 hover 动画，但禁用 will-change */
+.perf-medium .btn,
+.perf-medium .theme-btn {
+    will-change: auto;
+}
+
+/* --- 高性能设备：完整效果（默认） --- */
+/* 无需额外规则，CSS 默认值已包含完整光晕 */
+
+/* ========================================
    Standalone Nav (独立页面导航栏)
    为直接访问 /blogs、/tools 等 clean URL 的独立页面
    注入与 index.html 一致的导航栏体验

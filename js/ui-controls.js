@@ -264,11 +264,21 @@
 
     function initGlowBorder() {
         var _isMobile = window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches;
+
+        // 根据性能检测结果决定是否启用光晕效果
+        var perfLevel = (window.QinBlogPerf && window.QinBlogPerf.getLevel()) || 'medium';
+        var _glowDisabled = _isMobile || perfLevel === 'low';
+
+        if (_glowDisabled) {
+            // 低性能设备：跳过所有 JS 光晕逻辑，仅保留 CSS hover 效果
+            document.documentElement.classList.add('no-glow-js');
+            return;
+        }
+
         var cards = document.querySelectorAll('.glow-border');
         Array.prototype.forEach.call(cards, function (card) {
             if (card._glowInitialized) return;
             card._glowInitialized = true;
-            if (_isMobile) return;
 
             var cs = window.getComputedStyle(card);
             var r = parseFloat(cs.getPropertyValue('--glow-radius').trim());
@@ -277,7 +287,7 @@
             _glowCards.push(card);
         });
 
-        if (!_glowRaf && !_isMobile) {
+        if (!_glowRaf) {
             function onPointer(mx, my) {
                 if (_glowRaf) return;
                 _glowRaf = requestAnimationFrame(function () {

@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mygitblog-v10';
-const STATIC_CACHE_NAME = 'mygitblog-static-v10';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v10';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v10';
+const CACHE_NAME = 'mygitblog-v11';
+const STATIC_CACHE_NAME = 'mygitblog-static-v11';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v11';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v11';
 
 const STATIC_ASSETS = [
     './',
@@ -22,7 +22,8 @@ const STATIC_ASSETS = [
     './css/tools.css',
     './js/theme-tokens.js',
     './js/theme-listener.js',
-    './js/redirect-if-standalone.js'
+    './js/redirect-if-standalone.js',
+    './js/perf-detect.js'
 ];
 
 const CRITICAL_ASSETS = [
