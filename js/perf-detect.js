@@ -1,8 +1,8 @@
 /**
- * 性能检测模块
+ * 性能检测模块 v2
  *
- * 通过 FPS 采样、设备硬件信息综合评估设备性能等级，
- * 决定是否启用高开销的鼠标跟随光晕效果。
+ * 通过多轮 FPS 采样（取中位数）、GPU 型号识别、CPU 核心数、
+ * 设备内存、屏幕 DPR 等多维度加权评分，综合评估设备性能等级。
  *
  * 等级划分：
  *   high   — 启用完整光晕 + 动画
@@ -12,30 +12,67 @@
 (function () {
     'use strict';
 
-    var STORAGE_KEY = 'qinblog-perf-level';
-    var SAMPLE_DURATION = 1500;   // FPS 采样时长 ms
-    var SAMPLE_THRESHOLD = {
-        high: 50,    // >= 50 fps → high
-        medium: 30   // >= 30 fps → medium, < 30 → low
-    };
+    var STORAGE_KEY = 'qinblog-perf-level-v2';
+    var CACHE_TTL = 3600000; // 缓存有效期 1 小时
 
-    /**
-     * 检测硬件并发数（CPU 核心数）
-     */
-    function getHardwareConcurrency() {
+    /* =============================================
+       1. 硬件信息采集
+       ============================================= */
+
+    function getCPUThreads() {
         return navigator.hardwareConcurrency || 2;
     }
 
-    /**
-     * 检测设备内存（仅 Chrome 支持）
-     */
-    function getDeviceMemory() {
-        return navigator.deviceMemory || 4;
+    function getDeviceMemoryGB() {
+        // Chrome/Edge 63+: navigator.deviceMemory (单位 GB, 0.25~8)
+        // Firefox/Safari: 不支持，返回 undefined → 合理推断
+        if (navigator.deviceMemory) return navigator.deviceMemory;
+        // 无法检测时根据 CPU 核心数启发式推断
+        var cores = getCPUThreads();
+        if (cores >= 8) return 8;
+        if (cores >= 4) return 4;
+        return 2;
     }
 
     /**
-     * 检测是否为移动设备
+     * 通过 WebGL 检测 GPU 型号
+     * 返回 { renderer: string, vendor: string, tier: 1|2|3 }
+     *   tier 1 = 集成显卡 / 低端
+     *   tier 2 = 中端独显
+     *   tier 3 = 高端独显
      */
+    function detectGPU() {
+        var canvas = document.createElement('canvas');
+        var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return { renderer: 'unknown', vendor: 'unknown', tier: 1 };
+
+        var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (!debugInfo) return { renderer: 'unknown', vendor: 'unknown', tier: 2 };
+
+        var renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || '';
+        var vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || '';
+
+        // 释放资源
+        var ext = gl.getExtension('WEBGL_lose_context');
+        if (ext) ext.loseContext();
+
+        var tier = classifyGPU(renderer.toLowerCase());
+        return { renderer: renderer, vendor: vendor, tier: tier };
+    }
+
+    function classifyGPU(name) {
+        // 高端独显（tier 3）
+        if (/rtx\s*(4\d{3}|5\d{3}|3\d{3,4})|gtx\s*(1[6-9]\d{2}|2\d{3}|3\d{3})|radeon\s*rx\s*(7\d{3}|6\d{3}|5\d{3})|radeon\s*pro|iris\s*xe|apple\s*m[1-4]/i.test(name)) {
+            return 3;
+        }
+        // 中端独显（tier 2）
+        if (/gtx\s*(1[0-5]\d{2}|9\d{2})|gt\s*[1-9]\d{2}|radeon\s*(rx\s*)?(4\d{3}|5\d{3}|5\d{2})|mx\d{3}|intel.*hd|iris\s*(plus|xe)|adreno\s*(6[3-9]\d|[7-9]\d{2})|mali-g(7[1-9]|[89])/i.test(name)) {
+            return 2;
+        }
+        // 集成显卡 / 低端（tier 1）
+        return 1;
+    }
+
     function isMobile() {
         return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i
             .test(navigator.userAgent)
@@ -43,61 +80,145 @@
             || window.matchMedia('(pointer: coarse)').matches;
     }
 
+    function getDPR() {
+        return window.devicePixelRatio || 1;
+    }
+
+    /* =============================================
+       2. FPS 采样（多轮取中位数）
+       ============================================= */
+
     /**
-     * 通过 requestAnimationFrame 采样 FPS
+     * 单轮 FPS 采样
+     * @param {number} duration 采样时长 ms
+     * @param {function} callback 回调 fps
      */
-    function measureFPS(callback) {
+    function sampleFPS(duration, callback) {
         var frames = 0;
         var startTime = null;
-        var rafId = null;
+        var finished = false;
+
+        // 丢弃前几帧（页面加载抖动）
+        var warmupFrames = 0;
+        var WARMUP = 10;
 
         function tick(timestamp) {
+            if (finished) return;
             if (startTime === null) startTime = timestamp;
+
+            if (warmupFrames < WARMUP) {
+                warmupFrames++;
+                requestAnimationFrame(tick);
+                return;
+            }
+
             frames++;
-            if (timestamp - startTime < SAMPLE_DURATION) {
-                rafId = requestAnimationFrame(tick);
+            if (timestamp - startTime < duration) {
+                requestAnimationFrame(tick);
             } else {
-                var fps = Math.round((frames * 1000) / (timestamp - startTime));
-                callback(fps);
+                finished = true;
+                var elapsed = timestamp - startTime;
+                callback(elapsed > 0 ? Math.round((frames * 1000) / elapsed) : 0);
             }
         }
 
-        rafId = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
 
-        // 超时保护：如果 raf 停止，5 秒后强制结束
+        // 超时保护
         setTimeout(function () {
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-                var elapsed = Date.now() - (startTime || Date.now());
-                var fps = elapsed > 0 ? Math.round((frames * 1000) / elapsed) : 0;
-                callback(fps);
+            if (!finished) {
+                finished = true;
+                callback(0);
             }
-        }, SAMPLE_DURATION + 500);
+        }, duration + 2000);
     }
 
     /**
-     * 综合评估性能等级
+     * 多轮采样取中位数
+     * @param {number} rounds 采样轮数
+     * @param {number} duration 每轮时长 ms
+     * @param {function} callback 回调 { fps, samples }
      */
-    function evaluate(fps) {
-        var cores = getHardwareConcurrency();
-        var memory = getDeviceMemory();
+    function multiSampleFPS(rounds, duration, callback) {
+        var samples = [];
+        var done = 0;
 
-        // 移动设备降级
-        if (isMobile()) {
-            if (cores <= 4 && memory <= 4) return 'low';
-            if (fps < SAMPLE_THRESHOLD.medium) return 'low';
-            return 'medium';
+        // 串行采样，避免并发 raf 冲突
+        function runNext() {
+            if (done >= rounds) {
+                // 排序取中位数
+                var sorted = samples.slice().sort(function (a, b) { return a - b; });
+                var mid = Math.floor(sorted.length / 2);
+                var median = sorted.length % 2 !== 0
+                    ? sorted[mid]
+                    : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+                callback({ fps: median, samples: samples });
+                return;
+            }
+            sampleFPS(duration, function (fps) {
+                samples.push(fps);
+                done++;
+                // 轮间间隔 100ms 让浏览器恢复
+                setTimeout(runNext, 100);
+            });
         }
 
-        // 桌面设备评估
-        if (fps >= SAMPLE_THRESHOLD.high && cores >= 4) return 'high';
-        if (fps >= SAMPLE_THRESHOLD.medium && cores >= 2) return 'medium';
+        runNext();
+    }
+
+    /* =============================================
+       3. 加权评分系统
+       ============================================= */
+
+    /**
+     * 各维度分值（满分 100）
+     *   FPS    权重 50%  — 最直接的体感指标
+     *   GPU    权重 25%  — 决定渲染能力上限
+     *   CPU    权重 15%  — 计算能力
+     *   Memory 权重 10%  — 多任务余量
+     */
+    function scoreFPS(fps) {
+        if (fps >= 58) return 100;   // 满帧
+        if (fps >= 50) return 85;
+        if (fps >= 45) return 70;
+        if (fps >= 35) return 55;
+        if (fps >= 25) return 35;
+        if (fps >= 15) return 15;
+        return 0;
+    }
+
+    function scoreGPU(tier) {
+        if (tier === 3) return 100;
+        if (tier === 2) return 60;
+        return 25;
+    }
+
+    function scoreCPU(threads) {
+        if (threads >= 16) return 100;
+        if (threads >= 8) return 85;
+        if (threads >= 6) return 70;
+        if (threads >= 4) return 55;
+        if (threads >= 2) return 35;
+        return 15;
+    }
+
+    function scoreMemory(gb) {
+        if (gb >= 16) return 100;
+        if (gb >= 8) return 80;
+        if (gb >= 4) return 55;
+        return 30;
+    }
+
+    function computeLevel(score) {
+        if (score >= 65) return 'high';
+        if (score >= 40) return 'medium';
         return 'low';
     }
 
-    /**
-     * 在文档根元素上设置性能等级 class
-     */
+    /* =============================================
+       4. 主流程
+       ============================================= */
+
     function applyLevel(level) {
         var root = document.documentElement;
         root.classList.remove('perf-high', 'perf-medium', 'perf-low');
@@ -105,63 +226,113 @@
         root.dataset.perfLevel = level;
     }
 
-    /**
-     * 主入口：检测并应用性能等级
-     */
     function detect() {
-        // 1. 检查 localStorage 缓存（避免重复检测）
+        // 1. 缓存命中（带 TTL 校验）
         try {
-            var cached = localStorage.getItem(STORAGE_KEY);
-            if (cached === 'high' || cached === 'medium' || cached === 'low') {
-                applyLevel(cached);
-                return cached;
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var cached = JSON.parse(raw);
+                if (cached.level && cached.ts && (Date.now() - cached.ts < CACHE_TTL)) {
+                    applyLevel(cached.level);
+                    return cached.level;
+                }
             }
         } catch (e) { /* localStorage may be blocked */ }
 
-        // 2. 移动设备直接判定，跳过 FPS 采样
+        // 2. 移动设备：跳过 FPS 采样，直接硬件评估
         if (isMobile()) {
-            var mem = getDeviceMemory();
-            var level = mem <= 3 ? 'low' : 'medium';
-            applyLevel(level);
-            try { localStorage.setItem(STORAGE_KEY, level); } catch (e) { /* ignore */ }
-            return level;
+            var gpu = detectGPU();
+            var memGB = getDeviceMemoryGB();
+            var threads = getCPUThreads();
+            var mobileScore = scoreGPU(gpu.tier) * 0.4
+                + scoreCPU(threads) * 0.35
+                + scoreMemory(memGB) * 0.25;
+            var mobileLevel = mobileScore >= 55 ? 'medium' : 'low';
+            applyLevel(mobileLevel);
+            cacheResult(mobileLevel);
+            return mobileLevel;
         }
 
-        // 3. 桌面设备进行 FPS 采样
-        applyLevel('medium'); // 采样期间先用中等级别
+        // 3. 桌面设备：多轮 FPS 采样 + 硬件评估
+        applyLevel('medium'); // 采样期间默认 medium
 
-        measureFPS(function (fps) {
-            var finalLevel = evaluate(fps);
-            applyLevel(finalLevel);
-            try { localStorage.setItem(STORAGE_KEY, finalLevel); } catch (e) { /* ignore */ }
+        // 延迟 500ms 开始采样，等页面渲染稳定
+        setTimeout(function () {
+            multiSampleFPS(3, 2000, function (result) {
+                var gpu = detectGPU();
+                var threads = getCPUThreads();
+                var memGB = getDeviceMemoryGB();
 
-            // 开发环境输出检测结果
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.log('[PerfDetect] FPS:', fps,
-                    '| Cores:', getHardwareConcurrency(),
-                    '| Memory:', getDeviceMemory() + 'GB',
-                    '| Level:', finalLevel);
-            }
-        });
+                var fpsScore = scoreFPS(result.fps);
+                var gpuScore = scoreGPU(gpu.tier);
+                var cpuScore = scoreCPU(threads);
+                var memScore = scoreMemory(memGB);
 
-        return 'medium'; // 返回默认值，采样完成后会更新
+                var totalScore = fpsScore * 0.50
+                    + gpuScore * 0.25
+                    + cpuScore * 0.15
+                    + memScore * 0.10;
+
+                var level = computeLevel(totalScore);
+                applyLevel(level);
+                cacheResult(level);
+
+                // 开发环境详细日志
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    console.log('[PerfDetect v2]', {
+                        fps: result.fps,
+                        samples: result.samples,
+                        gpu: gpu.renderer,
+                        gpuTier: gpu.tier,
+                        cpuThreads: threads,
+                        memoryGB: memGB,
+                        scores: { fps: fpsScore, gpu: gpuScore, cpu: cpuScore, mem: memScore },
+                        totalScore: Math.round(totalScore),
+                        level: level
+                    });
+                }
+            });
+        }, 500);
+
+        return 'medium';
     }
 
-    // 暴露全局接口
+    function cacheResult(level) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                level: level,
+                ts: Date.now()
+            }));
+        } catch (e) { /* ignore */ }
+    }
+
+    /* =============================================
+       5. 公开接口
+       ============================================= */
+
     window.QinBlogPerf = {
         detect: detect,
         getLevel: function () {
             return document.documentElement.dataset.perfLevel || 'medium';
         },
-        // 允许用户手动切换等级（调试用）
         setLevel: function (level) {
             if (level === 'high' || level === 'medium' || level === 'low') {
                 applyLevel(level);
-                try { localStorage.setItem(STORAGE_KEY, level); } catch (e) { /* ignore */ }
+                cacheResult(level);
             }
+        },
+        /** 返回详细硬件信息（调试用） */
+        getHardwareInfo: function () {
+            var gpu = detectGPU();
+            return {
+                cpuThreads: getCPUThreads(),
+                memoryGB: getDeviceMemoryGB(),
+                gpu: gpu,
+                dpr: getDPR(),
+                isMobile: isMobile()
+            };
         }
     };
 
-    // 立即执行检测
     detect();
 })();
