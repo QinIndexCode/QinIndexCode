@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mygitblog-v12';
-const STATIC_CACHE_NAME = 'mygitblog-static-v12';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v12';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v12';
+const CACHE_NAME = 'mygitblog-v13';
+const STATIC_CACHE_NAME = 'mygitblog-static-v13';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v13';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v13';
 
 const STATIC_ASSETS = [
     './',
@@ -16,10 +16,11 @@ const STATIC_ASSETS = [
     './donate.html',
     './auth-callback.html',
     './feed.xml',
-    './css/main.css',
+    './.nojekyll',
+    './css/main.min.css',
     './css/css2.css',
     './css/atom-one-dark.min.css',
-    './css/tools.css',
+    './css/tools.min.css',
     './js/theme-tokens.js',
     './js/theme-listener.js',
     './js/redirect-if-standalone.js',
@@ -30,7 +31,7 @@ const CRITICAL_ASSETS = [
     './',
     './index.html',
     './404.html',
-    './css/main.css',
+    './css/main.min.css',
     './css/css2.css',
     './js/theme-tokens.js'
 ];

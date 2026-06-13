@@ -43,15 +43,16 @@
     <!-- Security -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: frame-src 'self' https://giscus.app; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self';">
 
-    <link rel="dns-prefetch" href="https://giscus.app">
-    <link rel="dns-prefetch" href="https://api.github.com">
+    <link rel="preconnect" href="https://giscus.app" crossorigin>
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
 
-    <link rel="preload" href="./css/main.css" as="style">
-    <link rel="preload" href="./css/css2.css" as="style">
-    <link rel="preload" href="./assets/images/avatar.jpg" as="image">
-
-    <link href="./css/css2.css" rel="stylesheet">
-    <link href="./css/main.css" rel="stylesheet">
+    <!-- 异步加载 CSS，不阻塞首屏渲染 -->
+    <link rel="preload" href="./css/css2.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="./css/main.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="./css/css2.css" rel="stylesheet">
+        <link href="./css/main.min.css" rel="stylesheet">
+    </noscript>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -141,7 +142,7 @@
                 <div class="profile-avatar">
                     <picture>
                         <source srcset="assets/images/avatar.webp" type="image/webp">
-                        <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async">
+                        <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="eager" decoding="async">
                     </picture>
                 </div>
                 <div class="profile-name">QinIndexCode</div>
@@ -217,6 +218,6 @@
 
     <script src="./js/app.js" defer></script>
     <script src="./js/redirect-if-standalone.js" defer></script>
-<script src="./js/svg-sprite.js"></script>
+<script src="./js/svg-sprite.js" defer></script>
 </body>
 </html>
