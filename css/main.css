@@ -685,7 +685,7 @@ button:focus-visible,
     font-weight: 600;
     letter-spacing: -0.02em;
     /* Animate in from below (for the animate-fade-in-up class chain) */
-    &::after {
+}.section-title::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -697,7 +697,6 @@ button:focus-visible,
         transform-origin: left center;
         animation: accentLine 600ms var(--ease-out) 200ms both;
     }
-}
 @keyframes accentLine {
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }

@@ -23,6 +23,7 @@
 
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.min.css" rel="stylesheet">
+    <link href="./css/donate.css" rel="stylesheet">
     <script src="./js/theme-tokens.js"></script>
     <script src="./js/redirect-if-standalone.js" defer></script>
     <script src="./js/nav-loader.js" defer></script>
@@ -38,56 +39,90 @@
     </div>
 </noscript>
 
-    <main class="donate-wrapper" role="main">
-        <div class="bg-glow" aria-hidden="true"></div>
-
-        <article class="card donate-card glass glow-border">
-            <div class="kofi-logo-wrapper">
-                <picture>
-                    <source srcset="assets/images/ko-fi.webp" type="image/webp">
-                    <img src="assets/images/ko-fi.png" alt="Ko-fi" class="kofi-logo" loading="lazy" decoding="async" width="48" height="48">
-                </picture>
+    <main class="container" role="main">
+        <!-- Hero -->
+        <section class="donate-hero">
+            <div class="donate-hero-content">
+                <p class="eyebrow">Support</p>
+                <h1>感谢你的关注</h1>
+                <p class="donate-hero-desc">
+                    如果你喜欢我的文章或开源项目，任何形式的支持都是对我最大的鼓励。每一份支持都让持续创作更有动力。
+                </p>
+                <div class="donate-hero-cta-row">
+                    <button onclick="openPayModal()" class="btn-donate-primary" aria-label="查看捐赠方式">
+                        <svg class="icon icon-filled" aria-hidden="true"><use href="#i-heart"></use></svg>
+                        <span>支持作者</span>
+                        <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+                    </button>
+                    <div class="donate-avatar-inline glass glow-border">
+                        <picture>
+                            <source srcset="assets/images/avatar.webp" type="image/webp">
+                            <img src="assets/images/avatar.jpg" alt="" loading="lazy" width="44" height="44">
+                        </picture>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <h1 class="donate-title">请我喝杯咖啡</h1>
-            <p class="donate-desc">
-                如果您觉得我的文章或开源项目对您有所帮助，<br>
-                欢迎通过 Ko-fi 进行捐赠支持。您的鼓励是我持续创作的最大动力！
-            </p>
+        <!-- 支持会用于 -->
+        <section class="card glass donate-section">
+            <div class="donate-usage-grid">
+                <div class="donate-usage-item">
+                    <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-server"></use></svg>
+                    <span class="donate-usage-title">服务器与域名</span>
+                    <span class="donate-usage-desc">保持站点稳定运行</span>
+                </div>
+                <div class="donate-usage-item">
+                    <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-book-open"></use></svg>
+                    <span class="donate-usage-title">内容创作</span>
+                    <span class="donate-usage-desc">持续输出技术文章</span>
+                </div>
+                <div class="donate-usage-item">
+                    <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-git-branch"></use></svg>
+                    <span class="donate-usage-title">开源项目</span>
+                    <span class="donate-usage-desc">维护和开发新工具</span>
+                </div>
+            </div>
+        </section>
 
-            <a href="https://ko-fi.com/qinindexcode" target="_blank" rel="noopener noreferrer"
-               class="btn-payment btn-kofi" aria-label="前往 Ko-fi 捐赠页面">
-                <svg class="icon icon-filled animate-beat" aria-hidden="true"><use href="#i-coffee"></use></svg>
+        <!-- 支持者 -->
+        <section class="card glass donor-section" id="donor-section" style="display:none;">
+            <p class="donor-label">支持者</p>
+            <ol class="donor-list" id="donor-list"></ol>
+        </section>
+    </main>
+
+    <!-- Payment Modal -->
+    <div class="pay-modal" id="payModal" onclick="closePayModal(event)" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
+        <div class="pay-modal-content" role="document">
+            <p class="pay-modal-title" id="payModalTitle">选择捐赠方式</p>
+
+            <a href="https://ko-fi.com/qinindexcode" target="_blank" rel="noopener noreferrer" class="pay-option pay-option-kofi">
+                <svg class="icon icon-filled" aria-hidden="true"><use href="#i-coffee"></use></svg>
                 <span>前往 Ko-fi 捐赠</span>
             </a>
 
-            <div class="divider" role="separator">
-                <span>或使用扫码支付</span>
-            </div>
+            <div class="pay-divider"><span>国内支付</span></div>
 
-            <div class="payment-grid">
-                <button class="btn-payment btn-wechat" onclick="showQR('wechat')" aria-label="显示微信支付二维码">
+            <div class="pay-grid">
+                <button class="pay-option pay-option-wechat" onclick="showQR('wechat')" aria-label="微信支付">
                     <svg class="icon icon-filled" aria-hidden="true"><use href="#i-wechat"></use></svg>
                     <span>微信支付</span>
                 </button>
-
-                <button class="btn-payment btn-alipay" onclick="showQR('alipay')" aria-label="显示支付宝二维码">
+                <button class="pay-option pay-option-alipay" onclick="showQR('alipay')" aria-label="支付宝">
                     <svg class="icon icon-filled" aria-hidden="true"><use href="#i-alipay"></use></svg>
                     <span>支付宝</span>
                 </button>
             </div>
-        </article>
-    </main>
+        </div>
+    </div>
 
-    <!-- QR Code Modal -->
-    <div class="qr-modal" id="qrModal" onclick="closeQR(event)" role="dialog" aria-modal="true" aria-labelledby="qrTitle" aria-describedby="qrDesc">
-        <div class="qr-modal-content" role="document">
-            <button class="qr-close-btn" onclick="closeQR(event, true)" aria-label="关闭二维码">
-                <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
-            </button>
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="支付二维码" class="qr-modal-img" id="qrImage">
-            <div class="qr-modal-title" id="qrTitle">支付方式</div>
-            <div class="qr-modal-tip" id="qrDesc">感谢您的支持！</div>
+    <!-- QR Sub-modal -->
+    <div class="qr-submodal" id="qrSubmodal" onclick="closeQRSub(event)" role="dialog" aria-modal="true" aria-labelledby="qrSubTitle">
+        <div class="qr-sub-content" role="document">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="支付二维码" class="qr-sub-img" id="qrSubImg">
+            <p class="qr-sub-title" id="qrSubTitle">支付方式</p>
+            <p class="qr-sub-tip">感谢您的支持！</p>
         </div>
     </div>
 
