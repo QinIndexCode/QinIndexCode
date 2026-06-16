@@ -252,6 +252,9 @@
     height: 220px;
     border-radius: var(--radius);
     margin-bottom: var(--spacing-sm);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .qr-sub-title { font-weight: var(--font-weight-semibold); color: var(--text-primary); margin-bottom: 0.25rem; }

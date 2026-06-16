@@ -23,7 +23,7 @@
 
     <link href="./css/css2.css" rel="stylesheet">
     <link href="./css/main.min.css" rel="stylesheet">
-    <link href="./css/donate.css" rel="stylesheet">
+    <link href="./css/donate.css?v=2" rel="stylesheet">
     <script src="./js/theme-tokens.js"></script>
     <script src="./js/redirect-if-standalone.js" defer></script>
     <script src="./js/nav-loader.js" defer></script>
@@ -120,7 +120,7 @@
     <!-- QR Sub-modal -->
     <div class="qr-submodal" id="qrSubmodal" onclick="closeQRSub(event)" role="dialog" aria-modal="true" aria-labelledby="qrSubTitle">
         <div class="qr-sub-content" role="document">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="支付二维码" class="qr-sub-img" id="qrSubImg">
+            <div class="qr-sub-img" id="qrSubImg" role="img" aria-label="支付二维码"></div>
             <p class="qr-sub-title" id="qrSubTitle">支付方式</p>
             <p class="qr-sub-tip">感谢您的支持！</p>
         </div>

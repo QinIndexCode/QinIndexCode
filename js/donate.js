@@ -34,7 +34,7 @@
     function showQR(type) {
         const data = qrData[type];
         if (!data) return;
-        qrSubImg.src = data.src;
+        qrSubImg.style.backgroundImage = 'url(' + data.src + ')';
         qrSubTitle.textContent = data.title;
         qrSubmodal.classList.add('active');
     }
