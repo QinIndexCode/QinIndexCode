@@ -41,6 +41,8 @@
 7. Agent的上下文处理 (2026-03-23): AI Agent 上下文管理策略 - 标签: AI, Agent, 上下文, LLM - /blogs.html#007
 8. 精读 Anthropic《Building Effective Agents》2025 更新版 (2026-03-23): Anthropic Agent 构建指南精读 - 标签: AI, Agent, Anthropic, 精读 - /blogs.html#008
 9. Axios 供应链攻击事件分析 (2026-03-30): npm 供应链安全事件分析 - 标签: 安全, npm, 供应链, Axios - /blogs.html#009
+10. 从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑 (2026-06-10): Agent 工程实践：Prompt、Context、Harness 三层经验总结 - 标签: AI, Agent, PromptEngineering, ContextEngineering, HarnessEngineering, Cursor, 经验分享 - /blogs.html#010
+11. 忒修斯之船与意识本质：当神经元被逐一替换 (2026-06-12): 哲学思想实验与意识本质探讨 - 标签: AI, 哲学, 意识, 神经科学, 忒修斯之船, 伦理 - /blogs.html#011
 
 ## 交互说明
 

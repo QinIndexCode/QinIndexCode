@@ -67,12 +67,13 @@
 
     function broadcastTheme(themeVars, target) {
         const msg = { type: 'qinblog-theme', vars: themeVars };
+        const origin = window.location.origin;
         if (target) {
-            try { target.postMessage(msg, '*'); } catch (e) { /* ignore */ }
+            try { target.postMessage(msg, origin); } catch (e) { /* ignore */ }
             return;
         }
         document.querySelectorAll('iframe').forEach(frame => {
-            try { frame.contentWindow.postMessage(msg, '*'); } catch (e) { /* ignore */ }
+            try { frame.contentWindow.postMessage(msg, origin); } catch (e) { /* ignore */ }
         });
     }
 
@@ -458,7 +459,9 @@
                 let iframeHash = '';
                 try { iframeHash = currentFrame.contentWindow.location.hash; } catch (e) { /* cross-origin */ }
                 if (mainHash !== iframeHash) {
-                    currentFrame.contentWindow.postMessage({ type: 'qinblog-hash-sync', hash: mainHash }, '*');
+                    try {
+                        currentFrame.contentWindow.postMessage({ type: 'qinblog-hash-sync', hash: mainHash }, window.location.origin);
+                    } catch (e) { /* ignore cross-origin postMessage errors */ }
                 }
             }
         });

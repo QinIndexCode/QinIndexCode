@@ -7,9 +7,27 @@
         <link>https://qinindexcode.site</link>
         <description>分享 JavaScript、前端开发、后端开发等技术文章和实战经验</description>
         <language>zh-CN</language>
-        <lastBuildDate>2026-06-10T00:00:00+08:00</lastBuildDate>
+        <lastBuildDate>2026-06-12T00:00:00+08:00</lastBuildDate>
         <atom:link href="https://qinindexcode.site/feed.xml" rel="self" type="application/rss+xml"/>
-        
+
+        <item>
+            <title>忒修斯之船与意识本质：当神经元被逐一替换</title>
+            <link>https://qinindexcode.site/blogs/011</link>
+            <guid isPermaLink="true">https://qinindexcode.site/blogs/011</guid>
+            <pubDate>2026-06-12T00:00:00+08:00</pubDate>
+            <description>哲学思想实验与意识本质探讨</description>
+            <dc:creator>QinIndexCode</dc:creator>
+        </item>
+
+        <item>
+            <title>从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑</title>
+            <link>https://qinindexcode.site/blogs/010</link>
+            <guid isPermaLink="true">https://qinindexcode.site/blogs/010</guid>
+            <pubDate>2026-06-10T00:00:00+08:00</pubDate>
+            <description>Agent 工程实践：Prompt、Context、Harness 三层经验总结</description>
+            <dc:creator>QinIndexCode</dc:creator>
+        </item>
+
         <item>
             <title>Axios供应链攻击事件分析</title>
             <link>https://qinindexcode.site/blogs/009</link>

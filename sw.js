@@ -21,10 +21,15 @@ const STATIC_ASSETS = [
     './css/css2.css',
     './css/atom-one-dark.min.css',
     './css/tools.min.css',
+    './css/donate.css',
     './js/theme-tokens.js',
     './js/theme-listener.js',
     './js/redirect-if-standalone.js',
-    './js/perf-detect.js'
+    './js/perf-detect.js',
+    './js/donate.js',
+    './js/ui-controls.js',
+    './js/nav-loader.js',
+    './js/svg-sprite.js'
 ];
 
 const CRITICAL_ASSETS = [
@@ -37,8 +42,11 @@ const CRITICAL_ASSETS = [
 ];
 
 const IMAGE_ASSETS = [
-    './assets/images/avatar.jpg',
-    './assets/images/avatar-alt.jpg'
+    './assets/images/avatar.webp',
+    './assets/images/avatar-alt.webp',
+    './assets/images/zhifubao.webp',
+    './assets/images/weixin.webp',
+    './assets/images/ko-fi.webp'
 ];
 
 const CACHE_STRATEGIES = {

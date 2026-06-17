@@ -27,8 +27,8 @@
     const qrSubTitle = document.getElementById('qrSubTitle');
 
     const qrData = {
-        wechat: { src: 'assets/images/weixin.jpg', title: '微信支付' },
-        alipay: { src: 'assets/images/zhifubao.jpg', title: '支付宝' }
+        wechat: { src: 'assets/images/weixin.webp', title: '微信支付' },
+        alipay: { src: 'assets/images/zhifubao.webp', title: '支付宝' }
     };
 
     function showQR(type) {

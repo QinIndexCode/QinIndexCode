@@ -146,5 +146,42 @@ window.QINBLOG_BLOGS = [
       "供应链",
       "axios"
     ]
+  },
+  {
+    "id": "010",
+    "fileName": "010.md",
+    "seq": 10,
+    "title": "从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑",
+    "date": "2026-06-10",
+    "author": "QinIndexCode",
+    "excerpt": "这篇博客聊聊我这一年多接触 AI 辅助编程和 Agent 编写的真实经历。从去年中旬偶然发现 Cursor 官网，到十月份之后接触 TraeCN，再到后来尝试 Cursor、OpenCode、Codex、OpenClaw，最后自己动手写 Agent。整个过程走了不少弯路，也推翻了很多最初想当然的认识。",
+    "wordCount": 6306,
+    "tags": [
+      "AI",
+      "Agent",
+      "PromptEngineering",
+      "ContextEngineering",
+      "HarnessEngineering",
+      "Cursor",
+      "经验分享"
+    ]
+  },
+  {
+    "id": "011",
+    "fileName": "011.md",
+    "seq": 11,
+    "title": "忒修斯之船与意识本质：当神经元被逐一替换",
+    "date": "2026-06-12",
+    "author": "QinIndexCode",
+    "excerpt": "如果有一种技术，能把人类大脑中的神经细胞一个一个地替换成人工机械单元，同时让你在整个过程中毫无察觉——那么当最后一个神经元被替换完毕时，你还是你吗？那个由机械构成的全新大脑，是否拥有和你一样的意识？",
+    "wordCount": 4347,
+    "tags": [
+      "AI",
+      "哲学",
+      "意识",
+      "神经科学",
+      "忒修斯之船",
+      "伦理"
+    ]
   }
 ];

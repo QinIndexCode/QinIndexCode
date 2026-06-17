@@ -11,6 +11,12 @@
         for (const key in vars) {
             root.style.setProperty(key, vars[key]);
         }
+        // 触发自定义事件，通知页面内其他脚本主题已更新
+        const bg = vars['--bg-primary'] || '';
+        const isDark = bg === '#0C0A09' || bg === '#0c0a09';
+        window.dispatchEvent(new CustomEvent('themeChanged', {
+            detail: { theme: isDark ? 'dark' : 'light', vars: vars }
+        }));
     }
 
     /* Listen for theme updates broadcast from the parent shell.
@@ -24,14 +30,18 @@
         } else if (data.type === 'qinblog-theme-request') {
             const parent = window.parent;
             if (parent && parent !== window) {
-                parent.postMessage({ type: 'qinblog-theme-response' }, '*');
+                try {
+                    parent.postMessage({ type: 'qinblog-theme-response' }, window.location.origin);
+                } catch (e) { /* ignore cross-origin postMessage errors */ }
             }
         }
     });
 
     /* Announce readiness so the parent can push the current theme to us */
     if (window.parent && window.parent !== window) {
-        window.parent.postMessage({ type: 'qinblog-theme-ready' }, '*');
+        try {
+            window.parent.postMessage({ type: 'qinblog-theme-ready' }, window.location.origin);
+        } catch (e) { /* ignore cross-origin postMessage errors */ }
     }
 
     /* Persist theme changes triggered by the themeChanged event */

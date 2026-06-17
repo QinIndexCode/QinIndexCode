@@ -108,7 +108,7 @@
         });
 
         // Close menu when clicking a link (mobile)
-        document.querySelectorAll('.nav-item').forEach(item => {
+        document.querySelectorAll('#tool-nav .nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 if (window.innerWidth <= 1024) {
                     navToggle.classList.remove('active');
@@ -119,7 +119,7 @@
 
         // Scroll Spy - 胶囊进度指示器 (使用 IntersectionObserver)
         const sections = document.querySelectorAll('.tool-card');
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('#tool-nav .nav-item');
         const progressPill = document.querySelector('.nav-progress-pill');
         const toolNavEl = document.getElementById('tool-nav');
 
@@ -159,9 +159,10 @@
                 const lastItem = navItems[navEnd - 1];
 
                 if (firstItem && lastItem) {
-                    // Use offsetTop relative to scroll container for accurate positioning
+                    // Pill 已移出 .tool-nav-scroll，需减去滚动偏移以保持跟随
                     const scrollContainer = toolNavEl.querySelector('.tool-nav-scroll');
-                    const firstTop = firstItem.offsetTop;
+                    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+                    const firstTop = firstItem.offsetTop - scrollTop;
 
                     toolNavEl.style.setProperty('--pill-count', navCount);
                     progressPill.style.transform = 'translateY(' + firstTop + 'px)';
@@ -204,6 +205,7 @@
         if (toolNavScroll) {
             toolNavScroll.addEventListener('scroll', () => {
                 isUserScrollingNav = true;
+                updateProgressPill(); // 滚动时同步更新 pill 位置
                 if (navScrollTimeout) clearTimeout(navScrollTimeout);
                 navScrollTimeout = setTimeout(() => {
                     isUserScrollingNav = false;
@@ -662,7 +664,7 @@
         let mdParser = null;
         if (window.markdownit) {
             mdParser = window.markdownit({
-                html: true,
+                html: false, // 禁用原始 HTML 渲染，防止 XSS
                 linkify: true,
                 typographer: true
             });
@@ -673,15 +675,25 @@
                 return mdParser.render(text);
             }
             // 简单的手动解析（如果 markdown-it 不可用）
+            // 对捕获组进行 HTML 实体编码，防止 XSS
+            function escapeHtml(str) {
+                if (str == null) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
             return text
-                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-                .replace(/\*(.*)\*/gim, '<em>$1</em>')
-                .replace(/^- (.*$)/gim, '<li>$1</li>')
-                .replace(/\[(.*)\]\((.*)\)/gim, '<a href="$2" target="_blank">$1</a>')
-                .replace(/`(.*?)`/gim, '<code>$1</code>')
+                .replace(/^# (.*$)/gim, (_, t) => '<h1>' + escapeHtml(t) + '</h1>')
+                .replace(/^## (.*$)/gim, (_, t) => '<h2>' + escapeHtml(t) + '</h2>')
+                .replace(/^### (.*$)/gim, (_, t) => '<h3>' + escapeHtml(t) + '</h3>')
+                .replace(/\*\*(.*)\*\*/gim, (_, t) => '<strong>' + escapeHtml(t) + '</strong>')
+                .replace(/\*(.*)\*/gim, (_, t) => '<em>' + escapeHtml(t) + '</em>')
+                .replace(/^- (.*$)/gim, (_, t) => '<li>' + escapeHtml(t) + '</li>')
+                .replace(/\[(.*?)\]\((.*?)\)/gim, (_, label, href) => '<a href="' + escapeHtml(href) + '" target="_blank">' + escapeHtml(label) + '</a>')
+                .replace(/`(.*?)`/gim, (_, t) => '<code>' + escapeHtml(t) + '</code>')
                 .replace(/\n/gim, '<br>');
         };
 

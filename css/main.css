@@ -2714,6 +2714,21 @@ body::before {
     transform: scale(1.1);
 }
 
+/* ----- Open source list (no icons, accent bar instead) ----- */
+.open-source-list .icon-list-item {
+    padding-left: 1rem;
+    border-left: 2px solid var(--border);
+    gap: 0;
+    transition: border-color var(--transition-fast),
+                background var(--transition-fast),
+                transform var(--transition-fast);
+}
+.open-source-list .icon-list-item:hover {
+    border-left-color: var(--accent);
+    background: var(--surface-hover);
+    transform: translateX(3px);
+}
+
 /* ----- Refined details/summary ----- */
 details {
     margin: var(--spacing-lg) 0;
@@ -3096,7 +3111,7 @@ a:hover {
     width: 40px;
     height: 40px;
     border-radius: var(--radius);
-    object-fit: cover;
+    object-fit: contain;
     background: var(--bg-tertiary);
     border: 1px solid var(--hairline);
     transition: transform var(--transition-base),
@@ -3130,6 +3145,16 @@ a:hover {
     background: var(--accent-soft);
     border-color: var(--border-accent);
     color: var(--accent);
+}
+
+/* Wide project card — spans full grid width */
+.project-card-wide {
+    grid-column: 1 / -1;
+}
+
+/* Hero about card — link-arrow needs margin-top */
+.hero-about-card .link-arrow {
+    margin-top: var(--spacing-md);
 }
 
 /* ----- Tech card desc refinement ----- */
@@ -3590,4 +3615,14 @@ textarea {
         right: var(--spacing-md);
         z-index: var(--z-fixed);
     }
+}
+
+/* ----- Utility: section spacing ----- */
+.mt-section {
+    margin-top: 4rem;
+}
+
+/* ----- Utility: hidden state ----- */
+.is-hidden {
+    display: none;
 }

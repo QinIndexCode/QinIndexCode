@@ -6,8 +6,8 @@
 
     <title>开源项目 - QinIndexCode | GitHub 项目、React Native、Vue.js</title>
     <meta name="title" content="开源项目 - QinIndexCode | GitHub 项目、React Native、Vue.js">
-    <meta name="description" content="QinIndexCode 开源项目展示，包括 React Native、Expo、Vue.js 等 GitHub 项目，涵盖烟草 AI 诊断、文档处理等实用工具">
-    <meta name="keywords" content="开源项目，React Native, Expo, Vue.js, GitHub 项目，Python, FastAPI, 烟草 AI, 文档处理">
+    <meta name="description" content="QinIndexCode 开源项目展示，包括 Expo 数据存储、AI Agent 工作台、网页截图工具、LLM 研究等 GitHub 项目">
+    <meta name="keywords" content="开源项目，Expo, Agent Workbench, Web Screenshot, ReflexLM, TypeScript, Python, GitHub 项目">
     <meta name="author" content="QinIndexCode">
     <meta name="robots" content="index, follow">
 
@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="QinIndexCode">
     <meta property="og:title" content="开源项目 - QinIndexCode">
     <meta property="og:description" content="开源项目展示，涵盖 React Native、Vue.js 等技术">
-    <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.jpg">
+    <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="开源项目 - QinIndexCode">
@@ -43,7 +43,10 @@
         <h2>开源项目</h2>
         <ul>
             <li><strong>expo-lite-data-store</strong>: Expo 应用的轻量级数据存储库，提供轻量快捷的本地存储解决方案。<a href="https://github.com/QinIndexCode/expo-lite-data-store">GitHub</a></li>
-            <li><strong>GitHub Reference 中文文档</strong>: GitHub Reference 速查表的中文文档项目。</li>
+            <li><strong>Agent Workbench</strong>: 本地优先的 AI Agent 工作台，支持权限控制、持久状态、Web UI 和 CLI。<a href="https://github.com/QinIndexCode/agent-workbench">GitHub</a></li>
+            <li><strong>web-screenshot-skill</strong>: 高质量网页截图工具，支持多分辨率、批处理，面向多模态 LLM 视觉分析。<a href="https://github.com/QinIndexCode/web-screenshot-skill">GitHub</a></li>
+            <li><strong>ReflexLM</strong>: 有界原生突触接口 (NSI) 运行时的实验实现，用于结构化命令选择。<a href="https://github.com/QinIndexCode/reflexlm">GitHub</a></li>
+            <li><strong>GitHub Reference 中文文档</strong>: GitHub Reference 速查表的中文文档项目。<a href="https://github.com/jaywcjlove/reference">GitHub</a></li>
         </ul>
     </div>
 </noscript>
@@ -59,27 +62,75 @@
                     <img src="assets/icons/leaf.svg" alt="expo-lite-data-store" class="project-icon">
                     <h3>expo-lite-data-store</h3>
                 </div>
-                <p class="project-desc">由本人主导开发的项目，用于 Expo 应用的轻量级数据存储库，旨在提供一个轻量快捷的本地存储解决方案。</p>
+                <p class="project-desc">由本人主导开发的项目，用于 Expo 应用的轻量级数据存储库，旨在提供一个轻量快捷的本地存储解决方案，支持比分散 JSON 文件更清晰的格式化能力。</p>
                 <div class="project-tags">
-                    <span class="tag">JavaScript</span>
                     <span class="tag">TypeScript</span>
                     <span class="tag">Expo</span>
                     <span class="tag">React Native</span>
+                    <span class="tag">MIT</span>
                 </div>
                 <a href="https://github.com/QinIndexCode/expo-lite-data-store" class="link-arrow" target="_blank" rel="noopener noreferrer">查看项目</a>
             </div>
 
-            <!-- 项目 2：GitHub Reference 中文文档 -->
+            <!-- 项目 2：Agent Workbench -->
             <div class="card glass animate-fade-in-left delay-300 glow-border">
+                <div class="project-header">
+                    <img src="assets/icons/agent-workbench.png" alt="Agent Workbench" class="project-icon">
+                    <h3>Agent Workbench</h3>
+                </div>
+                <p class="project-desc">本地优先的 AI Agent 工作台，支持基于风险的权限审批、加密 SQLite 持久状态、多模型供应商配置（OpenAI / Anthropic / Gemini）、Web UI 和 CLI。</p>
+                <div class="project-tags">
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">React</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">SQLite</span>
+                </div>
+                <a href="https://github.com/QinIndexCode/agent-workbench" class="link-arrow" target="_blank" rel="noopener noreferrer">查看项目</a>
+            </div>
+
+            <!-- 项目 3：web-screenshot-skill -->
+            <div class="card glass animate-fade-in-up delay-200 glow-border">
+                <div class="project-header">
+                    <img src="assets/icons/screenshot.svg" alt="web-screenshot-skill" class="project-icon">
+                    <h3>web-screenshot-skill</h3>
+                </div>
+                <p class="project-desc">高质量网页截图工具，支持 12 种设备预设、批量处理、高 DPI 渲染、暗色模式和元数据生成，专为多模态 LLM 视觉分析设计。</p>
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Playwright</span>
+                    <span class="tag">LLM</span>
+                    <span class="tag">MIT</span>
+                </div>
+                <a href="https://github.com/QinIndexCode/web-screenshot-skill" class="link-arrow" target="_blank" rel="noopener noreferrer">查看项目</a>
+            </div>
+
+            <!-- 项目 4：ReflexLM -->
+            <div class="card glass animate-fade-in-left delay-300 glow-border">
+                <div class="project-header">
+                    <img src="assets/icons/neural.svg" alt="ReflexLM" class="project-icon">
+                    <h3>ReflexLM</h3>
+                </div>
+                <p class="project-desc">有界原生突触接口 (NSI) 运行时的实验实现，聚焦于可证伪的机制验证，包含结构化受体、显著性与抑制模型、以及受控命令选择基准测试。</p>
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Research</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">MIT</span>
+                </div>
+                <a href="https://github.com/QinIndexCode/reflexlm" class="link-arrow" target="_blank" rel="noopener noreferrer">查看项目</a>
+            </div>
+
+            <!-- 项目 5：GitHub Reference 中文文档 -->
+            <div class="card glass animate-fade-in-up delay-200 glow-border project-card-wide">
                 <div class="project-header">
                     <img src="assets/icons/reference.svg" alt="GitHub Reference 中文文档" class="project-icon">
                     <h3>GitHub Reference 中文文档</h3>
                 </div>
-                <p class="project-desc">推荐该项目，因为它是一个非常好的资源，提供了 Reference 速查表的中文文档。</p>
+                <p class="project-desc">参与编写面向开发者的技术速查清单集合，整理常见技术、工具与开发流程，帮助快速查阅关键信息，提高开发效率。该项目已获得 15.1k Stars。</p>
                 <div class="project-tags">
-                    <span class="tag">Vue.js</span>
                     <span class="tag">Documentation</span>
-                    <span class="tag">GitHub</span>
+                    <span class="tag">Open Source</span>
+                    <span class="tag">15.1k Stars</span>
                 </div>
                 <a href="https://github.com/jaywcjlove/reference" class="link-arrow" target="_blank" rel="noopener noreferrer">查看项目</a>
             </div>

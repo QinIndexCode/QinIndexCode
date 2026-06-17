@@ -77,12 +77,25 @@
     text-align: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-lg);
+    border-radius: var(--radius);
+    transition: transform var(--transition-base),
+                background var(--transition-base);
+}
+
+.donate-usage-item:hover {
+    transform: translateY(-2px);
+    background: var(--surface-hover);
+}
+
+.donate-usage-item:hover .donate-usage-icon {
+    transform: scale(1.1);
 }
 
 .donate-usage-icon {
     width: 40px;
     height: 40px;
     color: var(--accent);
+    transition: transform var(--transition-base);
 }
 
 .donate-usage-title {

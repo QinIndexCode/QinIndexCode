@@ -19,7 +19,7 @@
     <meta property="og:site_name" content="QinIndexCode">
     <meta property="og:title" content="技术博客文章 - QinIndexCode">
     <meta property="og:description" content="分享 JavaScript、前端开发、后端开发等技术文章">
-    <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.jpg">
+    <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -41,7 +41,8 @@
     <script src="./js/redirect-if-standalone.js" defer></script>
     <script src="./js/nav-loader.js" defer></script>
     <script src="./js/theme-listener.js" defer></script>
-    <!-- blogs-data.js removed: articles are loaded dynamically via fetch -->
+    <!-- blogs-data.js 提供文章元数据回退（在 file:// 或 fetch 失败时使用） -->
+    <script src="./js/blogs-data.js"></script>
     <script src="./js/perf-detect.js"></script>
     <script src="./js/ui-controls.js" defer></script>
 
@@ -63,7 +64,7 @@
             "name": "QinIndexCode",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://qinindexcode.site/assets/images/avatar.jpg"
+                "url": "https://qinindexcode.site/assets/images/avatar.webp"
             }
         },
         "inLanguage": "zh-CN"
@@ -259,7 +260,7 @@
                     <use href="#i-search"></use>
                 </svg>
                 <input type="text" id="search-input" placeholder="搜索文章标题或内容..." autocomplete="off">
-                <button class="clear-search" id="clear-search" style="display: none;">
+                <button class="clear-search is-hidden" id="clear-search">
                     <svg class="icon" aria-hidden="true">
                         <use href="#i-x"></use>
                     </svg>
@@ -298,7 +299,7 @@
         </div>
 
         <!-- 搜索结果统计 -->
-        <div class="search-stats" id="search-stats" style="display: none;">
+        <div class="search-stats is-hidden" id="search-stats">
             <span id="stats-text"></span>
         </div>
 
@@ -308,7 +309,7 @@
         </div>
 
         <!-- 空状态提示 -->
-        <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-state is-hidden" id="empty-state">
             <svg class="icon" style="width:64px;height:64px;opacity:0.5;margin-bottom:1.5rem;" aria-hidden="true">
                 <use href="#i-search"></use>
             </svg>
@@ -330,7 +331,7 @@
     <script src="./js/highlight.min.js"></script>
     <script>
         const md = window.markdownit({
-            html: true,
+            html: false, // 禁用原始 HTML 渲染，防止 XSS
             linkify: true,
             typographer: true,
             highlight: function (str, lang) {
@@ -345,8 +346,9 @@
             }
         });
 
-        let blogData = [];
-        let filteredBlogs = [];
+        // 优先使用内联的 blogs-data.js（在 file:// 协议下 fetch 被 CORS 阻止时作为回退）
+        let blogData = (typeof window !== 'undefined' && window.QINBLOG_BLOGS) ? [...window.QINBLOG_BLOGS] : [];
+        let filteredBlogs = [...blogData];
         let currentFilter = 'all';
         let searchQuery = '';
 
@@ -495,6 +497,8 @@
             const loadedBlogs = [];
             let index = 1;
             let consecutiveErrors = 0;
+            let consecutiveNotFound = 0;
+            const MAX_NOT_FOUND = 3; // 连续 3 次 404 才停止，允许中间有缺失序号
 
             while (true) {
                 const num = String(index).padStart(3, '0');
@@ -503,7 +507,13 @@
 
                 try {
                     const res = await fetch(filePath);
-                    if (!res.ok) break; // 404 or other error = no more articles
+                    if (!res.ok) {
+                        // 404 或其他 HTTP 错误：继续尝试下一篇
+                        consecutiveNotFound++;
+                        if (consecutiveNotFound >= MAX_NOT_FOUND) break;
+                        index++;
+                        continue;
+                    }
                     const content = await res.text();
                     try {
                         loadedBlogs.push(parseBlogContent(fileName, content));
@@ -520,8 +530,14 @@
                     if (consecutiveErrors >= 3) break;
                     continue;
                 }
-                consecutiveErrors = 0; // 成功则重置错误计数
+                consecutiveErrors = 0;
+                consecutiveNotFound = 0; // 成功则重置缺失计数
                 index++;
+            }
+
+            if (loadedBlogs.length === 0 && blogData.length > 0) {
+                // fetch 未加载到任何文章（如 file:// 协议下 CORS 阻止），使用 blogs-data.js 的回退数据
+                loadedBlogs.push(...blogData);
             }
 
             if (loadedBlogs.length === 0) {
@@ -573,7 +589,7 @@
                     "name": "QinIndexCode",
                     "logo": {
                         "@type": "ImageObject",
-                        "url": "https://qinindexcode.site/assets/images/avatar.jpg"
+                        "url": "https://qinindexcode.site/assets/images/avatar.webp"
                     }
                 },
                 "blogPost": {
@@ -755,16 +771,17 @@
                 cleanupReadingProgress();
             }
 
-            // 如果是从详情页返回，恢复初始页面结构
+            // 如果是从详情页返回，直接重新渲染列表（保留当前过滤/搜索状态）
             const blogDetail = container.querySelector('.blog-detail-card');
             if (blogDetail) {
-                if (initialPageHTML) {
-                    container.innerHTML = initialPageHTML;
-                    // 重新渲染过滤标签（因为 innerHTML 被重置了）
-                    renderFilterTags();
-                    renderBlogListContent();
-                    return;
-                }
+                container.innerHTML = initialPageHTML || '';
+                renderFilterTags();
+                renderBlogListContent();
+                // 恢复搜索输入框的值
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) searchInput.value = searchQuery;
+                updateClearButton();
+                return;
             }
 
             renderBlogListContent();
@@ -776,19 +793,19 @@
             if (!blogList) return;
 
             const emptyState = document.getElementById('empty-state');
-            if (emptyState) emptyState.style.display = 'none';
+            if (emptyState) emptyState.classList.add('is-hidden');
 
             if (filteredBlogs.length === 0) {
-                blogList.style.display = 'none';
-                if (emptyState) emptyState.style.display = 'block';
+                blogList.classList.add('is-hidden');
+                if (emptyState) emptyState.classList.remove('is-hidden');
                 return;
             }
 
-            blogList.style.display = '';
-            if (emptyState) emptyState.style.display = 'none';
+            blogList.classList.remove('is-hidden');
+            if (emptyState) emptyState.classList.add('is-hidden');
 
             const blogCardsHTML = filteredBlogs.map(blog =>
-                '<div class="card blog-card glow-border" onclick="openBlog(\'' + blog.id + '\')" tabindex="0" role="link" aria-label="阅读文章：' + escapeHtml(blog.title) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
+                '<div class="card blog-card glow-border" data-blog-id="' + escapeHtml(blog.id) + '" tabindex="0" role="link" aria-label="阅读文章：' + escapeHtml(blog.title) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
                 '<h3 itemprop="headline">' + escapeHtml(blog.title) + '</h3>' +
                 '<div class="blog-card-meta">' +
                 '<span class="meta-item"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"></use></svg><time itemprop="datePublished" datetime="' + blog.date + '">' + blog.date + '</time></span>' +
@@ -860,6 +877,21 @@
                     tag.classList.add('active');
                     currentFilter = tag.dataset.filter;
                     filterAndSortBlogs();
+                }
+                // 博客卡片点击（事件委托，避免 XSS 风险）
+                const card = e.target.closest('.blog-card');
+                if (card && card.dataset.blogId) {
+                    openBlog(card.dataset.blogId);
+                }
+            });
+
+            // 博客卡片键盘事件（Enter / Space 触发打开）
+            container.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                const card = e.target.closest('.blog-card');
+                if (card && card.dataset.blogId) {
+                    e.preventDefault();
+                    openBlog(card.dataset.blogId);
                 }
             });
 
@@ -983,7 +1015,7 @@
 
         function updateClearButton() {
             const clearSearch = document.getElementById('clear-search');
-            clearSearch.style.display = searchQuery ? 'flex' : 'none';
+            clearSearch.classList.toggle('is-hidden', !searchQuery);
         }
 
         function filterAndSortBlogs() {
@@ -1031,10 +1063,10 @@
             const statsText = document.getElementById('stats-text');
 
             if (searchQuery || currentFilter !== 'all') {
-                statsEl.style.display = 'block';
+                statsEl.classList.remove('is-hidden');
                 statsText.textContent = `找到 ${filteredBlogs.length} 篇相关文章（共 ${blogData.length} 篇）`;
             } else {
-                statsEl.style.display = 'none';
+                statsEl.classList.add('is-hidden');
             }
         }
 
@@ -1124,7 +1156,12 @@
                 cleanupReadingProgress();
             }
 
+            // 重置 Giscus 重试计数，确保新博客的评论可以正常加载
+            giscusRetryCount = 0;
+
             isOpeningBlog = true;
+            let openSuccess = false;
+            try {
 
             // Fetch full article content for detail view
             let articleContent = blog.content;
@@ -1275,7 +1312,7 @@
                 // 初始化功能
                 loadLikeCount(discussionId);
                 loadGiscus(discussionId);
-                setupGiscusThemeListener();
+                // setupGiscusThemeListener 已在 loadGiscus 内部调用，避免重复注册
                 generateTOC();
                 setupReadingProgress();
                 setupCodeCopyButtons();
@@ -1301,24 +1338,42 @@
 
                 // 通知父页面同步 hash（使主页面 URL 也包含博客 ID，刷新后可恢复）
                 if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ type: 'qinblog-hash-update', hash: '#' + blogId, pageId: 'blogs' }, '*');
+                    try {
+                        const parentOrigin = window.location.origin;
+                        window.parent.postMessage({ type: 'qinblog-hash-update', hash: '#' + blogId, pageId: 'blogs' }, parentOrigin);
+                    } catch (e) { /* ignore cross-origin postMessage errors */ }
                 }
 
                 // 动态更新 Open Graph 标签，使社交分享显示当前文章信息
-                const desc = blog.excerpt || (blog.content || '').substring(0, 120).replace(/[#*\n]/g, '');
+                const desc = blog.excerpt || (blog.content || '').substring(0, 155).replace(/[#*\n]/g, '');
                 updateMetaTag('og:title', blog.title + ' - QinIndexCode');
                 updateMetaTag('og:description', desc);
                 updateMetaTag('og:url', 'https://qinindexcode.site/blogs.html#' + blogId);
+                updateMetaTag('og:type', 'article');
+                updateMetaTag('article:published_time', blog.date);
+                updateMetaTag('article:author', blog.author || 'QinIndexCode');
+                updateNameMetaTag('description', desc);
                 updateNameMetaTag('twitter:title', blog.title + ' - QinIndexCode');
                 updateNameMetaTag('twitter:description', desc);
                 document.title = blog.title + ' - QinIndexCode';
 
                 setTimeout(() => {
-                    container.classList.remove('fade-in');
-                    isOpeningBlog = false; // 重置标志
+                    try {
+                        container.classList.remove('fade-in');
+                    } finally {
+                        isOpeningBlog = false; // 重置标志
+                    }
                 }, 300);
             }, 300);
+        } catch (e) {
+            console.error('打开博客详情时发生错误:', e);
+        } finally {
+            // 保底重置：即使异步流程中发生未捕获异常，也能在稍后解锁
+            if (isOpeningBlog) {
+                setTimeout(() => { isOpeningBlog = false; }, 600);
+            }
         }
+    }
 
         // 提取标签
         function extractTags(content) {
@@ -1391,6 +1446,7 @@
             script.setAttribute('data-input-position', 'top');
             script.setAttribute('data-theme', theme);
             script.setAttribute('data-lang', 'zh-CN');
+            script.setAttribute('data-loading', 'lazy'); // 官方推荐：懒加载优化性能
 
             // 设置超时处理
             const timeoutId = setTimeout(() => {
@@ -1530,52 +1586,61 @@
             giscusThemeListeners = [];
         }
 
-        // 设置 Giscus 主题监听器（简化优化版）
+        // 设置 Giscus 主题监听器（官方推荐：监听 themeChanged 事件 + MutationObserver 兜底）
         function setupGiscusThemeListener() {
             // 先清理之前的监听器，防止重复创建
             cleanupGiscusThemeListeners();
 
             let lastTheme = getCurrentTheme();
 
-            // 统一方案：使用 postMessage 与父窗口通信
-            if (window.parent !== window) {
-                const themeChangeHandler = (e) => {
-                    // 只处理来自父窗口的消息
-                    if (e.source !== window.parent) return;
+            // 方案一：监听同窗口的 themeChanged 事件（theme-listener.js 触发）
+            const themeChangeHandler = (e) => {
+                const newTheme = e.detail?.theme;
+                if (newTheme && newTheme !== lastTheme) {
+                    lastTheme = newTheme;
+                    updateGiscusTheme(newTheme);
+                }
+            };
+            window.addEventListener('themeChanged', themeChangeHandler);
+            giscusThemeListeners.push({
+                target: window,
+                type: 'themeChanged',
+                handler: themeChangeHandler
+            });
 
-                    const newTheme = e.data?.giscus?.theme || e.detail?.theme;
-                    if (newTheme && newTheme !== lastTheme) {
+            // 方案二：监听 postMessage（兼容父窗口直接发送主题消息）
+            const messageHandler = (e) => {
+                if (e.source !== window.parent) return;
+                if (e.data?.type === 'qinblog-theme' && e.data.vars) {
+                    const bg = e.data.vars['--bg-primary'] || '';
+                    const newTheme = (bg === '#0C0A09' || bg === '#0c0a09') ? 'dark' : 'light';
+                    if (newTheme !== lastTheme) {
                         lastTheme = newTheme;
                         updateGiscusTheme(newTheme);
                     }
-                };
+                }
+            };
+            window.addEventListener('message', messageHandler);
+            giscusThemeListeners.push({
+                target: window,
+                type: 'message',
+                handler: messageHandler
+            });
 
-                // 监听 CustomEvent
-                window.parent.addEventListener('themeChanged', themeChangeHandler);
-                giscusThemeListeners.push({
-                    target: window.parent,
-                    type: 'themeChanged',
-                    handler: themeChangeHandler
-                });
-
-                // 监听 postMessage
-                const messageHandler = (e) => {
-                    if (e.source !== window.parent) return;
-                    if (e.data?.type === 'themeChange') {
-                        const newTheme = e.data.theme;
-                        if (newTheme && newTheme !== lastTheme) {
+            // 方案三：MutationObserver 兜底（直接观察 html class/style 变化）
+            const observer = new MutationObserver((mutations) => {
+                for (const mutation of mutations) {
+                    if (mutation.type === 'attributes') {
+                        const newTheme = getCurrentTheme();
+                        if (newTheme !== lastTheme) {
                             lastTheme = newTheme;
                             updateGiscusTheme(newTheme);
                         }
                     }
-                };
-                window.addEventListener('message', messageHandler);
-                giscusThemeListeners.push({
-                    target: window,
-                    type: 'message',
-                    handler: messageHandler
-                });
-            }
+                }
+            });
+            observer.observe(document.documentElement, { attributes: true });
+            giscusThemeObservers.push(observer);
 
             // 页面卸载时清理（使用 pagehide 替代废弃的 unload）
             window.addEventListener('pagehide', cleanupGiscusThemeListeners);
@@ -1882,12 +1947,19 @@
             isInDetailMode = false;
             // 通知父页面清除 hash
             if (window.parent && window.parent !== window) {
-                window.parent.postMessage({ type: 'qinblog-hash-update', hash: '', pageId: 'blogs' }, '*');
+                try {
+                    const parentOrigin = window.location.origin;
+                    window.parent.postMessage({ type: 'qinblog-hash-update', hash: '', pageId: 'blogs' }, parentOrigin);
+                } catch (e) { /* ignore cross-origin postMessage errors */ }
             }
             // 恢复原始 meta 标签
             updateMetaTag('og:title', '技术博客文章 - QinIndexCode');
             updateMetaTag('og:description', '分享 JavaScript、前端开发、后端开发等技术文章');
             updateMetaTag('og:url', 'https://qinindexcode.site/blogs.html');
+            updateMetaTag('og:type', 'website');
+            updateMetaTag('article:published_time', '');
+            updateMetaTag('article:author', '');
+            updateNameMetaTag('description', 'QinIndexCode 技术博客，分享 JavaScript、前端开发、后端开发、React、Vue、Node.js 等技术文章和实战经验');
             updateNameMetaTag('twitter:title', '技术博客文章 - QinIndexCode');
             updateNameMetaTag('twitter:description', '分享 JavaScript、前端开发、后端开发等技术文章');
             document.title = '技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发';
