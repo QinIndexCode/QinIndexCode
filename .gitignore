@@ -64,6 +64,9 @@ ehthumbs.db
 *~
 
 # Package manager files
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Astro build artifacts
+.astro/
+dist/

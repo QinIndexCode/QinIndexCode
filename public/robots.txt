@@ -1,0 +1,15 @@
+# robots.txt for QinIndexCode Blog
+# https://qinindexcode.site/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://qinindexcode.site/sitemap.xml
+Llms-txt: /llms.txt
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1
+
+# Allow all content for search engines
+# This is a personal blog, all content is public
