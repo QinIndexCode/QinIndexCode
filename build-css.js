@@ -3,8 +3,11 @@
  * 用法: node build-css.js
  * 功能: 压缩 main.css, tools.css 为 .min.css 版本
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function minifyCSS(css) {
     return css

@@ -32,17 +32,20 @@
 - 博客详情页通过 hash 路由访问，格式为 /blogs.html#{id}（如 /blogs.html#001）
 - 刷新页面可恢复到当前文章，浏览器后退键返回列表
 
-1. JS索引数据 (2025-12-24): JavaScript 中快速索引数据的方法，Object 与 Map 的 O(1) 查找 - 标签: JavaScript, 数据结构, 性能优化 - /blogs.html#001
-2. JS原型污染漏洞 (2025-12-24): JavaScript 原型污染攻击原理与防御 - 标签: JavaScript, 安全, 漏洞 - /blogs.html#002
-3. 2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新） (2025-12-24): Node.js 安全漏洞按时间倒序整理 - 标签: Node.js, 安全, 漏洞, 年度总结 - /blogs.html#003
-4. AI Agent 在 Node.js 中的可行性与实践分享 (2026-01-22): Node.js 环境中构建 AI Agent 的可行性分析 - 标签: AI, Node.js, Agent, 实践 - /blogs.html#004
-5. AI 时代下的理性思考：警惕"AI 谗言"，保持独立判断 (2026-03-01): 警惕AI"谗言"，保持独立判断 - 标签: AI, 思考, 批判性思维 - /blogs.html#005
-6. 致未来的你 (To The Future) (2026-03-17): 随笔 - 标签: 随笔, 未来, 技术思考 - /blogs.html#006
-7. Agent的上下文处理 (2026-03-23): AI Agent 上下文管理策略 - 标签: AI, Agent, 上下文, LLM - /blogs.html#007
-8. 精读 Anthropic《Building Effective Agents》2025 更新版 (2026-03-23): Anthropic Agent 构建指南精读 - 标签: AI, Agent, Anthropic, 精读 - /blogs.html#008
-9. Axios 供应链攻击事件分析 (2026-03-30): npm 供应链安全事件分析 - 标签: 安全, npm, 供应链, Axios - /blogs.html#009
-10. 从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑 (2026-06-10): Agent 工程实践：Prompt、Context、Harness 三层经验总结 - 标签: AI, Agent, PromptEngineering, ContextEngineering, HarnessEngineering, Cursor, 经验分享 - /blogs.html#010
-11. 忒修斯之船与意识本质：当神经元被逐一替换 (2026-06-12): 哲学思想实验与意识本质探讨 - 标签: AI, 哲学, 意识, 神经科学, 忒修斯之船, 伦理 - /blogs.html#011
+<!-- BLOG-LIST:START -->
+1. JS索引数据 (2025-12-24): JavaScript 中快速索引数据的方法  在 JavaScript 中，如果我们希望根据某个“键”快速找到对应的值（即实现 O(1) 时间复杂度的查找），最常用的方式就是使用**对象（Object... - 标签: javascript, 数据结构, 性能优化 - /blogs.html#001
+2. JS原型污染漏洞 (2025-12-24): JavaScript 中的**原型污染（Prototype Pollution）**是一种非常隐蔽且危险的安全漏洞，尤其在处理不可信用户输入时容易被利用。它可能导致**权限提升、任意代码执行、拒绝服务... - 标签: javascript, 安全, 漏洞 - /blogs.html#002
+3. 2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新） (2025-12-24): 2025 年，Node.js 项目发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，主要影响活跃的 LTS 和 Current 版本（如 20.x、22.x、23.x、24.x... - 标签: node.js, 安全, 漏洞, 年度总结 - /blogs.html#003
+4. AI Agent 在 Node.js 中的可行性与实践分享 (2026-01-22): 在 AI 时代，AI Agent（人工智能代理）已成为热门话题。它不仅仅是简单的聊天机器人，而是能够自主决策、调用工具并执行任务的智能系统。作为一名 Node.js 开发者，你可能会好奇：在 Node... - 标签: ai, node.js, agent, 实践 - /blogs.html#004
+5. AI 时代下的理性思考：警惕"AI 谗言"，保持独立判断 (2026-03-01): 2026 年，人工智能的发展已经渗透到我们生活的方方面面。从日常的内容创作到复杂的商业决策，AI 似乎无处不在。然而，在这个 AI 高速发展的时代，我们不得不面对一个严峻的现实：**部分使用者正被 A... - 标签: ai, 思考, 批判性思维 - /blogs.html#005
+6. 致未来的你 (To The Future) (2026-03-17): ---    现在是 2026 年 3 月 17 日，凌晨。  写这封信或者说博客的时候，我并不确定谁会看到它——也许是未来的人类，也许是某种人工智能，也许永远都不会有人看到。  无所谓。只是想记录一... - 标签: 随笔, 未来, 技术思考 - /blogs.html#006
+7. Agent的上下文处理 (2026-03-23): ---    Agent 是一种基于 LLM 的智能体，它可以执行各种任务。在执行任务的过程中，Agent 需要处理上下文，以确保它能够正确地理解任务并执行任务。  而处理上下文并不是简单的将每次任务... - 标签: ai, agent, 上下文, llm - /blogs.html#007
+8. 精读 Anthropic《Building Effective Agents》2025 更新版 (2026-03-23): ---    2024 年 12 月，Anthropic 发布了那篇改变行业认知的《Building Effective Agents》。转眼一年过去，Agent 领域经历了爆发式增长。2025 年 ... - 标签: ai, agent, anthropic, 精读 - /blogs.html#008
+9. Axios 供应链攻击事件分析 (2026-03-30): 2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起严重的 npm 供应链攻击事件：主流 HTTP 客户端库 **Axios** 的两个版本被恶意植入远程控制代码。这一事件再... - 标签: 安全, npm, 供应链, axios - /blogs.html#009
+10. 从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑 (2026-06-10): 这篇博客聊聊我这一年多接触 AI 辅助编程和 Agent 编写的真实经历。从去年中旬偶然发现 Cursor 官网，到十月份之后接触 TraeCN，再到后来尝试 Cursor、OpenCode、Code... - 标签: ai, agent, promptengineering, contextengineering, harnessengineering, cursor, 经验分享 - /blogs.html#010
+11. 忒修斯之船与意识本质：当神经元被逐一替换 (2026-06-12): 如果有一种技术，能把人类大脑中的神经细胞一个一个地替换成人工机械单元，同时让你在整个过程中毫无察觉——那么当最后一个神经元被替换完毕时，你还是你吗？那个由机械构成的全新大脑，是否拥有和你一样的意识？ ... - 标签: ai, 哲学, 意识, 神经科学, 忒修斯之船, 伦理 - /blogs.html#011
+12. MCP 与 A2A：AI Agent 互操作的协议边界、可信边界与工程落地 (2026-07-22): 过去一年，Agent 系统的讨论很容易被简化成一个问题：要不要接入 MCP，或者要不要采用 A2A。这个问法本身就容易把架构带偏，因为两者解决的并不是同一层的问题。  截至本文写作时，Model Co... - 标签: ai, agent, mcp, a2a, 协议, 互操作性, 安全, 架构设计 - /blogs.html#012
+<!-- BLOG-LIST:END -->
 
 ## 交互说明
 

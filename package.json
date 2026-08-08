@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "blogs:build": "node build-blogs.js",
+    "css:build": "node build-css.js",
+    "sync:public": "node sync-public.js",
+    "build": "npm run blogs:build && npm run css:build && npm run sync:public && astro build",
     "preview": "astro preview",
     "check": "astro check"
   },
