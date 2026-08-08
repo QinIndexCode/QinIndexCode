@@ -2,8 +2,6 @@
     'use strict';
 
     var registry = {};
-    var _glowRaf = null;
-    var _glowCards = [];
     var _glowDefaultRadius = 60;
     var _glowAngleOffset = (function () {
         var peak = 55;
@@ -267,7 +265,9 @@
 
         // 根据性能检测结果决定是否启用光晕效果
         var perfLevel = (window.QinBlogPerf && window.QinBlogPerf.getLevel()) || 'medium';
-        var _glowDisabled = _isMobile || perfLevel === 'low';
+        // Mouse-tracked conic gradients are expensive. They are decorative,
+        // so only enable them after the device was positively classified high.
+        var _glowDisabled = _isMobile || perfLevel !== 'high';
 
         if (_glowDisabled) {
             // 低性能设备：跳过所有 JS 光晕逻辑，仅保留 CSS hover 效果
@@ -275,45 +275,39 @@
             return;
         }
 
-        var cards = document.querySelectorAll('.glow-border');
+        var cards = document.querySelectorAll('.glow-border:not([data-glow-initialized])');
         Array.prototype.forEach.call(cards, function (card) {
-            if (card._glowInitialized) return;
-            card._glowInitialized = true;
+            card.dataset.glowInitialized = 'true';
 
             var cs = window.getComputedStyle(card);
             var r = parseFloat(cs.getPropertyValue('--glow-radius').trim());
             card.dataset.glowRadius = isFinite(r) ? r : _glowDefaultRadius;
 
-            _glowCards.push(card);
-        });
+            var rafId = null;
+            var pointerX = 0;
+            var pointerY = 0;
 
-        if (!_glowRaf) {
-            function onPointer(mx, my) {
-                if (_glowRaf) return;
-                _glowRaf = requestAnimationFrame(function () {
-                    _glowRaf = null;
-                    Array.prototype.forEach.call(_glowCards, function (card) {
-                        var rect = card.getBoundingClientRect();
-                        var dx = Math.max(rect.left - mx, mx - rect.right, 0);
-                        var dy = Math.max(rect.top - my, my - rect.bottom, 0);
-                        var dist = Math.sqrt(dx * dx + dy * dy);
-
-                        var cx = rect.left + rect.width / 2;
-                        var cy = rect.top + rect.height / 2;
-                        var angle = Math.atan2(my - cy, mx - cx) * (180 / Math.PI) + _glowAngleOffset;
-                        card.style.setProperty('--mouse-angle', angle);
-
-                        var radius = parseFloat(card.dataset.glowRadius) || _glowDefaultRadius;
-                        var intensity = Math.max(0, 1 - dist / radius);
-                        card.style.setProperty('--glow-intensity', intensity);
-                    });
-                });
+            function updateGlow() {
+                rafId = null;
+                var rect = card.getBoundingClientRect();
+                var angle = Math.atan2(pointerY - (rect.top + rect.height / 2), pointerX - (rect.left + rect.width / 2))
+                    * (180 / Math.PI) + _glowAngleOffset;
+                card.style.setProperty('--mouse-angle', angle);
+                card.style.setProperty('--glow-intensity', '1');
             }
 
-            document.addEventListener('mousemove', function (e) {
-                onPointer(e.clientX, e.clientY);
+            card.addEventListener('pointerenter', function () {
+                card.style.setProperty('--glow-intensity', '1');
             });
-        }
+            card.addEventListener('pointermove', function (event) {
+                pointerX = event.clientX;
+                pointerY = event.clientY;
+                if (!rafId) rafId = requestAnimationFrame(updateGlow);
+            });
+            card.addEventListener('pointerleave', function () {
+                card.style.setProperty('--glow-intensity', '0');
+            });
+        });
     }
 
     window.__csGet = function (id) {
