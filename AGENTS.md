@@ -21,3 +21,10 @@
 - `css/` 根目录是唯一事实源；改 CSS 后必须运行 `node build-css.js`（生成 `*.min.css`）再运行 `node sync-public.js`（同步到 `public/`）
 - HTML 源文件在 `src/legacy/`，无 public 副本（SPA 构建时生成）
 - 新增/修改博客文章：`blogs/*.md`，运行 `node build-blogs.js`
+
+## 多语言（i18n）
+- 词典：`i18n/{lang}.json`（扁平 key，如 `nav.home`）；新增语言 = 新增 JSON + 在 `js/i18n.js` 的 `SUPPORTED` 数组登记
+- 标记：元素加 `data-i18n="key"`（文本）或 `data-i18n-aria-label` / `-title` / `-placeholder` / `-alt`；动态内容用 `QinBlogI18n.reload(root)` 重新应用
+- `js/i18n.js` 内嵌 zh-CN 兜底词典，改 `i18n/zh-CN.json` 时必须同步更新它
+- 语言偏好存 `localStorage('qinblog_lang')`，同源 iframe 靠 `storage` 事件自动同步
+- 切换器固定在右上角（`.theme-selector` 内 `.lang-switch`），SPA 壳（`src/legacy/index.html`）与 `js/nav-loader.js` 注入版各有一份

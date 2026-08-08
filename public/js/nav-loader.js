@@ -17,15 +17,18 @@
     const path = window.location.pathname.replace(/^\/|\/$/g, '');
     const currentPage = path.replace(/\.html$/, '').replace(/\/$/, '') || 'home';
 
+    // 语言适配：优先使用 i18n 词典，未加载时回退中文
+    const L = (key, zh) => (window.QinBlogI18n ? window.QinBlogI18n.t(key) : zh);
+
     // 导航配置
     const navItems = [
-        { id: 'home',    label: '首页',  icon: '#i-home',     href: './' },
-        { id: 'tech',    label: '技术',  icon: '#i-code',     href: './tech.html' },
-        { id: 'projects',label: '项目',  icon: '#i-folder',    href: './projects.html' },
-        { id: 'blogs',   label: '随记',  icon: '#i-book-open', href: './blogs.html' },
-        { id: 'tools',   label: '工具',  icon: '#i-wrench',    href: './tools.html' },
-        { id: 'donate',  label: '捐赠',  icon: '#i-heart',     href: './donate.html' },
-        { id: 'about',   label: '关于',  icon: '#i-user',      href: './about.html' }
+        { id: 'home',    label: L('nav.home', '首页'),  icon: '#i-home',     href: './' },
+        { id: 'tech',    label: L('nav.tech', '技术'),  icon: '#i-code',     href: './tech.html' },
+        { id: 'projects',label: L('nav.projects', '项目'), icon: '#i-folder', href: './projects.html' },
+        { id: 'blogs',   label: L('nav.blogs', '随记'),  icon: '#i-book-open', href: './blogs.html' },
+        { id: 'tools',   label: L('nav.tools', '工具'),  icon: '#i-wrench',    href: './tools.html' },
+        { id: 'donate',  label: L('nav.donate', '捐赠'), icon: '#i-heart',     href: './donate.html' },
+        { id: 'about',   label: L('nav.about', '关于'),  icon: '#i-user',      href: './about.html' }
     ];
 
     // 生成导航菜单 HTML
@@ -35,7 +38,7 @@
             <li class="nav-item" role="none">
                 <a href="${item.href}" class="nav-link${isActive ? ' active' : ''}" role="menuitem">
                     <svg class="icon" aria-hidden="true"><use href="${item.icon}"></use></svg>
-                    <span>${item.label}</span>
+                    <span data-i18n="nav.${item.id}">${item.label}</span>
                 </a>
             </li>
         `;
@@ -50,6 +53,10 @@
         </button>
 
         <div class="theme-selector" id="theme-selector">
+            <div class="lang-switch" id="lang-switch" role="group" aria-label="切换语言">
+                <button type="button" class="lang-opt" data-lang="zh-CN" aria-pressed="true">中</button>
+                <button type="button" class="lang-opt" data-lang="en-US" aria-pressed="false">EN</button>
+            </div>
             <button class="theme-btn" id="theme-btn" aria-label="切换主题" aria-pressed="true">
                 <svg class="icon icon-md theme-icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
                 <svg class="icon icon-md theme-icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
@@ -132,5 +139,12 @@
     // 窗口 resize 到桌面端时关闭侧边栏
     window.addEventListener('resize', () => {
         if (window.innerWidth > 900) closeSidebar();
+    });
+
+    // 语言切换后重新应用注入的导航栏文案
+    document.addEventListener('qinblog:langchange', () => {
+        if (window.QinBlogI18n) {
+            window.QinBlogI18n.apply(document.getElementById('standalone-nav'));
+        }
     });
 })();

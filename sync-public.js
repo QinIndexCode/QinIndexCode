@@ -18,7 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = __dirname;
 const pub = path.join(__dirname, 'public');
 
-const DIRS = ['js', 'css', 'blogs', 'assets'];
+const DIRS = ['js', 'css', 'blogs', 'assets', 'i18n'];
 const FILES = [
     'feed.xml', 'sitemap.xml', 'robots.txt', 'llms.txt',
     'donations.md', 'README.md', 'CNAME', 'sw.js', '.nojekyll'

@@ -980,6 +980,50 @@ body::before {
     top: 1.5rem;
     right: 2rem;
     z-index: var(--z-fixed);
+    display: flex;
+    align-items: center;
+}
+
+/* 语言切换胶囊（与主题按钮同组，右上角全局偏好区） */
+.lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    margin-right: 0.625rem;
+    border-radius: var(--radius-full);
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--surface) 100%, var(--text-primary) 4%) 0%,
+            var(--surface) 100%);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-sm);
+    vertical-align: top;
+}
+
+.lang-opt {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    padding: 0 0.75rem;
+    height: 36px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background var(--transition-fast),
+                color var(--transition-fast);
+}
+
+.lang-opt:hover {
+    color: var(--text-primary);
+}
+
+.lang-opt[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-contrast);
 }
 
 .theme-btn {

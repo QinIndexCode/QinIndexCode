@@ -82,7 +82,7 @@
     <!-- AI Agent Accessibility Meta -->
     <meta name="agent:site-name" content="QinIndexCode">
     <meta name="agent:site-type" content="personal-blog">
-    <meta name="agent:content-language" content="zh-CN">
+    <meta name="agent:content-language" content="zh-CN,en-US">
     <meta name="agent:launch-date" content="2025-12-24">
     <meta name="agent:features" content="blog,projects,tools,typing-practice">
     <meta name="agent:interaction" content="comments-enabled,likes-enabled">
@@ -119,16 +119,20 @@
     })();
     </script>
 
-    <a href="#viewport" class="skip-link">跳转到主内容</a>
+    <a href="#viewport" class="skip-link" data-i18n="common.skipLink">跳转到主内容</a>
 
-    <button class="hamburger-btn" id="hamburger-btn" aria-label="打开菜单" aria-expanded="false" aria-controls="sidebar">
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="打开菜单" data-i18n-aria-label="common.openMenu" aria-expanded="false" aria-controls="sidebar">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
     <div class="theme-selector" id="theme-selector">
-        <button class="theme-btn" id="theme-btn" aria-label="切换主题" aria-pressed="true">
+        <div class="lang-switch" id="lang-switch" role="group" data-i18n-aria-label="common.switchLang">
+            <button type="button" class="lang-opt" data-lang="zh-CN" aria-pressed="true">中</button>
+            <button type="button" class="lang-opt" data-lang="en-US" aria-pressed="false">EN</button>
+        </div>
+        <button class="theme-btn" id="theme-btn" aria-label="切换主题" data-i18n-aria-label="common.switchTheme" aria-pressed="true">
             <svg class="icon icon-md theme-icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
             <svg class="icon icon-md theme-icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
         </button>
@@ -137,7 +141,7 @@
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
 
     <div class="main-container">
-        <aside class="sidebar glass" id="sidebar" role="navigation" aria-label="主导航">
+        <aside class="sidebar glass" id="sidebar" role="navigation" aria-label="主导航" data-i18n-aria-label="common.mainNav">
             <div class="profile-section">
                 <div class="profile-avatar">
                     <picture>
@@ -152,43 +156,43 @@
                 <li class="nav-item" role="none">
                     <div class="nav-link active" data-target="home" data-src="home.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-home"></use></svg>
-                        <span>首页</span>
+                        <span data-i18n="nav.home">首页</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="tech" data-src="tech.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>
-                        <span>技术</span>
+                        <span data-i18n="nav.tech">技术</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="projects" data-src="projects.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-folder"></use></svg>
-                        <span>项目</span>
+                        <span data-i18n="nav.projects">项目</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="blogs" data-src="blogs.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-book-open"></use></svg>
-                        <span>随记</span>
+                        <span data-i18n="nav.blogs">随记</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="tools" data-src="tools.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-wrench"></use></svg>
-                        <span>工具</span>
+                        <span data-i18n="nav.tools">工具</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="donate" data-src="donate.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-heart"></use></svg>
-                        <span>捐赠</span>
+                        <span data-i18n="nav.donate">捐赠</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">
                     <div class="nav-link" data-target="about" data-src="about.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg>
-                        <span>关于</span>
+                        <span data-i18n="nav.about">关于</span>
                     </div>
                 </li>
             </ul>
@@ -196,7 +200,7 @@
             <div class="sidebar-uptime" id="sidebar-uptime">
                 <svg class="uptime-icon" aria-hidden="true"><use href="#i-clock"></use></svg>
                 <div class="uptime-text">
-                    <span class="uptime-label">站点已运行</span>
+                    <span class="uptime-label" data-i18n="common.uptimeLabel">站点已运行</span>
                     <span class="uptime-value" id="uptime-value">计算中...</span>
                 </div>
             </div>
@@ -216,8 +220,9 @@
         </main>
     </div>
 
+    <script src="./js/i18n.js" defer></script>
     <script src="./js/app.js" defer></script>
     <script src="./js/redirect-if-standalone.js" defer></script>
-<script src="./js/svg-sprite.js" defer></script>
+    <script src="./js/svg-sprite.js" defer></script>
 </body>
 </html>
