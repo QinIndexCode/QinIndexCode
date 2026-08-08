@@ -1,4 +1,4 @@
-/* 图标颜色统一 - 适配主题 */
+﻿/* 鍥炬爣棰滆壊缁熶竴 - 閫傞厤涓婚 */
 :root {
     --icon-color: #57534E;
     --icon-color-hover: #44403C;
@@ -6,19 +6,19 @@
     --icon-color-dark-hover: #A8A29E;
 }
 
-/* 通用图标样式类 */
+/* 閫氱敤鍥炬爣鏍峰紡绫?*/
 .tool-icon {
     width: 32px;
     height: 32px;
     transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 亮色主题图标 - 渲染为深色 (单色静态图标) */
+/* 浜壊涓婚鍥炬爣 - 娓叉煋涓烘繁鑹?(鍗曡壊闈欐€佸浘鏍? */
 .tool-icon {
     filter: brightness(0) saturate(100%) invert(18%) sepia(8%) saturate(1200%) hue-rotate(15deg) brightness(98%) contrast(92%);
 }
 
-/* 暗色主题图标 */
+/* 鏆楄壊涓婚鍥炬爣 */
 body.dark-theme .tool-icon,
 [data-theme="dark"] .tool-icon {
     filter: brightness(0) saturate(100%) invert(85%) sepia(20%) saturate(600%) hue-rotate(350deg) brightness(105%) contrast(95%);
@@ -70,7 +70,7 @@ body.dark-theme .tool-icon,
     opacity: 1;
 }
 
-/* 工具卡片内容区域动画优化 */
+/* 宸ュ叿鍗＄墖鍐呭鍖哄煙鍔ㄧ敾浼樺寲 */
 .tool-card .tool-content>* {
     animation: fadeInUp 0.4s ease-out backwards;
 }
@@ -103,13 +103,13 @@ body.dark-theme .tool-icon,
     }
 }
 
-/* 工具图标动画 */
+/* 宸ュ叿鍥炬爣鍔ㄧ敾 */
 .tool-icon-wrapper {
     position: relative;
     overflow: hidden;
 }
 
-/* 按钮点击波纹效果 */
+/* 鎸夐挳鐐瑰嚮娉㈢汗鏁堟灉 */
 .btn {
     position: relative;
     overflow: hidden;
@@ -170,7 +170,7 @@ body.dark-theme .tool-icon,
     transition: color var(--transition-base), transform var(--transition-base);
 }
 
-/* 悬停时增强图标颜色 */
+/* 鎮仠鏃跺寮哄浘鏍囬鑹?*/
 .tool-card:hover .tool-icon-img {
     color: var(--accent-hover);
     transform: scale(1.05);
@@ -451,7 +451,7 @@ body.dark-theme .tool-icon,
     display: none;
 }
 
-/* 滚动提示 - 当内容可滚动时显示底部渐变遮罩 */
+/* 婊氬姩鎻愮ず - 褰撳唴瀹瑰彲婊氬姩鏃舵樉绀哄簳閮ㄦ笎鍙橀伄缃?*/
 .tool-nav-scroll-hint {
     position: absolute;
     bottom: 0;
@@ -474,7 +474,7 @@ body.dark-theme .tool-icon,
     opacity: 1;
 }
 
-/* 胶囊进度指示器 - 包裹当前可见列的所有图标 */
+/* 鑳跺泭杩涘害鎸囩ず鍣?- 鍖呰９褰撳墠鍙鍒楃殑鎵€鏈夊浘鏍?*/
 .tool-nav-scroll {
     position: relative;
 }
@@ -540,7 +540,7 @@ body.dark-theme .tool-icon,
 .nav-item img {
     width: 18px;
     height: 18px;
-    /* 使用 CSS filter 统一图标颜色 */
+    /* 浣跨敤 CSS filter 缁熶竴鍥炬爣棰滆壊 */
     filter: brightness(0) saturate(100%) invert(18%) sepia(8%) saturate(1200%) hue-rotate(15deg) brightness(98%) contrast(92%);
     transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -548,11 +548,11 @@ body.dark-theme .tool-icon,
 .nav-item:hover img,
 .nav-item.active img,
 .nav-item.hover-sync img {
-    /* 悬停/激活时反转 */
+    /* 鎮仠/婵€娲绘椂鍙嶈浆 */
     filter: brightness(0) saturate(100%) invert(100%);
 }
 
-/* 暗色主题下的导航图标 */
+/* 鏆楄壊涓婚涓嬬殑瀵艰埅鍥炬爣 */
 body.dark-theme .nav-item img,
 [data-theme="dark"] .nav-item img {
     filter: brightness(0) saturate(100%) invert(85%) sepia(20%) saturate(600%) hue-rotate(350deg) brightness(105%) contrast(95%);
@@ -594,7 +594,7 @@ body.dark-theme .nav-item.hover-sync img,
     display: none;
 }
 
-/* 响应式优化 - 增强移动端体验 */
+/* 鍝嶅簲寮忎紭鍖?- 澧炲己绉诲姩绔綋楠?*/
 @media (max-width: 1024px) {
     .tool-nav {
         position: fixed;
@@ -661,7 +661,7 @@ body.dark-theme .nav-item.hover-sync img,
     }
 }
 
-/* 小屏幕手机优化 */
+/* 灏忓睆骞曟墜鏈轰紭鍖?*/
 @media (max-width: 640px) {
     .tool-nav {
         bottom: 4.5rem;
@@ -701,13 +701,13 @@ body.dark-theme .nav-item.hover-sync img,
         height: 24px;
     }
 
-    /* 移动端工具卡片优化 */
+    /* 绉诲姩绔伐鍏峰崱鐗囦紭鍖?*/
     .tool-card {
         min-height: auto;
         margin-bottom: 1.5rem;
     }
 
-    /* 移动端按钮全宽 */
+    /* 绉诲姩绔寜閽叏瀹?*/
     .btn-row {
         flex-direction: column;
     }
@@ -717,12 +717,12 @@ body.dark-theme .nav-item.hover-sync img,
     }
 }
 
-/* 添加平滑滚动 */
+/* 娣诲姞骞虫粦婊氬姩 */
 html {
     scroll-behavior: smooth;
 }
 
-/* 优化容器内边距，防止导航遮挡 */
+/* 浼樺寲瀹瑰櫒鍐呰竟璺濓紝闃叉瀵艰埅閬尅 */
 .container {
     padding-right: 5rem;
     padding-left: var(--spacing-lg);
@@ -744,7 +744,7 @@ html {
     }
 }
 
-/* 添加骨架屏加载动画 */
+/* 娣诲姞楠ㄦ灦灞忓姞杞藉姩鐢?*/
 @keyframes shimmer {
     0% {
         background-position: -1000px 0;
@@ -765,7 +765,7 @@ html {
     border-radius: var(--radius);
 }
 
-/* 工具卡片内部元素优化 */
+/* 宸ュ叿鍗＄墖鍐呴儴鍏冪礌浼樺寲 */
 .tool-card .input-group {
     margin-bottom: 0.75rem;
 }
@@ -774,7 +774,7 @@ html {
     white-space: nowrap;
 }
 
-/* 输出框样式优化 */
+/* 杈撳嚭妗嗘牱寮忎紭鍖?*/
 .output-textarea {
     width: 100%;
     min-height: 120px;
@@ -783,7 +783,7 @@ html {
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     color: var(--text-primary);
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-mono);
     font-size: 0.875rem;
     resize: vertical;
     transition: all 0.2s;
@@ -795,7 +795,7 @@ html {
     box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
-/* 文件上传区域优化 */
+/* 鏂囦欢涓婁紶鍖哄煙浼樺寲 */
 .file-drop-zone {
     border: 1px dashed var(--border);
     border-radius: var(--radius);
@@ -817,7 +817,7 @@ html {
     transform: scale(1.01);
 }
 
-/* 二维码输出优化 */
+/* 浜岀淮鐮佽緭鍑轰紭鍖?*/
 .qr-output-container {
     display: flex;
     flex-direction: column;
@@ -830,7 +830,7 @@ html {
     height: auto;
 }
 
-/* 颜色选择器优化 */
+/* 棰滆壊閫夋嫨鍣ㄤ紭鍖?*/
 .color-picker-input {
     width: 100%;
     height: 50px;
@@ -855,9 +855,9 @@ html {
     border-radius: calc(var(--radius) - 2px);
 }
 
-/* 时间戳工具优化 */
+/* 鏃堕棿鎴冲伐鍏蜂紭鍖?*/
 .timestamp-display {
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-mono);
     font-size: 1.5rem;
     text-align: center;
     padding: 1rem;
@@ -866,7 +866,7 @@ html {
     margin: 1rem 0;
 }
 
-/* Markdown 预览优化 */
+/* Markdown 棰勮浼樺寲 */
 #md-preview {
     line-height: 1.7;
     word-wrap: break-word;
@@ -875,7 +875,7 @@ html {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    /* Override .preview-box flex layout — text content needs block flow */
+    /* Override .preview-box flex layout 鈥?text content needs block flow */
     display: block;
     align-items: unset;
     justify-content: unset;
@@ -902,7 +902,7 @@ html {
     color: var(--accent);
     padding: 0.2em 0.4em;
     border-radius: 3px;
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9em;
 }
 
@@ -925,7 +925,7 @@ html {
     color: var(--text-secondary);
 }
 
-/* 滚动条美化 */
+/* 婊氬姩鏉＄編鍖?*/
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -973,7 +973,7 @@ html {
     background: var(--bg-tertiary);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-mono);
     font-size: 0.85em;
 }
 
@@ -1076,7 +1076,7 @@ html {
     background: transparent;
     border: none;
     color: var(--text-primary);
-    font-family: 'Fira Code', 'Consolas', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.7;
     resize: none;
@@ -1186,7 +1186,7 @@ html {
     background: var(--bg-tertiary);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
-    font-family: 'Fira Code', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9em;
 }
 
@@ -1545,7 +1545,7 @@ html {
 }
 
 .typing-text-display {
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-family: var(--font-mono);
     font-size: 1.35rem;
     line-height: 2;
     letter-spacing: 0.02em;
