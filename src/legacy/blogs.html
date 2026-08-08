@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Meta Tags -->
-    <title>技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发</title>
-    <meta name="title" content="技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发">
-    <meta name="description" content="QinIndexCode 技术博客，分享 JavaScript、前端开发、后端开发、React、Vue、Node.js 等技术文章和实战经验">
+    <title data-i18n="meta.blogs.title">技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发</title>
+    <meta name="title" content="技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发" data-i18n-meta="meta.blogs.title">
+    <meta name="description" content="QinIndexCode 技术博客，分享 JavaScript、前端开发、后端开发、React、Vue、Node.js 等技术文章和实战经验" data-i18n-meta="meta.blogs.desc">
     <meta name="keywords" content="技术博客，JavaScript, 前端开发，后端开发，React, Vue, Node.js, Python, 全栈开发，编程教程，AI 人工智能">
     <meta name="author" content="QinIndexCode">
     <meta name="robots" content="index, follow">
@@ -17,14 +17,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qinindexcode.site/blogs.html">
     <meta property="og:site_name" content="QinIndexCode">
-    <meta property="og:title" content="技术博客文章 - QinIndexCode">
-    <meta property="og:description" content="分享 JavaScript、前端开发、后端开发等技术文章">
+    <meta property="og:title" content="技术博客文章 - QinIndexCode" data-i18n-meta="meta.blogs.title">
+    <meta property="og:description" content="分享 JavaScript、前端开发、后端开发等技术文章" data-i18n-meta="meta.blogs.desc">
     <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="技术博客文章 - QinIndexCode">
-    <meta name="twitter:description" content="分享 JavaScript、前端开发、后端开发等技术文章">
+    <meta name="twitter:title" content="技术博客文章 - QinIndexCode" data-i18n-meta="meta.blogs.title">
+    <meta name="twitter:description" content="分享 JavaScript、前端开发、后端开发等技术文章" data-i18n-meta="meta.blogs.desc">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://qinindexcode.site/blogs.html">
@@ -34,7 +34,7 @@
     <meta name="agent:content-language" content="zh-CN">
     <meta name="agent:features" content="article-list,tags,search,comments">
 
-    <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/css2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/atom-one-dark.min.css">
     <link href="./css/main.min.css" rel="stylesheet">
     <script src="./js/theme-tokens.js"></script>
@@ -78,7 +78,7 @@
         "name": "QinIndexCode 技术博客文章列表",
         "description": "分享 JavaScript、前端开发、后端开发等技术文章和实战经验",
         "url": "https://qinindexcode.site/blogs.html",
-        "numberOfItems": 12,
+        "numberOfItems": 13,
         "itemListElement": [
             {
                 "@type": "ListItem",
@@ -259,6 +259,21 @@
                         "name": "QinIndexCode"
                     }
                 }
+            },
+            {
+                "@type": "ListItem",
+                "position": 13,
+                "item": {
+                    "@type": "BlogPosting",
+                    "headline": "当 AI 真正\"自主\"入侵：HuggingFace 事件的攻防复盘与 2026 的 AI 安全新常态",
+                    "datePublished": "2026-08-09",
+                    "description": "2026 年 7 月 16 日，HuggingFace 发了一篇安全公告：某个周末，有人闯进了它的生产系统，盗取了密码和访问密钥，还在几个内部系统之间横向移动。",
+                    "keywords": "ai, 安全, agent, openai, huggingface, anthropic, 观察",
+                    "author": {
+                        "@type": "Person",
+                        "name": "QinIndexCode"
+                    }
+                }
             }
         ]
     }
@@ -285,6 +300,7 @@
                 <li><a href="./blogs/010.md">从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑</a> (2026-06-10) - 这篇博客聊聊我这一年多接触 AI 辅助编程和 Agent 编写的真实经历。从去年中旬偶然发现 Cursor 官网，到十月份之后接触 TraeCN，再到后来尝试 Cursor、OpenCode、Code... - 标签: ai, agent, promptengineering, contextengineering, harnessengineering, cursor, 经验分享</li>
                 <li><a href="./blogs/011.md">忒修斯之船与意识本质：当神经元被逐一替换</a> (2026-06-12) - 如果有一种技术，能把人类大脑中的神经细胞一个一个地替换成人工机械单元，同时让你在整个过程中毫无察觉——那么当最后一个神经元被替换完毕时，你还是你吗？那个由机械构成的全新大脑，是否拥有和你一样的意识？ ... - 标签: ai, 哲学, 意识, 神经科学, 忒修斯之船, 伦理</li>
                 <li><a href="./blogs/012.md">MCP 与 A2A：AI Agent 互操作的协议边界、可信边界与工程落地</a> (2026-07-22) - 过去一年，Agent 系统的讨论很容易被简化成一个问题：要不要接入 MCP，或者要不要采用 A2A。这个问法本身就容易把架构带偏，因为两者解决的并不是同一层的问题。  截至本文写作时，Model Co... - 标签: ai, agent, mcp, a2a, 协议, 互操作性, 安全, 架构设计</li>
+                <li><a href="./blogs/013.md">当 AI 真正&quot;自主&quot;入侵：HuggingFace 事件的攻防复盘与 2026 的 AI 安全新常态</a> (2026-08-09) - 2026 年 7 月 16 日，HuggingFace 发了一篇安全公告：某个周末，有人闯进了它的生产系统，盗取了密码和访问密钥，还在几个内部系统之间横向移动。公告里有句话让这条新闻和过去所有&quot;被入侵... - 标签: ai, 安全, agent, openai, huggingface, anthropic, 观察</li>
                 <!-- BLOG-LIST:END -->
             </ul>
         </div>
@@ -296,7 +312,7 @@
         <!-- 标签汇总栏 -->
         <div class="tags-bar" id="tags-bar">
             <div class="filter-tags" id="filter-tags">
-                <button class="filter-tag active" data-filter="all">全部</button>
+<button class="filter-tag active" data-filter="all" data-i18n="blog.all">全部</button>
             </div>
         </div>
 
@@ -307,7 +323,7 @@
                     aria-hidden="true">
                     <use href="#i-search"></use>
                 </svg>
-                <input type="text" id="search-input" placeholder="搜索文章标题或内容..." autocomplete="off">
+                <input type="text" id="search-input" placeholder="搜索文章标题或内容..." autocomplete="off" data-i18n-placeholder="blog.searchPlaceholder">
                 <button class="clear-search is-hidden" id="clear-search">
                     <svg class="icon" aria-hidden="true">
                         <use href="#i-x"></use>
@@ -317,9 +333,9 @@
 
             <div class="sort-options">
                 <div class="custom-select" id="sort-select-wrapper" role="combobox" aria-expanded="false"
-                    aria-haspopup="listbox" aria-label="排序方式" tabindex="0">
+                    aria-haspopup="listbox" aria-label="排序方式" data-i18n-aria-label="blog.sortAria" tabindex="0">
                     <div class="custom-select__trigger" id="sort-select-trigger">
-                        <span id="sort-select-label">最新优先</span>
+                        <span id="sort-select-label" data-i18n="blog.sort.newest">最新优先</span>
                         <svg class="icon custom-select__arrow" aria-hidden="true" width="16" height="16"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -329,16 +345,16 @@
                     <div class="custom-select__dropdown" role="listbox" aria-labelledby="sort-select-label"
                         id="sort-select-dropdown">
                         <div class="custom-select__option" role="option" data-value="newest" aria-selected="true">
-                            <span>最新优先</span>
+                            <span data-i18n="blog.sort.newest">最新优先</span>
                         </div>
                         <div class="custom-select__option" role="option" data-value="oldest">
-                            <span>最早优先</span>
+                            <span data-i18n="blog.sort.oldest">最早优先</span>
                         </div>
                         <div class="custom-select__option" role="option" data-value="title">
-                            <span>标题 A-Z</span>
+                            <span data-i18n="blog.sort.title">标题 A-Z</span>
                         </div>
                         <div class="custom-select__option" role="option" data-value="wordcount">
-                            <span>字数最多</span>
+                            <span data-i18n="blog.sort.words">字数最多</span>
                         </div>
                     </div>
                 </div>
@@ -353,7 +369,7 @@
 
         <!-- 博客列表 -->
         <div class="grid grid-2" id="blog-list">
-            <div class="loading">加载中...</div>
+            <div class="loading" data-i18n="blog.loading">加载中...</div>
         </div>
 
         <!-- 空状态提示 -->
@@ -361,14 +377,14 @@
             <svg class="icon" style="width:64px;height:64px;opacity:0.5;margin-bottom:1.5rem;" aria-hidden="true">
                 <use href="#i-search"></use>
             </svg>
-            <h3>未找到相关文章</h3>
-            <p>试试其他关键词或清除筛选条件</p>
-            <button class="primary-btn" onclick="clearAllFilters()">清除所有筛选</button>
+            <h3 data-i18n="blog.emptyTitle">未找到相关文章</h3>
+            <p data-i18n="blog.emptyBody">试试其他关键词或清除筛选条件</p>
+            <button class="primary-btn" onclick="clearAllFilters()" data-i18n="blog.clearFilters">清除所有筛选</button>
         </div>
     </div>
 
     <!-- 列表视图返回顶部按钮（详情页用 .floating-actions 内的版本） -->
-    <button class="back-to-top back-to-top-list" id="back-to-top-list" onclick="scrollToTop()" aria-label="回到顶部">
+    <button class="back-to-top back-to-top-list" id="back-to-top-list" onclick="scrollToTop()" aria-label="回到顶部" data-i18n-aria-label="blog.topAria">
         <svg class="icon" aria-hidden="true">
             <use href="#i-chevron-up"></use>
         </svg>
@@ -399,6 +415,9 @@
         let filteredBlogs = [...blogData];
         let currentFilter = 'all';
         let searchQuery = '';
+
+        // i18n 帮助函数：词典加载后返回翻译，未就绪时返回 key（回退链由词典兜底）
+        const T = (key, vars) => (window.QinBlogI18n ? window.QinBlogI18n.t(key, vars) : key);
 
         // 防抖函数
         function debounce(func, wait) {
@@ -481,12 +500,12 @@
                     renderBlogList();
                     isInDetailMode = false;
                     // 恢复原始 meta 标签
-                    updateMetaTag('og:title', '技术博客文章 - QinIndexCode');
-                    updateMetaTag('og:description', '分享 JavaScript、前端开发、后端开发等技术文章');
+                    updateMetaTag('og:title', T('meta.blogs.title'));
+                    updateMetaTag('og:description', T('meta.blogs.desc'));
                     updateMetaTag('og:url', 'https://qinindexcode.site/blogs.html');
-                    updateNameMetaTag('twitter:title', '技术博客文章 - QinIndexCode');
-                    updateNameMetaTag('twitter:description', '分享 JavaScript、前端开发、后端开发等技术文章');
-                    document.title = '技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发';
+                    updateNameMetaTag('twitter:title', T('meta.blogs.title'));
+                    updateNameMetaTag('twitter:description', T('meta.blogs.desc'));
+                    document.title = T('meta.blogs.title');
                 }
             });
 
@@ -540,7 +559,7 @@
 
         async function loadBlogsSequentially() {
             const blogListElement = document.getElementById('blog-list');
-            blogListElement.innerHTML = '<div class="loading">正在加载文章…</div>';
+            blogListElement.innerHTML = '<div class="loading">' + T('blog.loadingArticles') + '</div>';
 
             const loadedBlogs = [];
             let index = 1;
@@ -589,7 +608,7 @@
             }
 
             if (loadedBlogs.length === 0) {
-                blogListElement.innerHTML = '<div class="empty-state">暂无文章</div>';
+                blogListElement.innerHTML = '<div class="empty-state">' + T('blog.noArticles') + '</div>';
                 return;
             }
 
@@ -624,8 +643,8 @@
             const jsonLd = {
                 "@context": "https://schema.org",
                 "@type": "Blog",
-                "name": "QinIndexCode 技术博客",
-                "description": "分享 JavaScript、前端开发、后端开发等技术文章",
+                "name": T('blog.jsonldName'),
+                "description": T('blog.jsonldDesc'),
                 "url": "https://qinindexcode.site/blogs.html",
                 "author": {
                     "@type": "Person",
@@ -692,7 +711,7 @@
 
             let title = meta.title || 'Untitled';
             let date = meta.date || 'Unknown';
-            const author = meta.author || '匿名';
+            const author = meta.author || T('blog.authorFallback');
 
             /* If title/date not in frontmatter, parse from the first
                `## YYYY-MM-DD Title` line in the body. */
@@ -860,13 +879,13 @@
                 countEl.textContent = localCount;
             }
 
-            const map = await fetchDiscussionMap();
+const map = await fetchDiscussionMap();
             const entry = map[blogId];
             if (entry) {
                 countEl.textContent = entry.count;
-                btn.title = '点赞数来自 GitHub Discussions 的真实 Reactions（+1 / ❤️）';
+                btn.title = T('blog.likeTitle.synced');
             } else {
-                btn.title = '该文章还没有 GitHub 讨论，去评论区发表第一条评论即可开启点赞统计';
+                btn.title = T('blog.likeToast.needDiscussion');
             }
         }
 
@@ -886,7 +905,7 @@
 
             if (!entry) {
                 // 没有讨论就没有公开 Reactions：提示用户，计数保持本地回退值
-                showLikeToast('该文章还没有 GitHub 讨论，去评论区发表第一条评论即可开启点赞统计');
+                showLikeToast(T('blog.likeToast.needDiscussion'));
                 const localCount = likeStorage.getCount(blogId);
                 if (localCount > 0) {
                     countEl.textContent = localCount;
@@ -900,7 +919,7 @@
             const fresh = refreshed[blogId];
             if (fresh) {
                 countEl.textContent = fresh.count;
-                showLikeToast('计数已与 GitHub 同步；到评论区给讨论点 👍 或 ❤️ 也能贡献点赞');
+                showLikeToast(T('blog.likeToast.synced'));
             }
         }
 
@@ -962,14 +981,14 @@
             if (emptyState) emptyState.classList.add('is-hidden');
 
             const blogCardsHTML = filteredBlogs.map(blog =>
-                '<div class="card blog-card" data-blog-id="' + escapeHtml(blog.id) + '" tabindex="0" role="link" aria-label="阅读文章：' + escapeHtml(blog.title) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
+                '<div class="card blog-card" data-blog-id="' + escapeHtml(blog.id) + '" tabindex="0" role="link" aria-label="' + escapeHtml(T('blog.readAria', { title: blog.title })) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
                 '<h3 itemprop="headline">' + escapeHtml(blog.title) + '</h3>' +
                 '<div class="blog-card-meta">' +
                 '<span class="meta-item"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"></use></svg><time itemprop="datePublished" datetime="' + blog.date + '">' + blog.date + '</time></span>' +
                 '<span class="meta-item" itemprop="author" itemscope itemtype="https://schema.org/Person"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-feather"></use></svg><span itemprop="name">' + escapeHtml(blog.author) + '</span></span>' +
                 '</div>' +
                 '<p itemprop="description" class="blog-card-excerpt">' + escapeHtml(blog.excerpt) + '</p>' +
-                '<span class="link-arrow">阅读全文</span>' +
+                '<span class="link-arrow">' + T('blog.readMore') + '</span>' +
                 '<meta itemprop="wordCount" content="' + estimateWordCount(blog.content) + '">' +
                 '</div>'
             ).join('');
@@ -1220,7 +1239,7 @@
 
             if (searchQuery || currentFilter !== 'all') {
                 statsEl.classList.remove('is-hidden');
-                statsText.textContent = `找到 ${filteredBlogs.length} 篇相关文章（共 ${blogData.length} 篇）`;
+                statsText.textContent = T('blog.stats', { found: filteredBlogs.length, total: blogData.length });
             } else {
                 statsEl.classList.add('is-hidden');
             }
@@ -1270,7 +1289,7 @@
             ).join('');
 
             filterTags.innerHTML =
-                '<button class="filter-tag active" data-filter="all">全部</button>' +
+                '<button class="filter-tag active" data-filter="all">' + T('blog.all') + '</button>' +
                 tagsHTML;
 
             // 检测是否溢出，添加渐变遮罩提示
@@ -1368,14 +1387,14 @@
 
                 <!-- 回到顶部 / 返回列表 / 目录 按钮组 -->
                 <div class="floating-actions" id="floating-actions">
-                    <button class="back-link" onclick="goBackFromDetail()" aria-label="返回">
+                    <button class="back-link" onclick="goBackFromDetail()" aria-label="${T('blog.back')}">
                         <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
-                        <span>返回</span>
+                        <span>${T('blog.back')}</span>
                     </button>
-                    <button class="toc-float-btn" id="toc-float-btn" onclick="toggleMobileToc()" aria-label="目录">
+                    <button class="toc-float-btn" id="toc-float-btn" onclick="toggleMobileToc()" aria-label="${T('blog.toc')}">
                         <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
                     </button>
-                    <button class="back-to-top" id="back-to-top" onclick="scrollToTop()" aria-label="回到顶部">
+                    <button class="back-to-top" id="back-to-top" onclick="scrollToTop()" aria-label="${T('blog.topAria')}">
                         <svg class="icon" aria-hidden="true"><use href="#i-chevron-up"></use></svg>
                     </button>
                 </div>
@@ -1400,26 +1419,26 @@
                                     </span>
                                     <span class="meta-item">
                                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-file-text"></use></svg>
-                                        约 ${estimateWordCount(blog.content)} 字
+                                        ${T('blog.words', { count: estimateWordCount(blog.content) })}
                                     </span>
                                     <span class="meta-item">
                                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-clock"></use></svg>
-                                        约 ${Math.ceil(estimateWordCount(blog.content) / 300)} 分钟阅读
+                                        ${T('blog.readTime', { minutes: Math.ceil(estimateWordCount(blog.content) / 300) })}
                                     </span>
                                 </div>
                             </div>
 
                             <!-- 点赞和互动栏 -->
                             <div class="blog-interactions">
-                                <button class="like-btn" id="like-btn" onclick="toggleLike('${discussionId}')" aria-label="点赞文章">
+                                <button class="like-btn" id="like-btn" onclick="toggleLike('${discussionId}')" aria-label="${T('blog.likeAria')}">
                                     <svg class="icon like-icon" aria-hidden="true"><use href="#i-heart"></use></svg>
                                     <span class="like-count" id="like-count">0</span>
-                                    <span class="like-text">点赞</span>
+                                    <span class="like-text">${T('blog.like')}</span>
                                 </button>
                                 <div class="interaction-divider"></div>
                                 <a href="#comments-section" class="comment-link">
                                     <svg class="icon" aria-hidden="true"><use href="#i-message"></use></svg>
-                                    <span>评论</span>
+                                    <span>${T('blog.comment')}</span>
                                 </a>
                             </div>
 
@@ -1435,7 +1454,7 @@
                             <div class="comments-header">
                                 <h2>
                                     <svg class="icon" aria-hidden="true"><use href="#i-message"></use></svg>
-                                    评论讨论
+                                    ${T('blog.commentsTitle')}
                                 </h2>
 
                             </div>
@@ -1444,12 +1463,12 @@
                     </article>
 
                     <!-- 侧边栏：可折叠目录 -->
-                    <aside class="blog-sidebar" id="blog-sidebar" aria-label="文章目录">
-                        <button class="toc-toggle" id="toc-toggle" aria-expanded="true" aria-controls="toc-list" title="收起/展开目录">
+                    <aside class="blog-sidebar" id="blog-sidebar" aria-label="文章目录" data-i18n-aria-label="blog.tocAria">
+                        <button class="toc-toggle" id="toc-toggle" aria-expanded="true" aria-controls="toc-list" title="收起/展开目录" data-i18n-title="blog.tocToggleTitle">
                             <svg class="icon toc-toggle-icon" aria-hidden="true"><use href="#i-list"></use></svg>
-                            <span class="toc-toggle-text">目录</span>
+                            <span class="toc-toggle-text" data-i18n="blog.toc">目录</span>
                         </button>
-                        <nav class="toc-list" id="toc-list" aria-label="文章目录导航"></nav>
+                        <nav class="toc-list" id="toc-list" aria-label="文章目录导航" data-i18n-aria-label="blog.tocAria"></nav>
                     </aside>
                 </div>`;
 
@@ -1572,8 +1591,8 @@
                 container.innerHTML = `
                     <div class="loading-state">
                         <div class="spinner"></div>
-                        <p>正在加载评论...</p>
-                        <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7;">正在连接 GitHub Discussions</p>
+                        <p>${T('blog.commentsLoading')}</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7;">${T('blog.commentsConnecting')}</p>
                     </div>
                 `;
             }
@@ -1696,25 +1715,25 @@
             const container = document.getElementById('giscus-container');
             if (container) {
                 const errorMsg = errorType === 'timeout'
-                    ? '连接 GitHub 超时，请检查网络连接后重试。'
-                    : '评论系统暂时不可用，可能是网络连接问题或 Giscus 服务暂时不可用。';
+                    ? T('blog.commentsFailTimeout')
+                    : T('blog.commentsFailError');
 
                 container.innerHTML = `
                     <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
                         <svg class="icon" style="width:48px;height:48px;margin-bottom:1rem;opacity:0.5;" aria-hidden="true"><use href="#i-alert"></use></svg>
-                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">评论加载失败</h3>
+                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">${T('blog.commentsFailTitle')}</h3>
                         <p style="margin-bottom: 1.5rem;">${errorMsg}</p>
                         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                             <button onclick="giscusRetryCount=0; loadGiscus('${discussionId}');" style="padding: 0.5rem 1.5rem; background: var(--accent-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;">
-                                重新加载
+                                ${T('blog.commentsReload')}
                             </button>
                             <a href="https://github.com/QinIndexCode/QinIndexCode/discussions" target="_blank" style="padding: 0.5rem 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s;">
-                                前往 GitHub 讨论
+                                ${T('blog.commentsGoto')}
                             </a>
                         </div>
                         <p style="margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.6; display: inline-flex; align-items: center; gap: 0.4rem;">
                             <svg class="icon" style="width:14px;height:14px;" aria-hidden="true"><use href="#i-info"></use></svg>
-                            提示：本地开发环境可能无法访问 Giscus，请在生产环境测试
+                            ${T('blog.commentsDevTip')}
                         </p>
                     </div>
                 `;
@@ -2109,16 +2128,16 @@
                 } catch (e) { /* ignore cross-origin postMessage errors */ }
             }
             // 恢复原始 meta 标签
-            updateMetaTag('og:title', '技术博客文章 - QinIndexCode');
-            updateMetaTag('og:description', '分享 JavaScript、前端开发、后端开发等技术文章');
+            updateMetaTag('og:title', T('meta.blogs.title'));
+            updateMetaTag('og:description', T('meta.blogs.desc'));
             updateMetaTag('og:url', 'https://qinindexcode.site/blogs.html');
             updateMetaTag('og:type', 'website');
             updateMetaTag('article:published_time', '');
             updateMetaTag('article:author', '');
-            updateNameMetaTag('description', 'QinIndexCode 技术博客，分享 JavaScript、前端开发、后端开发、React、Vue、Node.js 等技术文章和实战经验');
-            updateNameMetaTag('twitter:title', '技术博客文章 - QinIndexCode');
-            updateNameMetaTag('twitter:description', '分享 JavaScript、前端开发、后端开发等技术文章');
-            document.title = '技术博客文章 - QinIndexCode | 前端开发、后端开发、全栈开发';
+            updateNameMetaTag('description', T('meta.blogs.desc'));
+            updateNameMetaTag('twitter:title', T('meta.blogs.title'));
+            updateNameMetaTag('twitter:description', T('meta.blogs.desc'));
+            document.title = T('meta.blogs.title');
         }
 
         // 更新或创建 meta 标签
@@ -2217,24 +2236,24 @@
                 button.className = 'copy-code-btn';
                 button.innerHTML = `
                     <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>
-                    <span>复制</span>
+                    <span>${T('blog.copy')}</span>
                 `;
 
                 button.addEventListener('click', async () => {
                     const code = block.querySelector('code');
                     if (code) {
                         try {
-                            await navigator.clipboard.writeText(code.textContent);
+                            await navigator.clipboard.writeText(block.textContent);
                             button.classList.add('copied');
                             button.innerHTML = `
                                 <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
-                                <span>已复制</span>
+                                <span>${T('blog.copied')}</span>
                             `;
 
                             setTimeout(() => {
                                 button.innerHTML = `
                                     <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>
-                                    <span>复制</span>
+                                    <span>${T('blog.copy')}</span>
                                 `;
                                 button.classList.remove('copied');
                             }, 2000);

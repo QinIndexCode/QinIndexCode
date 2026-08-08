@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="支持 QinIndexCode - 请我喝杯咖啡，支持开源项目持续发展">
-    <title>捐赠 - QinIndexCode</title>
+    <meta name="description" content="支持 QinIndexCode - 请我喝杯咖啡，支持开源项目持续发展" data-i18n-meta="meta.donate.desc">
+    <title data-i18n="meta.donate.title">捐赠 - QinIndexCode</title>
 
-    <meta property="og:title" content="支持作者 - QinIndexCode">
-    <meta property="og:description" content="如果我的内容对你有帮助，欢迎请我喝杯咖啡">
+    <meta property="og:title" content="支持作者 - QinIndexCode" data-i18n-meta="meta.donate.title">
+    <meta property="og:description" content="如果我的内容对你有帮助，欢迎请我喝杯咖啡" data-i18n-meta="meta.donate.desc">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qinindexcode.site/donate.html">
     <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="支持作者 - QinIndexCode">
-    <meta name="twitter:description" content="如果我的内容对你有帮助，欢迎请我喝杯咖啡">
+    <meta name="twitter:title" content="支持作者 - QinIndexCode" data-i18n-meta="meta.donate.title">
+    <meta name="twitter:description" content="如果我的内容对你有帮助，欢迎请我喝杯咖啡" data-i18n-meta="meta.donate.desc">
 
     <link rel="canonical" href="https://qinindexcode.site/donate.html">
 
@@ -21,9 +21,9 @@
     <meta name="agent:content-language" content="zh-CN">
     <meta name="agent:features" content="donation">
 
-    <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/css2.min.css" rel="stylesheet">
     <link href="./css/main.min.css" rel="stylesheet">
-    <link href="./css/donate.css?v=3" rel="stylesheet">
+    <link href="./css/donate.min.css" rel="stylesheet">
     <script src="./js/theme-tokens.js"></script>
     <script src="./js/redirect-if-standalone.js" defer></script>
     <script src="./js/i18n.js" defer></script>
@@ -46,13 +46,13 @@
             <div class="donate-hero-content">
                 <p class="eyebrow">Support</p>
                 <h1 data-i18n="page.donate.thanks">感谢你的关注</h1>
-                <p class="donate-hero-desc">
+                <p class="donate-hero-desc" data-i18n="donate.thanksBody">
                     如果你喜欢我的文章或开源项目，任何形式的支持都是对我最大的鼓励。每一份支持都让持续创作更有动力。
                 </p>
                 <div class="donate-hero-cta-row">
-                    <button onclick="openPayModal()" class="btn-donate-primary" aria-label="查看捐赠方式">
+                    <button onclick="openPayModal()" class="btn-donate-primary" aria-label="查看捐赠方式" data-i18n-aria-label="donate.viewAria">
                         <svg class="icon icon-filled" aria-hidden="true"><use href="#i-heart"></use></svg>
-                        <span>支持作者</span>
+                        <span data-i18n="donate.supportBtn">支持作者</span>
                         <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
                     </button>
                     <div class="donate-avatar-inline glass glow-border">
@@ -70,25 +70,25 @@
             <div class="donate-usage-grid">
                 <div class="donate-usage-item">
                     <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-server"></use></svg>
-                    <span class="donate-usage-title">服务器与域名</span>
-                    <span class="donate-usage-desc">保持站点稳定运行</span>
+                    <span class="donate-usage-title" data-i18n="donate.usage.srv.title">服务器与域名</span>
+                    <span class="donate-usage-desc" data-i18n="donate.usage.srv.desc">保持站点稳定运行</span>
                 </div>
                 <div class="donate-usage-item">
                     <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-book-open"></use></svg>
-                    <span class="donate-usage-title">内容创作</span>
-                    <span class="donate-usage-desc">持续输出技术文章</span>
+                    <span class="donate-usage-title" data-i18n="donate.usage.content.title">内容创作</span>
+                    <span class="donate-usage-desc" data-i18n="donate.usage.content.desc">持续输出技术文章</span>
                 </div>
                 <div class="donate-usage-item">
                     <svg class="icon donate-usage-icon" aria-hidden="true"><use href="#i-git-branch"></use></svg>
-                    <span class="donate-usage-title">开源项目</span>
-                    <span class="donate-usage-desc">维护和开发新工具</span>
+                    <span class="donate-usage-title" data-i18n="donate.usage.oss.title">开源项目</span>
+                    <span class="donate-usage-desc" data-i18n="donate.usage.oss.desc">维护和开发新工具</span>
                 </div>
             </div>
         </section>
 
         <!-- 支持者 -->
         <section class="card glass donor-section is-hidden" id="donor-section">
-            <p class="donor-label">支持者</p>
+            <p class="donor-label" data-i18n="donate.donorLabel">支持者</p>
             <ol class="donor-list" id="donor-list"></ol>
         </section>
     </main>
@@ -96,23 +96,23 @@
     <!-- Payment Modal -->
     <div class="pay-modal" id="payModal" onclick="closePayModal(event)" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
         <div class="pay-modal-content" role="document">
-            <p class="pay-modal-title" id="payModalTitle">选择捐赠方式</p>
+            <p class="pay-modal-title" id="payModalTitle" data-i18n="donate.pay.title">选择捐赠方式</p>
 
             <a href="https://ko-fi.com/qinindexcode" target="_blank" rel="noopener noreferrer" class="pay-option pay-option-kofi">
                 <svg class="icon icon-filled" aria-hidden="true"><use href="#i-coffee"></use></svg>
-                <span>前往 Ko-fi 捐赠</span>
+                <span data-i18n="donate.pay.kofi">前往 Ko-fi 捐赠</span>
             </a>
 
-            <div class="pay-divider"><span>国内支付</span></div>
+            <div class="pay-divider"><span data-i18n="donate.pay.domestic">国内支付</span></div>
 
             <div class="pay-grid">
-                <button class="pay-option pay-option-wechat" onclick="showQR('wechat')" aria-label="微信支付">
+                <button class="pay-option pay-option-wechat" onclick="showQR('wechat')" aria-label="微信支付" data-i18n-aria-label="donate.pay.wechat">
                     <svg class="icon icon-filled" aria-hidden="true"><use href="#i-wechat"></use></svg>
-                    <span>微信支付</span>
+                    <span data-i18n="donate.pay.wechat">微信支付</span>
                 </button>
-                <button class="pay-option pay-option-alipay" onclick="showQR('alipay')" aria-label="支付宝">
+                <button class="pay-option pay-option-alipay" onclick="showQR('alipay')" aria-label="支付宝" data-i18n-aria-label="donate.pay.alipay">
                     <svg class="icon icon-filled" aria-hidden="true"><use href="#i-alipay"></use></svg>
-                    <span>支付宝</span>
+                    <span data-i18n="donate.pay.alipay">支付宝</span>
                 </button>
             </div>
         </div>
@@ -121,9 +121,9 @@
     <!-- QR Sub-modal -->
     <div class="qr-submodal" id="qrSubmodal" onclick="closeQRSub(event)" role="dialog" aria-modal="true" aria-labelledby="qrSubTitle">
         <div class="qr-sub-content" role="document">
-            <div class="qr-sub-img" id="qrSubImg" role="img" aria-label="支付二维码"></div>
-            <p class="qr-sub-title" id="qrSubTitle">支付方式</p>
-            <p class="qr-sub-tip">感谢您的支持！</p>
+            <div class="qr-sub-img" id="qrSubImg" role="img" aria-label="支付二维码" data-i18n-aria-label="donate.qr.title"></div>
+            <p class="qr-sub-title" id="qrSubTitle" data-i18n="donate.qr.title">支付方式</p>
+            <p class="qr-sub-tip" data-i18n="donate.qr.tip">感谢您的支持！</p>
         </div>
     </div>
 

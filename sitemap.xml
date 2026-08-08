@@ -134,5 +134,11 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
+    <url>
+        <loc>https://qinindexcode.site/blogs/013</loc>
+        <lastmod>2026-08-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
     <!-- SITEMAP-BLOGS:END -->
 </urlset>

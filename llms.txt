@@ -45,6 +45,7 @@
 10. 从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑 (2026-06-10): 这篇博客聊聊我这一年多接触 AI 辅助编程和 Agent 编写的真实经历。从去年中旬偶然发现 Cursor 官网，到十月份之后接触 TraeCN，再到后来尝试 Cursor、OpenCode、Code... - 标签: ai, agent, promptengineering, contextengineering, harnessengineering, cursor, 经验分享 - /blogs.html#010
 11. 忒修斯之船与意识本质：当神经元被逐一替换 (2026-06-12): 如果有一种技术，能把人类大脑中的神经细胞一个一个地替换成人工机械单元，同时让你在整个过程中毫无察觉——那么当最后一个神经元被替换完毕时，你还是你吗？那个由机械构成的全新大脑，是否拥有和你一样的意识？ ... - 标签: ai, 哲学, 意识, 神经科学, 忒修斯之船, 伦理 - /blogs.html#011
 12. MCP 与 A2A：AI Agent 互操作的协议边界、可信边界与工程落地 (2026-07-22): 过去一年，Agent 系统的讨论很容易被简化成一个问题：要不要接入 MCP，或者要不要采用 A2A。这个问法本身就容易把架构带偏，因为两者解决的并不是同一层的问题。  截至本文写作时，Model Co... - 标签: ai, agent, mcp, a2a, 协议, 互操作性, 安全, 架构设计 - /blogs.html#012
+13. 当 AI 真正"自主"入侵：HuggingFace 事件的攻防复盘与 2026 的 AI 安全新常态 (2026-08-09): 2026 年 7 月 16 日，HuggingFace 发了一篇安全公告：某个周末，有人闯进了它的生产系统，盗取了密码和访问密钥，还在几个内部系统之间横向移动。公告里有句话让这条新闻和过去所有"被入侵... - 标签: ai, 安全, agent, openai, huggingface, anthropic, 观察 - /blogs.html#013
 <!-- BLOG-LIST:END -->
 
 ## 交互说明

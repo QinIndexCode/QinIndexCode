@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="开发者工具箱 - 图片转换、二维码、JSON、Base64、时间戳、颜色转换等全能工具集">
+    <meta name="description" content="开发者工具箱 - 图片转换、二维码、JSON、Base64、时间戳、颜色转换等全能工具集" data-i18n-meta="meta.tools.desc">
     <meta name="agent:page-type" content="tools">
     <meta name="agent:content-language" content="zh-CN">
     <meta name="agent:features" content="image-converter,qr-generator,timestamp,json,base64,url,color,password,lorem,markdown,shadow,font-unit,gradient,typing">
-    <title>工具箱 - QinIndexCode</title>
+    <title data-i18n="meta.tools.title">工具箱 - QinIndexCode</title>
 
-    <meta property="og:title" content="工具箱 - QinIndexCode">
-    <meta property="og:description" content="在线开发工具集合 - JSON格式化、编码转换、正则测试等">
+    <meta property="og:title" content="工具箱 - QinIndexCode" data-i18n-meta="meta.tools.title">
+    <meta property="og:description" content="在线开发工具集合 - JSON格式化、编码转换、正则测试等" data-i18n-meta="meta.tools.desc">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qinindexcode.site/tools.html">
     <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="工具箱 - QinIndexCode">
-    <meta name="twitter:description" content="在线开发工具集合 - JSON格式化、编码转换、正则测试等">
+    <meta name="twitter:title" content="工具箱 - QinIndexCode" data-i18n-meta="meta.tools.title">
+    <meta name="twitter:description" content="在线开发工具集合 - JSON格式化、编码转换、正则测试等" data-i18n-meta="meta.tools.desc">
 
     <link rel="canonical" href="https://qinindexcode.site/tools.html">
 
-    <link href="./css/css2.css" rel="stylesheet">
+    <link href="./css/css2.min.css" rel="stylesheet">
     <link href="./css/main.min.css" rel="stylesheet">
     <link href="./css/tools.min.css" rel="stylesheet">
     <script src="./js/theme-tokens.js"></script>
@@ -60,65 +60,65 @@
 </noscript>
 
     <main class="container" role="main">
-        <nav class="tool-nav" id="tool-nav" aria-label="工具快捷导航">
+        <nav class="tool-nav" id="tool-nav" aria-label="工具快捷导航" data-i18n-aria-label="tool.navAria">
             <div class="nav-progress-pill" aria-hidden="true"></div>
             <div class="tool-nav-scroll">
-                <a href="#tool-image" class="nav-item" data-title="图片转换" aria-label="跳转到图片转换工具">
+                <a href="#tool-image" class="nav-item" data-title="图片转换" data-i18n-title="tool.navName.image" aria-label="跳转到图片转换工具" data-i18n-aria-label="tool.jump.image">
                     <svg class="icon" aria-hidden="true"><use href="#i-image"></use></svg>
                 </a>
-                <a href="#tool-qr" class="nav-item" data-title="二维码" aria-label="跳转到二维码生成工具">
+                <a href="#tool-qr" class="nav-item" data-title="二维码" data-i18n-title="tool.navName.qr" aria-label="跳转到二维码生成工具" data-i18n-aria-label="tool.jump.qr">
                     <svg class="icon" aria-hidden="true"><use href="#i-qr-code"></use></svg>
                 </a>
-                <a href="#tool-timestamp" class="nav-item" data-title="时间戳" aria-label="跳转到时间戳转换工具">
+                <a href="#tool-timestamp" class="nav-item" data-title="时间戳" data-i18n-title="tool.navName.timestamp" aria-label="跳转到时间戳转换工具" data-i18n-aria-label="tool.jump.timestamp">
                     <svg class="icon" aria-hidden="true"><use href="#i-clock"></use></svg>
                 </a>
-                <a href="#tool-json" class="nav-item" data-title="JSON 工具" aria-label="跳转到JSON工具">
+                <a href="#tool-json" class="nav-item" data-title="JSON 工具" data-i18n-title="tool.navName.json" aria-label="跳转到JSON工具" data-i18n-aria-label="tool.jump.json">
                     <svg class="icon" aria-hidden="true"><use href="#i-braces"></use></svg>
                 </a>
-                <a href="#tool-base64" class="nav-item" data-title="Base64" aria-label="跳转到Base64转换工具">
+                <a href="#tool-base64" class="nav-item" data-title="Base64" data-i18n-title="tool.navName.base64" aria-label="跳转到Base64转换工具" data-i18n-aria-label="tool.jump.base64">
                     <svg class="icon" aria-hidden="true"><use href="#i-type"></use></svg>
                 </a>
-                <a href="#tool-url" class="nav-item" data-title="URL 编码" aria-label="跳转到URL编解码工具">
+                <a href="#tool-url" class="nav-item" data-title="URL 编码" data-i18n-title="tool.navName.url" aria-label="跳转到URL编解码工具" data-i18n-aria-label="tool.jump.url">
                     <svg class="icon" aria-hidden="true"><use href="#i-link-2"></use></svg>
                 </a>
-                <a href="#tool-color" class="nav-item" data-title="颜色转换" aria-label="跳转到颜色调试器">
+                <a href="#tool-color" class="nav-item" data-title="颜色转换" data-i18n-title="tool.navName.color" aria-label="跳转到颜色调试器" data-i18n-aria-label="tool.jump.color">
                     <svg class="icon" aria-hidden="true"><use href="#i-palette"></use></svg>
                 </a>
-                <a href="#tool-password" class="nav-item" data-title="密码生成" aria-label="跳转到密码生成器">
+                <a href="#tool-password" class="nav-item" data-title="密码生成" data-i18n-title="tool.navName.password" aria-label="跳转到密码生成器" data-i18n-aria-label="tool.jump.password">
                     <svg class="icon" aria-hidden="true"><use href="#i-lock"></use></svg>
                 </a>
-                <a href="#tool-lorem" class="nav-item" data-title="文本生成" aria-label="跳转到文本生成工具">
+                <a href="#tool-lorem" class="nav-item" data-title="文本生成" data-i18n-title="tool.navName.lorem" aria-label="跳转到文本生成工具" data-i18n-aria-label="tool.jump.lorem">
                     <svg class="icon" aria-hidden="true"><use href="#i-pilcrow"></use></svg>
                 </a>
-                <a href="#tool-markdown" class="nav-item" data-title="Markdown" aria-label="跳转到Markdown预览工具">
+                <a href="#tool-markdown" class="nav-item" data-title="Markdown" data-i18n-title="tool.navName.markdown" aria-label="跳转到Markdown预览工具" data-i18n-aria-label="tool.jump.markdown">
                     <svg class="icon" aria-hidden="true"><use href="#i-file-text"></use></svg>
                 </a>
-                <a href="#tool-shadow" class="nav-item" data-title="阴影生成" aria-label="跳转到CSS阴影生成器">
+                <a href="#tool-shadow" class="nav-item" data-title="阴影生成" data-i18n-title="tool.navName.shadow" aria-label="跳转到CSS阴影生成器" data-i18n-aria-label="tool.jump.shadow">
                     <svg class="icon" aria-hidden="true"><use href="#i-zap"></use></svg>
                 </a>
-                <a href="#tool-font" class="nav-item" data-title="字体转换" aria-label="跳转到字体单位转换器">
+                <a href="#tool-font" class="nav-item" data-title="字体转换" data-i18n-title="tool.navName.font" aria-label="跳转到字体单位转换器" data-i18n-aria-label="tool.jump.font">
                     <svg class="icon" aria-hidden="true"><use href="#i-type"></use></svg>
                 </a>
-                <a href="#tool-gradient" class="nav-item" data-title="渐变生成" aria-label="跳转到CSS渐变生成器">
+                <a href="#tool-gradient" class="nav-item" data-title="渐变生成" data-i18n-title="tool.navName.gradient" aria-label="跳转到CSS渐变生成器" data-i18n-aria-label="tool.jump.gradient">
                     <svg class="icon" aria-hidden="true"><use href="#i-palette"></use></svg>
                 </a>
-                <a href="#tool-typing" class="nav-item" data-title="打字练习" aria-label="跳转到打字练习工具">
+                <a href="#tool-typing" class="nav-item" data-title="打字练习" data-i18n-title="tool.navName.typing" aria-label="跳转到打字练习工具" data-i18n-aria-label="tool.jump.typing">
                     <svg class="icon" aria-hidden="true"><use href="#i-keyboard"></use></svg>
                 </a>
             </div>
             <div class="tool-nav-scroll-hint" aria-hidden="true"></div>
         </nav>
 
-        <button class="nav-toggle" id="nav-toggle" aria-label="打开工具导航菜单" aria-expanded="false" aria-controls="tool-nav">
+        <button class="nav-toggle" id="nav-toggle" aria-label="打开工具导航菜单" aria-expanded="false" aria-controls="tool-nav" data-i18n-aria-label="tool.navToggleAria">
             <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
         </button>
 
         <h1 class="section-title" data-i18n="page.tools.title">开发者工具箱</h1>
         <p class="tools-subtitle">
-            <span class="accent-dot">●</span> 本地运行
-            <span class="accent-dot-spaced">●</span> 数据安全
-            <span class="accent-dot-spaced">●</span> 极速响应
-            <span class="accent-dot-spaced">●</span> 14 款工具
+            <span class="accent-dot">●</span> <span data-i18n="tool.sub.local">本地运行</span>
+            <span class="accent-dot-spaced">●</span> <span data-i18n="tool.sub.safe">数据安全</span>
+            <span class="accent-dot-spaced">●</span> <span data-i18n="tool.sub.fast">极速响应</span>
+            <span class="accent-dot-spaced">●</span> <span data-i18n="tool.sub.count">14 款工具</span>
         </p>
 
         <div class="grid grid-3 cv-auto">
@@ -129,10 +129,10 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-image"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-image-title">图片转换</h3>
+                        <h3 class="tool-title" id="tool-image-title" data-i18n="tool.image.title">图片转换</h3>
                     </div>
                 </div>
-                <p class="tool-desc">PNG / JPG / WEBP / BMP / ICO 格式互转，支持质量调节。</p>
+                <p class="tool-desc" data-i18n="tool.image.desc">PNG / JPG / WEBP / BMP / ICO 格式互转，支持质量调节。</p>
 
                 <div class="tool-content">
                     <input type="file" id="img-upload" accept="image/*" class="file-input">
@@ -147,9 +147,9 @@
                                 <option value="image/x-icon">ICO</option>
                             </select>
                             <input type="number" id="img-quality" class="text-input flex-1" value="0.9" step="0.1" min="0.1"
-                                max="1" title="质量 (0-1)">
+                                max="1" title="质量 (0-1)" data-i18n-title="tool.image.quality">
                         </div>
-                        <button id="img-convert-btn" class="btn btn-primary w-full">转换并下载</button>
+                        <button id="img-convert-btn" class="btn btn-primary w-full" data-i18n="tool.image.convert">转换并下载</button>
                     </div>
 
                     <div id="img-preview" class="preview-box hidden"></div>
@@ -162,21 +162,21 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-qr-code"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-qr-title">二维码生成</h3>
+                        <h3 class="tool-title" id="tool-qr-title" data-i18n="tool.qr.title">二维码生成</h3>
                     </div>
                 </div>
-                <p class="tool-desc">生成可自定义颜色的高清二维码图片。</p>
+                <p class="tool-desc" data-i18n="tool.qr.desc">生成可自定义颜色的高清二维码图片。</p>
 
                 <div class="tool-content">
-                    <input type="text" id="qr-text" placeholder="输入链接或文本" class="text-input">
+                    <input type="text" id="qr-text" placeholder="输入链接或文本" data-i18n-placeholder="tool.qr.placeholder" class="text-input">
                     <div class="btn-row btn-row-center">
                         <input type="color" id="qr-color-dark" value="#000000"
                             class="qr-color-input"
-                            title="二维码前景色">
+                            title="二维码前景色" data-i18n-title="tool.qr.dark">
                         <input type="color" id="qr-color-light" value="#ffffff"
                             class="qr-color-input"
-                            title="二维码背景色">
-                        <button id="qr-gen-btn" class="btn btn-primary flex-2">生成</button>
+                            title="二维码背景色" data-i18n-title="tool.qr.light">
+                        <button id="qr-gen-btn" class="btn btn-primary flex-2" data-i18n="tool.qr.gen">生成</button>
                     </div>
 
                     <div id="qr-container" class="preview-box hidden">
@@ -191,26 +191,26 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-clock"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-timestamp-title">时间戳转换</h3>
+                        <h3 class="tool-title" id="tool-timestamp-title" data-i18n="tool.ts.title">时间戳转换</h3>
                     </div>
                 </div>
-                <p class="tool-desc">Unix 时间戳与日期时间互转。</p>
+                <p class="tool-desc" data-i18n="tool.ts.desc">Unix 时间戳与日期时间互转。</p>
 
                 <div class="tool-content">
                     <div class="input-group">
-                        <label class="input-label">当前时间戳 (ms)</label>
+                        <label class="input-label" data-i18n="tool.ts.now">当前时间戳 (ms)</label>
                         <div class="output-wrapper">
                             <input type="text" id="ts-now" class="text-input" readonly>
-                            <button class="copy-btn" onclick="Tools.copyToClipboard('ts-now')">复制</button>
+                            <button class="copy-btn" onclick="Tools.copyToClipboard('ts-now')" data-i18n="tool.copy">复制</button>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">时间戳转日期</label>
+                        <label class="input-label" data-i18n="tool.ts.toDate">时间戳转日期</label>
                         <div class="btn-row">
-                            <input type="text" id="ts-input" class="text-input" placeholder="输入时间戳">
-                            <button id="ts-to-date-btn" class="btn btn-outline">转换</button>
+                            <input type="text" id="ts-input" class="text-input" placeholder="输入时间戳" data-i18n-placeholder="tool.ts.phInput">
+                            <button id="ts-to-date-btn" class="btn btn-outline" data-i18n="tool.ts.convert">转换</button>
                         </div>
-                        <input type="text" id="ts-date-output" class="text-input" readonly placeholder="结果...">
+                        <input type="text" id="ts-date-output" class="text-input" readonly placeholder="结果..." data-i18n-placeholder="tool.resultPh">
                     </div>
                 </div>
             </article>
@@ -221,20 +221,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-braces"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-json-title">JSON 工具</h3>
+                        <h3 class="tool-title" id="tool-json-title" data-i18n="tool.json.title">JSON 工具</h3>
                     </div>
                 </div>
-                <p class="tool-desc">格式化、压缩与校验 JSON 数据。</p>
+                <p class="tool-desc" data-i18n="tool.json.desc">格式化、压缩与校验 JSON 数据。</p>
 
                 <div class="tool-content">
-                    <textarea id="json-input" class="textarea-input" placeholder="粘贴 JSON..."></textarea>
+                    <textarea id="json-input" class="textarea-input" placeholder="粘贴 JSON..." data-i18n-placeholder="tool.json.phInput"></textarea>
                     <div class="btn-row">
-                        <button id="json-fmt-btn" class="btn btn-outline flex-1">美化</button>
-                        <button id="json-minify-btn" class="btn btn-outline flex-1">压缩</button>
+                        <button id="json-fmt-btn" class="btn btn-outline flex-1" data-i18n="tool.json.beautify">美化</button>
+                        <button id="json-minify-btn" class="btn btn-outline flex-1" data-i18n="tool.json.minify">压缩</button>
                     </div>
                     <div class="output-wrapper">
-                        <textarea id="json-output" class="textarea-input" placeholder="结果..." readonly></textarea>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('json-output')">复制</button>
+                        <textarea id="json-output" class="textarea-input" placeholder="结果..." data-i18n-placeholder="tool.resultPh" readonly></textarea>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('json-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -245,20 +245,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-type"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-base64-title">Base64 转换</h3>
+                        <h3 class="tool-title" id="tool-base64-title" data-i18n="tool.b64.title">Base64 转换</h3>
                     </div>
                 </div>
-                <p class="tool-desc">文本与 Base64 编码互转，支持中文。</p>
+                <p class="tool-desc" data-i18n="tool.b64.desc">文本与 Base64 编码互转，支持中文。</p>
 
                 <div class="tool-content">
-                    <textarea id="b64-input" class="textarea-input" placeholder="输入内容..."></textarea>
+                    <textarea id="b64-input" class="textarea-input" placeholder="输入内容..." data-i18n-placeholder="tool.b64.phInput"></textarea>
                     <div class="btn-row">
-                        <button id="b64-encode-btn" class="btn btn-outline flex-1">编码</button>
-                        <button id="b64-decode-btn" class="btn btn-outline flex-1">解码</button>
+                        <button id="b64-encode-btn" class="btn btn-outline flex-1" data-i18n="tool.b64.encode">编码</button>
+                        <button id="b64-decode-btn" class="btn btn-outline flex-1" data-i18n="tool.b64.decode">解码</button>
                     </div>
                     <div class="output-wrapper">
-                        <textarea id="b64-output" class="textarea-input" placeholder="结果..." readonly></textarea>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('b64-output')">复制</button>
+                        <textarea id="b64-output" class="textarea-input" placeholder="结果..." data-i18n-placeholder="tool.resultPh" readonly></textarea>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('b64-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -269,20 +269,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-link-2"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-url-title">URL 编解码</h3>
+                        <h3 class="tool-title" id="tool-url-title" data-i18n="tool.url.title">URL 编解码</h3>
                     </div>
                 </div>
-                <p class="tool-desc">URL 参数转义与还原。</p>
+                <p class="tool-desc" data-i18n="tool.url.desc">URL 参数转义与还原。</p>
 
                 <div class="tool-content">
-                    <textarea id="url-input" class="textarea-input" placeholder="输入 URL..."></textarea>
+                    <textarea id="url-input" class="textarea-input" placeholder="输入 URL..." data-i18n-placeholder="tool.url.phInput"></textarea>
                     <div class="btn-row">
-                        <button id="url-encode-btn" class="btn btn-outline flex-1">编码</button>
-                        <button id="url-decode-btn" class="btn btn-outline flex-1">解码</button>
+                        <button id="url-encode-btn" class="btn btn-outline flex-1" data-i18n="tool.url.encode">编码</button>
+                        <button id="url-decode-btn" class="btn btn-outline flex-1" data-i18n="tool.url.decode">解码</button>
                     </div>
                     <div class="output-wrapper">
-                        <textarea id="url-output" class="textarea-input" placeholder="结果..." readonly></textarea>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('url-output')">复制</button>
+                        <textarea id="url-output" class="textarea-input" placeholder="结果..." data-i18n-placeholder="tool.resultPh" readonly></textarea>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('url-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -293,20 +293,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-palette"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-color-title">颜色调试器</h3>
+                        <h3 class="tool-title" id="tool-color-title" data-i18n="tool.color.title">颜色调试器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">HEX / RGB / RGBA 互转，支持透明度。</p>
+                <p class="tool-desc" data-i18n="tool.color.desc">HEX / RGB / RGBA 互转，支持透明度。</p>
 
                 <div class="tool-content">
                     <div class="input-group">
-                        <label class="input-label">颜色选择器</label>
+                        <label class="input-label" data-i18n="tool.color.picker">颜色选择器</label>
                         <div class="color-picker-row">
                         <input type="color" id="color-picker" value="#5B8DEF"
                                 class="color-picker-small">
                             <div class="flex-col-gap-xs">
-                                <label class="input-label label-xs">透明度 (Alpha): <span
-                                        id="alpha-val">1.0</span></label>
+                                <label class="input-label label-xs" data-i18n="tool.color.alpha">透明度 (Alpha): </label> <span
+                                        id="alpha-val">1.0</span>
                                 <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="1"
                                     class="range-full">
                             </div>
@@ -314,19 +314,19 @@
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">输出格式</label>
+                        <label class="input-label" data-i18n="tool.color.format">输出格式</label>
                         <select id="color-format" class="select-input">
-                            <option value="auto">自动 (Auto)</option>
+                            <option value="auto" data-i18n="tool.color.auto">自动 (Auto)</option>
                             <option value="hex">HEX (#RRGGBB / #RRGGBBAA)</option>
                             <option value="rgb">RGB / RGBA</option>
                         </select>
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">输入 / 输出</label>
+                        <label class="input-label" data-i18n="tool.color.io">输入 / 输出</label>
                         <div class="output-wrapper">
-                            <input type="text" id="color-input" class="text-input" placeholder="支持 HEX, RGB, RGBA">
-                            <button class="copy-btn" onclick="Tools.copyToClipboard('color-input')">复制</button>
+                            <input type="text" id="color-input" class="text-input" placeholder="支持 HEX, RGB, RGBA" data-i18n-placeholder="tool.color.phInput">
+                            <button class="copy-btn" onclick="Tools.copyToClipboard('color-input')" data-i18n="tool.copy">复制</button>
                         </div>
                     </div>
 
@@ -343,20 +343,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-lock"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-password-title">密码生成器</h3>
+                        <h3 class="tool-title" id="tool-password-title" data-i18n="tool.pwd.title">密码生成器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">生成高强度随机密码。</p>
+                <p class="tool-desc" data-i18n="tool.pwd.desc">生成高强度随机密码。</p>
 
                 <div class="tool-content">
                     <div class="btn-row btn-row-center">
-                        <label class="input-label flex-1">长度: <span id="pwd-len-val">16</span></label>
+                        <label class="input-label flex-1"><span data-i18n="tool.pwd.len">长度: </span><span id="pwd-len-val">16</span></label>
                         <input type="range" id="pwd-len" min="6" max="64" value="16" class="flex-2">
                     </div>
-                    <button id="pwd-gen-btn" class="btn btn-primary">生成密码</button>
+                    <button id="pwd-gen-btn" class="btn btn-primary" data-i18n="tool.pwd.gen">生成密码</button>
                     <div class="output-wrapper">
                         <input type="text" id="pwd-output" class="text-input" readonly>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('pwd-output')">复制</button>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('pwd-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -367,21 +367,20 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-pilcrow"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-lorem-title">文本生成</h3>
+                        <h3 class="tool-title" id="tool-lorem-title" data-i18n="tool.lorem.title">文本生成</h3>
                     </div>
                 </div>
-                <p class="tool-desc">生成 Lorem Ipsum 占位文本。</p>
+                <p class="tool-desc" data-i18n="tool.lorem.desc">生成 Lorem Ipsum 占位文本。</p>
 
                 <div class="tool-content">
                     <div class="btn-row">
-                        <button onclick="Tools.genLorem(1)" class="btn btn-outline flex-1">1 句</button>
-                        <button onclick="Tools.genLorem(3)" class="btn btn-outline flex-1">3 句</button>
-                        <button onclick="Tools.genLorem(5)" class="btn btn-outline flex-1">5 句</button>
+                        <button onclick="Tools.genLorem(1)" class="btn btn-outline flex-1" data-i18n="tool.lorem.1">1 句</button>
+                        <button onclick="Tools.genLorem(3)" class="btn btn-outline flex-1" data-i18n="tool.lorem.3">3 句</button>
+                        <button onclick="Tools.genLorem(5)" class="btn btn-outline flex-1" data-i18n="tool.lorem.5">5 句</button>
                     </div>
                     <div class="output-wrapper">
-                        <textarea id="lorem-output" class="textarea-input textarea-h-150" readonly placeholder="点击按钮生成..."
-                            ></textarea>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('lorem-output')">复制</button>
+                        <textarea id="lorem-output" class="textarea-input textarea-h-150" readonly placeholder="点击按钮生成..." data-i18n-placeholder="tool.lorem.ph"></textarea>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('lorem-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -392,17 +391,17 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-file-text"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-markdown-title">Markdown 预览</h3>
+                        <h3 class="tool-title" id="tool-markdown-title" data-i18n="tool.md.title">Markdown 预览</h3>
                     </div>
                 </div>
-                <p class="tool-desc">实时预览与编辑 Markdown，点击展开全屏编辑器。</p>
+                <p class="tool-desc" data-i18n="tool.md.desc">实时预览与编辑 Markdown，点击展开全屏编辑器。</p>
 
                 <div class="tool-content">
                     <div id="md-preview" class="preview-box md-compact-preview md-compact-style"
                         ></div>
                     <button id="md-expand-btn" class="btn btn-primary btn-full-mt">
                         <svg class="icon icon-mr" aria-hidden="true"><use href="#i-external"></use></svg>
-                        展开编辑
+                        <span data-i18n="tool.md.expand">展开编辑</span>
                     </button>
                 </div>
             </article>
@@ -413,30 +412,30 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-zap"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-shadow-title">CSS 阴影生成器</h3>
+                        <h3 class="tool-title" id="tool-shadow-title" data-i18n="tool.shadow.title">CSS 阴影生成器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">生成 box-shadow CSS 代码。</p>
+                <p class="tool-desc" data-i18n="tool.shadow.desc">生成 box-shadow CSS 代码。</p>
 
                 <div class="tool-content">
                     <div class="input-group">
-                        <label class="input-label">X 偏移：<span id="shadow-x-val">4</span>px</label>
+                        <label class="input-label"><span data-i18n="tool.shadow.x">X 偏移：</span><span id="shadow-x-val">4</span>px</label>
                         <input type="range" id="shadow-x" min="-50" max="50" value="4">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Y 偏移：<span id="shadow-y-val">6</span>px</label>
+                        <label class="input-label"><span data-i18n="tool.shadow.y">Y 偏移：</span><span id="shadow-y-val">6</span>px</label>
                         <input type="range" id="shadow-y" min="-50" max="50" value="6">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">模糊：<span id="shadow-blur-val">12</span>px</label>
+                        <label class="input-label"><span data-i18n="tool.shadow.blur">模糊：</span><span id="shadow-blur-val">12</span>px</label>
                         <input type="range" id="shadow-blur" min="0" max="100" value="12">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">扩展：<span id="shadow-spread-val">0</span>px</label>
+                        <label class="input-label"><span data-i18n="tool.shadow.spread">扩展：</span><span id="shadow-spread-val">0</span>px</label>
                         <input type="range" id="shadow-spread" min="-20" max="20" value="0">
                     </div>
                     <div class="color-picker-row">
-                        <label class="input-label">颜色:</label>
+                        <label class="input-label" data-i18n="tool.shadow.color">颜色:</label>
                         <input type="color" id="shadow-color" value="#000000" class="shadow-color-input">
                         <input type="range" id="shadow-opacity" min="0" max="1" step="0.01" value="0.3" class="flex-1">
                         <span id="shadow-opacity-val" class="text-xs-muted">0.30</span>
@@ -448,7 +447,7 @@
                     </div>
                     <div class="output-wrapper">
                         <input type="text" id="shadow-output" class="text-input" readonly>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('shadow-output')">复制</button>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('shadow-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -459,18 +458,18 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-type"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-font-title">字体单位转换器</h3>
+                        <h3 class="tool-title" id="tool-font-title" data-i18n="tool.font.title">字体单位转换器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">px / rem / em / pt 单位互转。</p>
+                <p class="tool-desc" data-i18n="tool.font.desc">px / rem / em / pt 单位互转。</p>
 
                 <div class="tool-content">
                     <div class="input-group">
-                        <label class="input-label">基础字体大小 (px):</label>
+                        <label class="input-label" data-i18n="tool.font.base">基础字体大小 (px):</label>
                         <input type="number" id="base-font-size" class="text-input" value="16" min="8" max="32">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">输入值:</label>
+                        <label class="input-label" data-i18n="tool.font.value">输入值:</label>
                         <div class="btn-row">
                             <input type="number" id="font-value" class="text-input" value="16" step="0.5">
                             <select id="font-unit" class="select-input flex-1">
@@ -481,27 +480,27 @@
                             </select>
                         </div>
                     </div>
-                    <button id="font-convert-btn" class="btn btn-primary">转换</button>
+                    <button id="font-convert-btn" class="btn btn-primary" data-i18n="tool.font.convert">转换</button>
                     <div id="font-results" class="grid-2col">
                         <div class="output-wrapper">
                             <input type="text" id="font-px" class="text-input" readonly placeholder="px">
                             <button class="copy-btn copy-btn-static"
-                                onclick="Tools.copyToClipboard('font-px')">复制</button>
+                                onclick="Tools.copyToClipboard('font-px')" data-i18n="tool.copy">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-rem" class="text-input" readonly placeholder="rem">
                             <button class="copy-btn copy-btn-static"
-                                onclick="Tools.copyToClipboard('font-rem')">复制</button>
+                                onclick="Tools.copyToClipboard('font-rem')" data-i18n="tool.copy">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-em" class="text-input" readonly placeholder="em">
                             <button class="copy-btn copy-btn-static"
-                                onclick="Tools.copyToClipboard('font-em')">复制</button>
+                                onclick="Tools.copyToClipboard('font-em')" data-i18n="tool.copy">复制</button>
                         </div>
                         <div class="output-wrapper">
                             <input type="text" id="font-pt" class="text-input" readonly placeholder="pt">
                             <button class="copy-btn copy-btn-static"
-                                onclick="Tools.copyToClipboard('font-pt')">复制</button>
+                                onclick="Tools.copyToClipboard('font-pt')" data-i18n="tool.copy">复制</button>
                         </div>
                     </div>
                 </div>
@@ -513,24 +512,24 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-palette"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-gradient-title">CSS 渐变生成器</h3>
+                        <h3 class="tool-title" id="tool-gradient-title" data-i18n="tool.gradient.title">CSS 渐变生成器</h3>
                     </div>
                 </div>
-                <p class="tool-desc">创建线性渐变 CSS 代码。</p>
+                <p class="tool-desc" data-i18n="tool.gradient.desc">创建线性渐变 CSS 代码。</p>
 
                 <div class="tool-content">
                     <div class="input-group">
-                        <label class="input-label">角度：<span id="gradient-angle-val">45</span>°</label>
+                        <label class="input-label"><span data-i18n="tool.gradient.angle">角度：</span><span id="gradient-angle-val">45</span>°</label>
                         <input type="range" id="gradient-angle" min="0" max="360" value="45">
                     </div>
                     <div class="color-picker-row color-picker-row-between">
                         <div class="flex-1">
-                            <label class="input-label">起始颜色</label>
+                            <label class="input-label" data-i18n="tool.gradient.start">起始颜色</label>
                             <input type="color" id="gradient-color-1" value="#5B8DEF"
                                 class="gradient-color-input">
                         </div>
                         <div class="flex-1">
-                            <label class="input-label">结束颜色</label>
+                            <label class="input-label" data-i18n="tool.gradient.end">结束颜色</label>
                             <input type="color" id="gradient-color-2" value="#3B6FD4"
                                 class="gradient-color-input">
                         </div>
@@ -540,7 +539,7 @@
                     </div>
                     <div class="output-wrapper">
                         <input type="text" id="gradient-output" class="text-input" readonly>
-                        <button class="copy-btn" onclick="Tools.copyToClipboard('gradient-output')">复制</button>
+                        <button class="copy-btn" onclick="Tools.copyToClipboard('gradient-output')" data-i18n="tool.copy">复制</button>
                     </div>
                 </div>
             </article>
@@ -551,13 +550,13 @@
                         <svg class="icon tool-icon-img" aria-hidden="true"><use href="#i-keyboard"></use></svg>
                     </div>
                     <div>
-                        <h3 class="tool-title" id="tool-typing-title">打字练习</h3>
+                        <h3 class="tool-title" id="tool-typing-title" data-i18n="tool.typing.title">打字练习</h3>
                     </div>
                 </div>
-                <p class="tool-desc">提升打字速度与准确性，支持多种练习模式。</p>
+                <p class="tool-desc" data-i18n="tool.typing.desc">提升打字速度与准确性，支持多种练习模式。</p>
 
                 <div class="tool-content">
-                    <button id="typing-start-btn" class="btn btn-primary btn-full-mt-sm">
+                    <button id="typing-start-btn" class="btn btn-primary btn-full-mt-sm" data-i18n="tool.typing.start">
                         开始练习
                     </button>
                 </div>
@@ -570,78 +569,78 @@
     <div id="typing-modal" class="typing-modal hidden" role="dialog" aria-modal="true"
         aria-labelledby="typing-modal-title">
         <div class="typing-modal-content">
-            <button id="typing-close-btn" class="typing-close-btn" aria-label="关闭打字练习">
+            <button id="typing-close-btn" class="typing-close-btn" aria-label="关闭打字练习" data-i18n-aria-label="tool.typing.closeAria">
                 <svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg>
             </button>
 
             <!-- Setup Panel -->
             <div id="typing-setup" class="typing-setup">
-                <h2 id="typing-modal-title" class="typing-title">打字练习</h2>
-                <p class="typing-subtitle">选择文章并开始练习</p>
+                <h2 id="typing-modal-title" class="typing-title" data-i18n="tool.typing.title">打字练习</h2>
+                <p class="typing-subtitle" data-i18n="tool.typing.subtitle">选择文章并开始练习</p>
 
                 <div class="typing-articles-grid">
                     <div class="typing-article-card selected" data-article="0">
                         <div class="typing-article-number">01</div>
                         <div class="typing-article-content">
                             <h4>The Art of Programming</h4>
-                            <p>探索编程的本质与美学的交汇点</p>
+                            <p data-i18n="tool.typing.article1">探索编程的本质与美学的交汇点</p>
                         </div>
                     </div>
                     <div class="typing-article-card" data-article="1">
                         <div class="typing-article-number">02</div>
                         <div class="typing-article-content">
                             <h4>Space Exploration</h4>
-                            <p>人类对宇宙未知领域的永恒追求</p>
+                            <p data-i18n="tool.typing.article2">人类对宇宙未知领域的永恒追求</p>
                         </div>
                     </div>
                     <div class="typing-article-card" data-article="2">
                         <div class="typing-article-number">03</div>
                         <div class="typing-article-content">
                             <h4>The Digital Age</h4>
-                            <p>数字化时代如何重塑我们的生活方式</p>
+                            <p data-i18n="tool.typing.article3">数字化时代如何重塑我们的生活方式</p>
                         </div>
                     </div>
                     <div class="typing-article-card" data-article="3">
                         <div class="typing-article-number">04</div>
                         <div class="typing-article-content">
                             <h4>Environmental Challenges</h4>
-                            <p>地球面临的紧迫环境问题与解决方案</p>
+                            <p data-i18n="tool.typing.article4">地球面临的紧迫环境问题与解决方案</p>
                         </div>
                     </div>
                     <div class="typing-article-card" data-article="4">
                         <div class="typing-article-number">05</div>
                         <div class="typing-article-content">
                             <h4>The Future of AI</h4>
-                            <p>人工智能的发展前景与思考</p>
+                            <p data-i18n="tool.typing.article5">人工智能的发展前景与思考</p>
                         </div>
                     </div>
                     <div class="typing-article-card" data-article="5">
                         <div class="typing-article-number">06</div>
                         <div class="typing-article-content">
                             <h4>Mindfulness Practice</h4>
-                            <p>正念冥想与心理健康的奥秘</p>
+                            <p data-i18n="tool.typing.article6">正念冥想与心理健康的奥秘</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="typing-settings">
                     <div class="typing-setting-group">
-                        <label class="typing-setting-label">时间限制</label>
+                        <label class="typing-setting-label" data-i18n="tool.typing.timeLimit">时间限制</label>
                         <div class="typing-time-options">
-                            <button class="typing-time-btn selected" data-time="0">无限</button>
-                            <button class="typing-time-btn" data-time="60">1 分钟</button>
-                            <button class="typing-time-btn" data-time="120">2 分钟</button>
-                            <button class="typing-time-btn" data-time="300">5 分钟</button>
+                            <button class="typing-time-btn selected" data-time="0" data-i18n="tool.typing.unlimited">无限</button>
+                            <button class="typing-time-btn" data-time="60" data-i18n="tool.typing.min1">1 分钟</button>
+                            <button class="typing-time-btn" data-time="120" data-i18n="tool.typing.min2">2 分钟</button>
+                            <button class="typing-time-btn" data-time="300" data-i18n="tool.typing.min5">5 分钟</button>
                         </div>
                         <div class="typing-custom-time hidden">
-                            <input type="number" id="typing-custom-time-input" class="text-input" placeholder="输入秒数"
+                            <input type="number" id="typing-custom-time-input" class="text-input" placeholder="输入秒数" data-i18n-placeholder="tool.typing.customPh"
                                 min="10" max="3600" value="60">
                         </div>
                     </div>
                 </div>
 
                 <button id="typing-begin-btn" class="btn btn-primary typing-begin-btn">
-                    <span>开始打字</span>
+                    <span data-i18n="tool.typing.begin">开始打字</span>
                     <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
                 </button>
             </div>
@@ -650,7 +649,7 @@
             <div id="typing-practice" class="typing-practice hidden">
                 <div class="typing-stats-bar">
                     <div class="typing-stat">
-                        <span class="typing-stat-label">时间</span>
+                        <span class="typing-stat-label" data-i18n="tool.typing.time">时间</span>
                         <span id="typing-time-display" class="typing-stat-value">--:--</span>
                     </div>
                     <div class="typing-stat">
@@ -658,11 +657,11 @@
                         <span id="typing-wpm-display" class="typing-stat-value">0</span>
                     </div>
                     <div class="typing-stat">
-                        <span class="typing-stat-label">准确率</span>
+                        <span class="typing-stat-label" data-i18n="tool.typing.accuracy">准确率</span>
                         <span id="typing-accuracy-display" class="typing-stat-value">100%</span>
                     </div>
                     <div class="typing-stat">
-                        <span class="typing-stat-label">进度</span>
+                        <span class="typing-stat-label" data-i18n="tool.typing.progress">进度</span>
                         <span id="typing-progress-display" class="typing-stat-value">0%</span>
                     </div>
                 </div>
@@ -670,15 +669,15 @@
                 <div class="typing-text-container">
                     <div id="typing-text-display" class="typing-text-display"></div>
                     <input type="text" id="typing-input" class="typing-input" autocomplete="off" autocorrect="off"
-                        autocapitalize="off" spellcheck="false" aria-label="打字输入区域">
+                        autocapitalize="off" spellcheck="false" aria-label="打字输入区域" data-i18n-aria-label="tool.typing.inputAria">
                 </div>
 
                 <div class="typing-keyboard-hint">
-                    <span>按下</span>
+                    <span data-i18n="tool.typing.hintPress">按下</span>
                     <kbd>Tab</kbd>
-                    <span>或</span>
+                    <span data-i18n="tool.typing.hintOr">或</span>
                     <kbd>Esc</kbd>
-                    <span>键结束练习</span>
+                    <span data-i18n="tool.typing.hintEnd">键结束练习</span>
                 </div>
             </div>
 
@@ -687,7 +686,7 @@
                 <div class="typing-results-icon">
                     <svg class="icon icon-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg>
                 </div>
-                <h2 class="typing-results-title">练习完成!</h2>
+                <h2 class="typing-results-title" data-i18n="tool.typing.done">练习完成!</h2>
                 <div class="typing-results-stats">
                     <div class="typing-result-stat">
                         <span class="typing-result-value" id="typing-result-wpm">0</span>
@@ -695,23 +694,23 @@
                     </div>
                     <div class="typing-result-stat">
                         <span class="typing-result-value" id="typing-result-accuracy">0%</span>
-                        <span class="typing-result-label">准确率</span>
+                        <span class="typing-result-label" data-i18n="tool.typing.accuracy">准确率</span>
                     </div>
                     <div class="typing-result-stat">
                         <span class="typing-result-value" id="typing-result-time">0s</span>
-                        <span class="typing-result-label">用时</span>
+                        <span class="typing-result-label" data-i18n="tool.typing.duration">用时</span>
                     </div>
                     <div class="typing-result-stat">
                         <span class="typing-result-value" id="typing-result-chars">0</span>
-                        <span class="typing-result-label">字符</span>
+                        <span class="typing-result-label" data-i18n="tool.typing.chars">字符</span>
                     </div>
                 </div>
                 <div class="typing-results-actions">
                     <button id="typing-restart-btn" class="btn btn-outline">
                         <svg class="icon" aria-hidden="true"><use href="#i-rotate-ccw"></use></svg>
-                        再试一次
+                        <span data-i18n="tool.typing.retry">再试一次</span>
                     </button>
-                    <button id="typing-change-article-btn" class="btn btn-primary">
+                    <button id="typing-change-article-btn" class="btn btn-primary" data-i18n="tool.typing.changeArticle">
                         更换文章
                     </button>
                 </div>
@@ -726,9 +725,9 @@
     <div id="md-modal" class="md-modal hidden">
         <div class="md-modal-content">
             <div class="md-modal-header">
-                <h3>Markdown 编辑器</h3>
+                <h3 data-i18n="tool.md.editorTitle">Markdown 编辑器</h3>
                 <div class="flex-gap-center">
-                    <button id="md-toggle-preview-btn" class="btn btn-outline btn-compact" title="切换预览面板">
+                    <button id="md-toggle-preview-btn" class="btn btn-outline btn-compact" title="切换预览面板" data-i18n-title="tool.md.togglePreview">
                         <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg>
                     </button>
                     <button id="md-close-btn" class="btn btn-outline btn-icon-only">
@@ -739,7 +738,7 @@
             <div class="md-modal-body-split">
                 <div class="md-editor-pane">
                     <textarea id="md-modal-input" class="md-editor-textarea"
-                        placeholder="在此输入 Markdown..."></textarea>
+                        placeholder="在此输入 Markdown..." data-i18n-placeholder="tool.md.ph"></textarea>
                 </div>
                 <div id="md-modal-preview" class="md-preview-pane"></div>
             </div>

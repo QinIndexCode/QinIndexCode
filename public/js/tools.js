@@ -1,6 +1,12 @@
 (function () {
     'use strict';
 
+    /* Helper: i18n 取值（QinBlogI18n 未加载时原样返回 key） */
+    function T(key, vars) {
+        if (window.QinBlogI18n) return window.QinBlogI18n.t(key, vars);
+        return key;
+    }
+
     /* Helper: read a CSS custom property and return as #rrggbb hex */
     function cssVarToHex(varName) {
         var val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
@@ -292,7 +298,7 @@
             const el = document.getElementById(elementId);
             const text = el && (el.value !== undefined ? el.value : el.textContent);
             if (!text) {
-                showToast('⚠️ 内容为空，无法复制', 'warning');
+                showToast(T('tool.toast.empty'), 'warning');
                 return;
             }
 
@@ -316,20 +322,20 @@
             if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                     showCopyFeedback(el);
-                    showToast('✓ 复制成功', 'success');
+                    showToast(T('tool.toast.copyOk'), 'success');
                 }).catch(() => {
-                    showToast('✗ 复制失败，请手动复制', 'error');
+                    showToast(T('tool.toast.copyFail'), 'error');
                 });
                 return;
             }
 
             if (!copied) {
-                showToast('✗ 复制失败，请手动复制', 'error');
+                showToast(T('tool.toast.copyFail'), 'error');
                 return;
             }
 
             showCopyFeedback(el);
-            showToast('✓ 复制成功', 'success');
+            showToast(T('tool.toast.copyOk'), 'success');
         };
 
         // 复制成功按钮反馈
@@ -444,7 +450,7 @@
                 link.click();
             } catch (error) {
                 console.error('图片转换失败:', error);
-                alert('图片转换失败，请确保图片已完全加载');
+                alert(T('tool.img.failAlert'));
             }
         });
 
@@ -515,10 +521,10 @@
         }
 
         document.getElementById('b64-encode-btn').addEventListener('click', () => {
-            try { b64Out.value = utf8ToBase64(b64In.value); } catch (e) { b64Out.value = "编码错误: " + e.message; }
+            try { b64Out.value = utf8ToBase64(b64In.value); } catch (e) { b64Out.value = T('tool.b64.encodeErr', { msg: e.message }); }
         });
         document.getElementById('b64-decode-btn').addEventListener('click', () => {
-            try { b64Out.value = base64ToUtf8(b64In.value); } catch (e) { b64Out.value = "解码错误: " + e.message; }
+            try { b64Out.value = base64ToUtf8(b64In.value); } catch (e) { b64Out.value = T('tool.b64.decodeErr', { msg: e.message }); }
         });
 
         const urlIn = document.getElementById('url-input');
@@ -700,12 +706,16 @@
                 .replace(/\n/gim, '<br>');
         };
 
-        /* Default markdown content */
-        var _defaultMdText = "# Hello Markdown\n\n**粗体** 和 *斜体*\n\n- 列表项 1\n- 列表项 2\n\n[链接示例](https://example.com)";
+        /* Default markdown content (i18n) */
+        function mdSampleText() { return T('tool.md.sample'); }
+        var lastMdSample = null;
 
         /* Render compact preview in card */
         function renderCompactPreview() {
-            if (!mdModalInput.value) mdModalInput.value = _defaultMdText;
+            if (!mdModalInput.value) {
+                mdModalInput.value = mdSampleText();
+                lastMdSample = mdModalInput.value;
+            }
             mdPreview.innerHTML = Tools.parseMarkdown(mdModalInput.value);
         }
         renderCompactPreview();
@@ -714,12 +724,30 @@
         mdPreview.addEventListener('click', openMdModal);
 
         function openMdModal() {
-            if (!mdModalInput.value) mdModalInput.value = _defaultMdText;
+            if (!mdModalInput.value) {
+                mdModalInput.value = mdSampleText();
+                lastMdSample = mdModalInput.value;
+            }
             mdModalPreview.innerHTML = Tools.parseMarkdown(mdModalInput.value);
             mdModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             mdModalInput.focus();
         }
+
+        /* 语言切换时，若编辑器仍是未编辑的示例内容则同步换语种示例 */
+        document.addEventListener('qinblog:langchange', function () {
+            var newSample = mdSampleText();
+            if (!mdModalInput.value || mdModalInput.value === lastMdSample) {
+                mdModalInput.value = newSample;
+                lastMdSample = newSample;
+                renderCompactPreview();
+                if (!mdModal.classList.contains('hidden')) {
+                    mdModalPreview.innerHTML = Tools.parseMarkdown(mdModalInput.value);
+                }
+            } else {
+                lastMdSample = newSample;
+            }
+        });
 
         function closeMdModal() {
             mdModal.classList.add('hidden');

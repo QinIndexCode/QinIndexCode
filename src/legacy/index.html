@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Meta Tags -->
-    <title>QinIndexCode - 个人技术博客 | 全栈开发、Web 开发、移动应用开发</title>
-    <meta name="title" content="QinIndexCode - 个人技术博客 | 全栈开发、Web 开发、移动应用开发">
-    <meta name="description" content="QinIndexCode 个人技术博客，专注于分享全栈开发、Web 开发、移动应用开发、JavaScript、React、Vue、Node.js 等技术文章和实战经验">
+    <title data-i18n="meta.home.title">QinIndexCode - 个人技术博客 | 全栈开发、Web 开发、移动应用开发</title>
+    <meta name="title" content="QinIndexCode - 个人技术博客 | 全栈开发、Web 开发、移动应用开发" data-i18n-meta="meta.home.title">
+    <meta name="description" content="QinIndexCode 个人技术博客，专注于分享全栈开发、Web 开发、移动应用开发、JavaScript、React、Vue、Node.js 等技术文章和实战经验" data-i18n-meta="meta.home.desc">
     <meta name="keywords" content="技术博客，全栈开发，Web 开发，JavaScript, React, Vue, Node.js, 前端开发，后端开发，移动开发，React Native, Python, 编程教程">
     <meta name="author" content="QinIndexCode">
     <meta name="robots" content="index, follow">
@@ -19,16 +19,16 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://qinindexcode.site/">
     <meta property="og:site_name" content="QinIndexCode">
-    <meta property="og:title" content="QinIndexCode - 个人技术博客">
-    <meta property="og:description" content="专注于分享全栈开发、Web 开发、移动应用开发等技术文章和实战经验">
+    <meta property="og:title" content="QinIndexCode - 个人技术博客" data-i18n-meta="meta.home.title">
+    <meta property="og:description" content="专注于分享全栈开发、Web 开发、移动应用开发等技术文章和实战经验" data-i18n-meta="meta.home.desc">
     <meta property="og:image" content="https://qinindexcode.site/assets/images/avatar.webp">
     <meta property="og:locale" content="zh_CN">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://qinindexcode.site/">
-    <meta name="twitter:title" content="QinIndexCode - 个人技术博客">
-    <meta name="twitter:description" content="专注于分享全栈开发、Web 开发、移动应用开发等技术文章和实战经验">
+    <meta name="twitter:title" content="QinIndexCode - 个人技术博客" data-i18n-meta="meta.home.title">
+    <meta name="twitter:description" content="专注于分享全栈开发、Web 开发、移动应用开发等技术文章和实战经验" data-i18n-meta="meta.home.desc">
     <meta name="twitter:image" content="https://qinindexcode.site/assets/images/avatar.webp">
     <meta name="twitter:creator" content="@QinIndexCode">
 
@@ -47,10 +47,10 @@
     <link rel="preconnect" href="https://api.github.com" crossorigin>
 
     <!-- 异步加载 CSS，不阻塞首屏渲染 -->
-    <link rel="preload" href="./css/css2.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="./css/css2.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="./css/main.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link href="./css/css2.css" rel="stylesheet">
+        <link href="./css/css2.min.css" rel="stylesheet">
         <link href="./css/main.min.css" rel="stylesheet">
     </noscript>
 
@@ -128,10 +128,7 @@
     </button>
 
     <div class="theme-selector" id="theme-selector">
-        <div class="lang-switch" id="lang-switch" role="group" data-i18n-aria-label="common.switchLang">
-            <button type="button" class="lang-opt" data-lang="zh-CN" aria-pressed="true">中</button>
-            <button type="button" class="lang-opt" data-lang="en-US" aria-pressed="false">EN</button>
-        </div>
+        <button type="button" class="lang-btn" id="lang-btn" aria-label="切换语言" data-i18n-aria-label="common.switchLang">中</button>
         <button class="theme-btn" id="theme-btn" aria-label="切换主题" data-i18n-aria-label="common.switchTheme" aria-pressed="true">
             <svg class="icon icon-md theme-icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
             <svg class="icon icon-md theme-icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
@@ -146,7 +143,7 @@
                 <div class="profile-avatar">
                     <picture>
                         <source srcset="assets/images/avatar.webp" type="image/webp">
-                        <img src="assets/images/avatar.webp" alt="QinIndexCode 头像" width="100" height="100" loading="eager" decoding="async">
+                        <img src="assets/images/avatar.webp" alt="QinIndexCode 头像" data-i18n-alt="common.avatarAlt" width="100" height="100" loading="eager" decoding="async">
                     </picture>
                 </div>
                 <div class="profile-name">QinIndexCode</div>
@@ -201,7 +198,7 @@
                 <svg class="uptime-icon" aria-hidden="true"><use href="#i-clock"></use></svg>
                 <div class="uptime-text">
                     <span class="uptime-label" data-i18n="common.uptimeLabel">站点已运行</span>
-                    <span class="uptime-value" id="uptime-value">计算中...</span>
+                    <span class="uptime-value" id="uptime-value" data-i18n="common.computing">计算中...</span>
                 </div>
             </div>
         </aside>

@@ -53,10 +53,7 @@
         </button>
 
         <div class="theme-selector" id="theme-selector">
-            <div class="lang-switch" id="lang-switch" role="group" aria-label="切换语言">
-                <button type="button" class="lang-opt" data-lang="zh-CN" aria-pressed="true">中</button>
-                <button type="button" class="lang-opt" data-lang="en-US" aria-pressed="false">EN</button>
-            </div>
+            <button type="button" class="lang-btn" id="lang-btn" aria-label="切换语言">中</button>
             <button class="theme-btn" id="theme-btn" aria-label="切换主题" aria-pressed="true">
                 <svg class="icon icon-md theme-icon theme-icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
                 <svg class="icon icon-md theme-icon theme-icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>

@@ -204,5 +204,24 @@ window.QINBLOG_BLOGS = [
       "安全",
       "架构设计"
     ]
+  },
+  {
+    "id": "013",
+    "fileName": "013.md",
+    "seq": 13,
+    "title": "当 AI 真正\"自主\"入侵：HuggingFace 事件的攻防复盘与 2026 的 AI 安全新常态",
+    "date": "2026-08-09",
+    "author": "QinIndexCode",
+    "excerpt": "2026 年 7 月 16 日，HuggingFace 发了一篇安全公告：某个周末，有人闯进了它的生产系统，盗取了密码和访问密钥，还在几个内部系统之间横向移动。公告里有句话让这条新闻和过去所有\"被入侵\"都不一样——这套入侵从头到尾由自主 AI Agent 系统驱动，一个真人操作者都没有参与。  当时...",
+    "wordCount": 2210,
+    "tags": [
+      "ai",
+      "安全",
+      "agent",
+      "openai",
+      "huggingface",
+      "anthropic",
+      "观察"
+    ]
   }
 ];
