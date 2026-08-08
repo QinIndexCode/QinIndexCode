@@ -806,9 +806,11 @@ button:focus-visible,
     font-size: inherit;
 }
 .prose blockquote {
-    border-left: 2px solid var(--accent);
-    padding: 0.25em 0 0.25em 1.25em;
-    margin: 1.25em 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-secondary);
+    padding: 1em 1.25em;
+    margin: 1.5em 0;
     color: var(--text-secondary);
     font-style: italic;
 }
@@ -1372,37 +1374,16 @@ details > *:not(summary) {
     margin: 1px 0;
 }
 
-.nav-link::before {
-    content: '';
-    position: absolute;
-    left: -0.5rem;
-    top: 50%;
-    transform: translateY(-50%) scaleY(0);
-    width: 3px;
-    height: 60%;
-    background: var(--accent);
-    border-radius: 0 3px 3px 0;
-    transition: transform var(--transition-base);
-}
-
 .nav-link:hover {
     color: var(--text-primary);
     background: var(--surface-hover);
     transform: translateX(2px);
 }
 
-.nav-link:hover::before {
-    transform: translateY(-50%) scaleY(0.6);
-}
-
 .nav-link.active {
     color: var(--accent);
     background: var(--accent-soft);
     font-weight: var(--font-weight-semibold);
-}
-
-.nav-link.active::before {
-    transform: translateY(-50%) scaleY(1);
 }
 
 .nav-link .icon {
@@ -2714,17 +2695,12 @@ body::before {
     transform: scale(1.1);
 }
 
-/* ----- Open source list (no icons, accent bar instead) ----- */
+/* ----- Open source list (no icons, hover card instead of accent bar) ----- */
 .open-source-list .icon-list-item {
-    padding-left: 1rem;
-    border-left: 2px solid var(--border);
-    gap: 0;
-    transition: border-color var(--transition-fast),
-                background var(--transition-fast),
+    transition: background var(--transition-fast),
                 transform var(--transition-fast);
 }
 .open-source-list .icon-list-item:hover {
-    border-left-color: var(--accent);
     background: var(--surface-hover);
     transform: translateX(3px);
 }

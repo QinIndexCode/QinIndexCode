@@ -163,10 +163,13 @@
                     const scrollContainer = toolNavEl.querySelector('.tool-nav-scroll');
                     const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
                     const firstTop = firstItem.offsetTop - scrollTop;
+                    const lastBottom = lastItem.offsetTop + lastItem.offsetHeight - scrollTop;
 
-                    toolNavEl.style.setProperty('--pill-count', navCount);
-                    progressPill.style.transform = 'translateY(' + firstTop + 'px)';
+                    // 高度直接按首尾项实测计算（兼容各断点的项尺寸与间距），
+                    // 不使用 calc(var() 乘法)，避免旧浏览器解析失败导致胶囊塌陷成一条线
                     toolNavEl.classList.add('has-pill');
+                    progressPill.style.height = Math.max(0, lastBottom - firstTop) + 'px';
+                    progressPill.style.transform = 'translateY(' + firstTop + 'px)';
                 }
             } else {
                 toolNavEl.classList.remove('has-pill');

@@ -480,20 +480,20 @@ body.dark-theme .tool-icon,
 }
 
 .nav-progress-pill {
-            position: absolute;
-            left: 0.375rem;
-            right: 0.375rem;
-            top: 0;
-            background: color-mix(in srgb, var(--accent) 18%, transparent);
-            border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-            border-radius: 1.125rem;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 0;
-            height: calc(var(--pill-count, 1) * 36px + (var(--pill-count, 1) - 1) * 0.25rem);
-            will-change: transform;
-        }
+    position: absolute;
+    left: 0.375rem;
+    right: 0.375rem;
+    top: 0;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: 1.125rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    height: 36px;
+    will-change: transform;
+}
 
 .tool-nav.has-pill .nav-progress-pill {
     opacity: 1;
@@ -686,7 +686,7 @@ body.dark-theme .nav-item.hover-sync img,
     }
 
     .nav-progress-pill {
-        height: calc(var(--pill-count, 1) * 34px + (var(--pill-count, 1) - 1) * 0.2rem);
+        height: 34px;
     }
 
     .nav-toggle {
@@ -917,8 +917,10 @@ html {
 }
 
 #md-preview blockquote {
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
     margin: 1rem 0;
     color: var(--text-secondary);
 }
@@ -1213,8 +1215,10 @@ html {
 }
 
 #md-modal-preview blockquote {
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
     margin: 1rem 0;
     color: var(--text-secondary);
     font-style: italic;
