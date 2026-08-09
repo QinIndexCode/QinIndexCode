@@ -359,9 +359,11 @@
 
         handleIframeError(iframe, page) {
             console.error(`Failed to load page: ${page.src}`);
+            let savedLang = 'zh-CN';
+            try { savedLang = localStorage.getItem('qinblog_lang') || 'zh-CN'; } catch (e) { /* ignore */ }
             iframe.srcdoc = `
                 <!DOCTYPE html>
-                <html lang="zh-CN">
+                <html lang="${savedLang}">
                 <head>
                     <meta charset="UTF-8">
                     <style>

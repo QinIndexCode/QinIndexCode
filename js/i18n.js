@@ -369,6 +369,10 @@
 
     function apply(root) {
         var scope = root || document;
+        if (root === undefined) {
+            document.documentElement.lang = current;
+            document.documentElement.dataset.lang = current;
+        }
         var nodes = scope.querySelectorAll('[data-i18n]');
         Array.prototype.forEach.call(nodes, function (el) {
             var key = el.getAttribute('data-i18n');
