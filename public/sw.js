@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mygitblog-v16';
-const STATIC_CACHE_NAME = 'mygitblog-static-v16';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v16';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v16';
+const CACHE_NAME = 'mygitblog-v17';
+const STATIC_CACHE_NAME = 'mygitblog-static-v17';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v17';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v17';
 
 const STATIC_ASSETS = [
     './',
@@ -19,6 +19,7 @@ const STATIC_ASSETS = [
     './.nojekyll',
     './css/main.min.css',
     './css/css2.min.css',
+    './css/article.min.css',
     './css/atom-one-dark.min.css',
     './css/tools.min.css',
     './css/donate.min.css',
@@ -29,6 +30,7 @@ const STATIC_ASSETS = [
     './js/donate.js',
     './js/ui-controls.js',
     './js/nav-loader.js',
+    './js/article.js',
     './js/svg-sprite.js'
 ];
 

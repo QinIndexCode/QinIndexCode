@@ -1,0 +1,508 @@
+/* ========================================
+   article.css — 独立文章页（/blogs/{id}.html）详情布局样式
+   与主站文章详情一致：右侧固定目录 + 浮动按钮组 + 阅读进度条
+   ======================================== */
+
+/* ---------- 详情卡片 ---------- */
+.blog-detail-card {
+    margin-bottom: 2rem;
+}
+
+.blog-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.blog-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ---------- 标签 ---------- */
+.blog-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 9999px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.tag:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    transform: translateY(-2px);
+}
+
+/* ---------- 文章正文（含代码块复制按钮定位） ---------- */
+.blog-content {
+    margin-bottom: 2rem;
+}
+
+/* ---------- 评论卡片 ---------- */
+.comments-card {
+    margin-top: 2rem;
+    padding: 2rem;
+}
+
+.comments-card h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#giscus-container {
+    margin-top: 1rem;
+    min-height: 300px;
+}
+
+#giscus-container iframe {
+    border-radius: var(--border-radius);
+    width: 100%;
+}
+
+/* ---------- 详情布局：主内容 + 右侧固定目录 ---------- */
+.blog-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    position: relative;
+}
+
+.blog-main {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.blog-sidebar {
+    position: sticky;
+    top: 3.5rem;
+    flex: 0 0 240px;
+    max-height: calc(100vh - 4.5rem);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    box-shadow: var(--shadow-sm);
+    transition: flex-basis 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.blog-sidebar.collapsed {
+    flex-basis: 48px;
+    padding: 0.5rem;
+}
+
+.blog-sidebar.collapsed .toc-list {
+    opacity: 0;
+    pointer-events: none;
+    max-height: 0;
+}
+
+.toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.toc-toggle:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border);
+    color: var(--accent-blue);
+}
+
+.toc-toggle .icon {
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-sidebar.collapsed .toc-toggle .icon {
+    transform: rotate(180deg);
+}
+
+.toc-toggle-text {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.blog-sidebar.collapsed .toc-toggle-text {
+    opacity: 0;
+    width: 0;
+}
+
+.toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    max-height: calc(100vh - 7.5rem);
+    transition: opacity 0.2s ease, max-height 0.3s ease;
+}
+
+.toc-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.toc-list::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 2px;
+}
+
+.toc-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.toc-item {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.4rem 0.625rem;
+    padding-left: calc(0.625rem + var(--indent, 0rem));
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.toc-item:hover {
+    background: var(--glass-bg-hover);
+    color: var(--accent-blue);
+}
+
+.toc-item.active {
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.toc-h1,
+.toc-h2 {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.toc-h3 {
+    font-weight: 500;
+}
+
+.toc-h4,
+.toc-h5,
+.toc-h6 {
+    font-size: 0.8125rem;
+    opacity: 0.9;
+}
+
+/* ---------- 浮动操作按钮组 ---------- */
+.floating-actions {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    z-index: 998;
+}
+
+.floating-actions .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.625rem 1rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+    border-radius: 9999px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    margin: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-actions .back-link:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    transform: translateX(-3px);
+}
+
+.floating-actions .back-link .icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-actions .back-link:hover .icon {
+    transform: translateX(-2px);
+}
+
+.floating-actions .back-to-top {
+    position: static;
+    width: 50px;
+    height: 50px;
+    align-self: flex-end;
+}
+
+/* ---------- 回到顶部 ---------- */
+.back-to-top {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+    color: var(--accent-blue);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    box-shadow: var(--shadow-md);
+    padding: 0;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--accent-blue);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-lg);
+    color: var(--accent-purple);
+}
+
+.back-to-top:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.back-to-top .icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-to-top:hover .icon {
+    transform: translateY(-2px);
+}
+
+/* ---------- 移动端目录浮动按钮 ---------- */
+.toc-float-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.toc-float-btn:hover {
+    background: var(--glass-bg-hover);
+    color: var(--accent-blue);
+    transform: translateY(-2px);
+}
+
+/* ---------- 阅读进度条 ---------- */
+.reading-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--glass-bg);
+    z-index: 1000;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+/* ---------- 移动端 ---------- */
+@media (max-width: 1200px) {
+    .blog-sidebar {
+        flex-basis: 190px;
+    }
+}
+
+@media (max-width: 900px) {
+    .blog-sidebar {
+        display: none;
+    }
+
+    .blog-sidebar.mobile-toc-open {
+        display: flex;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 999;
+        transform: translateX(0);
+        margin-top: 0;
+        border-radius: 0;
+        max-height: 100vh;
+        padding: 3.5rem 1rem 1rem;
+        border-right: 1px solid var(--glass-border);
+    }
+
+    .toc-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 998;
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+    }
+
+    .toc-overlay.active {
+        display: block;
+    }
+
+    .toc-float-btn {
+        display: inline-flex;
+    }
+}
+
+@media (min-width: 901px) {
+    .toc-float-btn {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .floating-actions {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .floating-actions .back-link span {
+        display: none;
+    }
+
+    .floating-actions .back-link {
+        padding: 0.625rem;
+        width: 44px;
+        height: 44px;
+        justify-content: center;
+    }
+
+    .floating-actions .back-to-top {
+        width: 44px;
+        height: 44px;
+    }
+
+    .toc-float-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .blog-meta {
+        gap: 0.75rem;
+        font-size: 0.8125rem;
+    }
+
+    .meta-item {
+        white-space: nowrap;
+    }
+
+    .back-to-top {
+        right: 1rem;
+        bottom: 1rem;
+        width: 44px;
+        height: 44px;
+    }
+
+    .comments-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .comments-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comments-header h2 {
+        font-size: 1.25rem;
+    }
+}

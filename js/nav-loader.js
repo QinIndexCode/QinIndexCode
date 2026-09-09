@@ -79,6 +79,13 @@
             <ul class="nav-menu" role="menubar">
                 ${navMenuHTML}
             </ul>
+            <div class="sidebar-uptime" id="sidebar-uptime">
+                <svg class="uptime-icon" aria-hidden="true"><use href="#i-clock"></use></svg>
+                <div class="uptime-text">
+                    <span class="uptime-label" data-i18n="common.uptimeLabel">站点已运行</span>
+                    <span class="uptime-value" id="uptime-value" data-i18n="common.computing">计算中...</span>
+                </div>
+            </div>
         </aside>
     `;
 
@@ -90,6 +97,22 @@
 
     // 为 body 添加类名，让页面内容留出导航栏空间
     document.body.classList.add('has-standalone-nav');
+
+    // ====== 站点运行时间 ======
+    const SITE_LAUNCH_DATE = new Date('2025-12-24T00:00:00+08:00');
+    function updateSiteUptime() {
+        const el = document.getElementById('uptime-value');
+        if (!el) return;
+        const diff = Date.now() - SITE_LAUNCH_DATE.getTime();
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        el.textContent =
+            `${days}天 ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+    setInterval(updateSiteUptime, 1000);
+    updateSiteUptime();
 
     // ====== 交互绑定 ======
 

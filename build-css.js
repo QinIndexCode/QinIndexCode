@@ -40,7 +40,7 @@ function minifyCSS(css) {
 }
 
 const cssDir = path.join(__dirname, 'css');
-const files = ['main.css', 'tools.css', 'donate.css', 'css2.css'];
+const files = ['main.css', 'tools.css', 'donate.css', 'css2.css', 'article.css'];
 
 files.forEach(file => {
     const inputPath = path.join(cssDir, file);
