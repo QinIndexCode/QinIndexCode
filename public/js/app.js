@@ -21,6 +21,11 @@
         });
     }
 
+    /* Reference to the PageSlider instance, assigned once created inside
+       DOMContentLoaded. The global message handler below runs before that
+       moment, so it must be null-safe (avoids "slider is not defined"). */
+    let shellSlider = null;
+
     /* ----------------------------------------
        URL Parameter Handling (Deep Linking)
        ---------------------------------------- */
@@ -52,6 +57,14 @@
             initialPage = fromPage;
         }
         shouldSwitchPage = true;
+    }
+
+    /* 博客文章 hash 深链（如 /blogs#014，或 404 兜底后的 /?from=014/123）：
+       直接在壳层脚本加载时跳到独立文章页，绝不经过 iframe + 沙箱，
+       避免沙箱内访问 window.top 抛 SecurityError 及多层重定向。 */
+    if (initialPage === 'blogs' && /^#\d{1,3}$/.test(initialHash)) {
+        const id = initialHash.slice(1).padStart(3, '0');
+        window.location.replace('/blogs/' + id + '.html');
     }
 
     /* ----------------------------------------
@@ -107,7 +120,7 @@
                 if (typeof hash !== 'string' || !hash.startsWith('#')) return;
             }
             // 仅在当前页面是消息来源页面时才同步 hash，防止跨页泄漏
-            const currentPageId = slider.pages[slider.currentIndex]?.id;
+            const currentPageId = shellSlider?.pages[shellSlider.currentIndex]?.id;
             const senderPage = data.pageId;
             if (senderPage && senderPage !== currentPageId) return;
 
@@ -117,6 +130,13 @@
                 ? currentPath + currentSearch + hash
                 : currentPath + currentSearch;
             history.replaceState(history.state, '', newUrl);
+        } else if (data.type === 'qinblog-open-article') {
+            // 子页面（blogs.html 的沙箱 iframe）请求跳转到独立文章页。
+            // 沙箱 iframe 直接改 window.top.location 会抛 SecurityError，
+            // 因此由无沙箱的顶层壳代为跳转（同源页面）。
+            const id = String(data.id || '').replace(/[^a-zA-Z0-9-]/g, '');
+            if (!id) return;
+            window.location.replace('/blogs/' + id + '.html');
         }
     });
 
@@ -213,8 +233,11 @@
                    triggers a console warning, but is safe here because all
                    iframe src URLs are same-origin (GitHub Pages). The
                    combination is required for theme sync (postMessage) and
-                   DOM access (contentDocument) to work inside the iframe. */
-                iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox';
+                   DOM access (contentDocument) to work inside the iframe.
+                   allow-top-navigation lets blog cards / old hash deep-links
+                   (all same-origin /blogs/{id}.html) break out to the
+                   standalone article page. */
+                iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation';
 
                 const loadTimeout = setTimeout(() => {
                     if (!iframe.contentDocument || !iframe.contentDocument.body.innerHTML) {
@@ -454,6 +477,7 @@
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
         const slider = new PageSlider();
+        shellSlider = slider;
 
         /* Handle browser back/forward buttons */
         window.addEventListener('popstate', (e) => {

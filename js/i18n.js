@@ -399,13 +399,20 @@
         return SUPPORTED[(idx + 1) % SUPPORTED.length];
     }
 
+    /* 计算站点根相对基准前缀：位于子目录（如 /blogs/xxx.html）时返回 '../'，根页面返回 '' */
+    function getSiteBase() {
+        return window.location.pathname.split('/').length > 2 ? '../' : '';
+    }
+
     function loadDict(done) {
         if (current === DEFAULT_LANG) {
             dict = FALLBACK_DICT;
             if (done) done();
             return;
         }
-        fetch('./i18n/' + current + '.json', { cache: 'no-cache' })
+        // 词典位于站点根目录下 i18n/，页面可能在子目录（如 /blogs/xxx.html），
+        // 因此用站点根相对路径（./ 或 ../）解析，失败时回退内置中文。
+        fetch(getSiteBase() + 'i18n/' + current + '.json', { cache: 'no-cache' })
             .then(function (res) {
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 return res.json();

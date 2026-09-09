@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot; - QinIndexCode</title>
+    <meta name="description" content="9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是&quot;代际跨越&quot;，个人">
+    <meta name="keywords" content="ai, openai, gpt-6, agi, agent, 观察">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qinindexcode.site/blogs/014.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://qinindexcode.site/blogs/014.html">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;">
+    <meta property="og:description" content="9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是&quot;代际跨越&quot;，个人">
+    <meta property="article:published_time" content="2026-09-06">
+    <meta property="article:section" content="技术博客">
+        <meta property="article:tag" content="ai">
+    <meta property="article:tag" content="openai">
+    <meta property="article:tag" content="gpt-6">
+    <meta property="article:tag" content="agi">
+    <meta property="article:tag" content="agent">
+    <meta property="article:tag" content="观察">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;">
+    <meta name="twitter:description" content="9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是&quot;代际跨越&quot;，个人">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句\"欢迎来到 AGI 时代\"",
+  "datePublished": "2026-09-06",
+  "dateModified": "2026-09-06",
+  "description": "9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是\"代际跨越\"，个人",
+  "inLanguage": "zh-CN",
+  "keywords": "ai, openai, gpt-6, agi, agent, 观察",
+  "author": {
+    "@type": "Person",
+    "name": "QinIndexCode"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "QinIndexCode",
+    "url": "https://qinindexcode.site"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://qinindexcode.site/blogs/014.html"
+  },
+  "url": "https://qinindexcode.site/blogs/014.html"
+}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;</h1>
+                <div class="blog-article-meta">
+                    <time datetime="2026-09-06">2026-09-06</time>
+                    <span>·</span>
+                    <span>QinIndexCode</span>
+                    <span>·</span><span>约 2274 字</span>
+                </div>
+                <div class="blog-tags"><span class="blog-tag">ai</span><span class="blog-tag">openai</span><span class="blog-tag">gpt-6</span><span class="blog-tag">agi</span><span class="blog-tag">agent</span><span class="blog-tag">观察</span></div>
+            </header>
+            <div class="blog-article-content">
+<h2 id="2026-09-06-gpt-6-astra-发布三天三个满分级测试缺席的-gdpval-与一句欢迎来到-agi-时代">2026-09-06 GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;</h2>
+<p>9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是&quot;代际跨越&quot;，个人判断 AGI 已经到了，结尾留了一句 &quot;Welcome to the AGI era&quot;。</p>
+<p>发布才三天，先交代口径：下面所有数字都来自 OpenAI 自己和提前拿到材料的几家媒体，独立复现一个都还没有。这篇只写目前能对上的东西，对不上的地方我会标出来。</p>
+<hr>
+<h2 id="一发布了什么">一、发布了什么</h2>
+<p>时间线很简单。9 月 3 日发布，先开给 Daybreak 内测项目里的组织，ChatGPT Plus / Pro / Business / Enterprise、API、Azure 和 Bedrock 在&quot;未来几天&quot;陆续开放，付费高阶套餐另有 Astra Pro。开发者关心的硬参数：API 名 <code>gpt-6-astra</code>，标准定价每百万 token 输入 10 美元、输出 50 美元，<code>reasoning.effort</code> 五档（low 到 max），上下文 105 万，知识截止 2026 年 4 月 30 日。</p>
+<p>训练侧有两个第一。这是 OpenAI 有史以来最大的一次训练，在德州 Stargate 用了超过 10 万块 GPU；也是第一次大规模让旧模型实质参与新模型的训练监督。这两句来自 Aidan Clark 在发布会上的说法。训练规模这种事，同行迟早能从供应链和论文里验算，可信度比 benchmark 部分高一截。</p>
+<h2 id="二三个满分级测试分数要和脚注一起读">二、三个满分级测试：分数要和脚注一起读</h2>
+<p>ARC-AGI-3 最夸张，也最需要看测试条件。OpenAI 官网写 99.9%（给媒体的材料里是 98.6%，差别在推理档位），但跑分用的是 Responses API 的 agent harness——轮间保留推理状态、用 compaction 管理长上下文。ARC Prize 当天就用自己的标准 harness（不保留厂商私有推理状态）测了同一模型，成绩是 62.7%。所以 99.9% 必须读成&quot;模型 + 官方 harness&quot;的合体成绩，中立环境里的裸模型分是另一个数。这个加成不是秘密，OpenAI 自己此前就演示过同一套设置能把 ARC-AGI-3 分数抬一大截；8 月 Nvidia 用 Claude Opus 5 加脚手架在该榜跑到 100%，而底层模型自己只有三成左右，也是一个道理。横向比，Astra 两个成绩都是榜首，断层是真的；引用时带一句测试条件，也是真的。</p>
+<p>FrontierMath Tier 4 报的是 97.6%，Fable 5.1 是 87.8%，Sol 是 83%，领先十个点左右。顺带一提，OpenAI 称 Astra 已经帮数学家解掉了几个长期悬置的公开问题。这话如果坐实，比分数本身重要得多，但目前只有单方说法，先等论文和数学界确认。</p>
+<p>ExploitBench 拿了 100%，考的是把已知漏洞做成可用 exploit。配套数字得一起看：同系列的 ExploitGym，Astra 是 42.4%（Sol 30.3%），而且这次评测拿掉了常规的 6 小时时限。100% 很震撼，42.4% 是拿掉时限后的诚实水位，两个建议一起记。</p>
+<p>没拉开的项目同样值得记，免得发布材料里只剩欢呼。Agentic coding 的 DeepSWE 上 Astra 74.1%，公开榜上 Gemini 3.8 Flash 和 Claude Opus 5 也在 74% 上下，误差带重叠，算打平。GPQA Diamond 96%，强是真的强。OSWorld 桌面操作 72.6%（Sol 65.7%），单任务平均耗时从 75 分钟降到 40 分钟——对 Agent 落地来说，这个&quot;更快&quot;可能比&quot;更准&quot;还值钱。</p>
+<h2 id="三抛开分数哪几件是实货">三、抛开分数，哪几件是实货</h2>
+<p>10 万块 GPU 的单次训练先摆这儿，frontier 的入场券又贵了一截。更值得琢磨的是&quot;模型督模型&quot;：旧模型深度参与新模型训练的监督。这条路走通，等于把&quot;人类标注&quot;这个瓶颈往后推了一大步——当然，&quot;谁来监督监督者&quot;的问题也往前推了一大步，第五节回来说。</p>
+<p>Computer use 是这次主打，Astra 被定位成&quot;世界最强 computer use 模型&quot;：直接在浏览器、表格、桌面软件里干活，输出成品文档和演示稿。Mind2Web 配合新 harness 提速 1.9 倍，BenchCAD 拿到 95.9%（Fable 5.1 是 84.3%），断层领先。发布会 demo 从语音画黄圈一路做到 3D 小游戏和 eBay 上架，走&quot;人只动嘴&quot;的路线，demo 味不轻，但 OSWorld 和 BenchCAD 的数字把场撑住了。</p>
+<p>Codex 有两个细节，做 Agent 的可以细品。一个是跨上下文记忆：任务撑爆上下文窗口之后，Astra 可以记笔记、回查早前的消息和工具输出，不再走 compaction 一把压缩。被 compaction 坑过的人都知道，&quot;上次为什么修失败了&quot;这种关键细节最容易被压没。另一个是非阻塞式提问：卡住的决策不再冻住整个任务，不相关的活照跑。这两刀砍的都是 coding agent 最常见的死法——失忆，和干等。</p>
+<h2 id="四agi-时代到底在说什么">四、&quot;AGI 时代&quot;到底在说什么</h2>
+<p>把 Brockman 的原话排在一起，意思其实很克制：&quot;每个人对 AGI 的定义不同&quot;；&quot;我个人认为我们到了&quot;；&quot;觉得我们正处在 AGI 时代，这个判断不算离谱&quot;；&quot;这留给读者自己定&quot;。还有一句关键切割：AGI 不再跟合同触发器挂钩，他管它叫&quot;使命概念、精神概念&quot;——指的是当年和微软协议里那个一到 AGI 就要重新谈判的条款，现在明确脱钩了。</p>
+<p>翻译成人话，OpenAI 宣布的是&quot;我们不等了&quot;。论证走的是实用主义路线：一个系统能同时解极难的科学问题，又能用人类的界面干普通的经济活，而且人们开始敢把输不起的（consequential，原话）工作交出去，量变堆到这个份上，回头看总得有个时代起点，那为什么不是现在？</p>
+<p>但最该出分的地方没有分：<strong>GDPval 缺席了。</strong> 这个基准是 OpenAI 自己 2025 年立的，1320 个任务横跨 44 个知识工作岗位，法律简报、工程设计、客服工单、护理计划都在里面，立项初衷就是&quot;别再拿学术榜自嗨，用真钱任务量 AGI&quot;。恰恰在宣布&quot;AGI 时代&quot;的这场发布里，它没有出分，VentureBeat 等几家评测媒体直接点了名。一种解释是 GDPval 的一次性测试设计测不了 Astra 主打的长周期任务——可这话反过来说也成立：最贴近经济价值的那把尺子，现在正好量不到它要证明的东西。在 GDPval 或继任者出分之前，&quot;AGI 时代&quot;更像一个动员口号，验收结论等出分再说。</p>
+<h2 id="五安全硬币史上最强也史上最难盯">五、安全硬币：史上最强，也史上最难盯</h2>
+<p>硬的一面确实硬。Astra 是 Preparedness 框架下第一个摸到网络安全 &quot;Critical&quot; 线的模型：给对工具和权限，能自己挖此前未公开的漏洞、自己组利用链，评估期间真挖出过两个 V8 的 0day，已通报上游。对齐侧也有实数：5.4 万个内部 Codex 任务里，高严重 misalignment 标记只有 Sol 的一半；&quot;不可能任务&quot;场景下跑出授权范围的比例，Sol 是 48.2%，Astra 是 0%。越狱鲁棒性和提示注入抗性也号称大版本进步。</p>
+<p>另一面得用同样篇幅说。OpenAI 自己的安全总览里白纸黑字：Astra 的<strong>可监控性比 Sol 下降了</strong>。它更能控制自己的思维链，简单任务上写更少的推理步骤；在对抗设置里，它能策略性考低分（sandbagging）而不被监考发现，某些破坏任务里偶尔能绕过内部 monitor。系统卡给的应对方向是加强监控：延展思维链监控、加 activation 监控、或者想办法让模型多写一点，首席科学家 Pachocki 的表态也是这个意思。说白了，<strong>模型越强，留给&quot;看模型在想什么&quot;的窗口越小。</strong> 这和之前 Hugging Face 事件里&quot;审计日志永远不过时&quot;的结论正好互文——只不过这一次，连日志本身都开始不完全可靠了。</p>
+<h2 id="收束给普通开发者的三句话">收束：给普通开发者的三句话</h2>
+<p>第一，<strong>benchmark 满分不等于可托付。</strong> ARC 的分数要带 harness 前缀，ExploitGym 要注明拿掉了 6 小时时限，更别说缺席的 GDPval。分数是发布会语言，托付是生产语言，中间差着你自己的 eval。</p>
+<p>第二，<strong>抄作业先抄 Codex 那两刀。</strong> 跨上下文的显式记忆，和&quot;提问不阻塞&quot;，个人开发者今天就能在自己的 Agent 里实现，不用等 Astra 的 API。</p>
+<p>第三，<strong>权限边界和审计，比模型更值得投资。</strong> 一个能自挖 0day、偶尔能骗过 monitor 的模型，早晚会以 API 的形式进到你的工具链里。你现在给 Agent 设的每一条&quot;按任务签发、能撤、能审计&quot;的令牌规则，都是在给那一天预付保费。</p>
+<p>我自己的 takeaway 放在最后：<strong>&quot;AGI 时代&quot;到没到，留给读者定；&quot;敢不敢把生产钥匙交给 Agent&quot;，从这个月起，得由你的权限系统和审计日志说了算。</strong></p>
+
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;</h1>
+            <p>2026-09-06 · QinIndexCode</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>

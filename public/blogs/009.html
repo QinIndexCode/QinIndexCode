@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios 供应链攻击事件分析 - QinIndexCode</title>
+    <meta name="description" content="2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。  ---      - `axios@1.14.1` - `axios@0.3">
+    <meta name="keywords" content="安全, npm, 供应链, axios">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qinindexcode.site/blogs/009.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://qinindexcode.site/blogs/009.html">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="Axios 供应链攻击事件分析">
+    <meta property="og:description" content="2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。  ---      - `axios@1.14.1` - `axios@0.3">
+    <meta property="article:published_time" content="2026-03-30">
+    <meta property="article:section" content="技术博客">
+        <meta property="article:tag" content="安全">
+    <meta property="article:tag" content="npm">
+    <meta property="article:tag" content="供应链">
+    <meta property="article:tag" content="axios">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Axios 供应链攻击事件分析">
+    <meta name="twitter:description" content="2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。  ---      - `axios@1.14.1` - `axios@0.3">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Axios 供应链攻击事件分析",
+  "datePublished": "2026-03-30",
+  "dateModified": "2026-03-30",
+  "description": "2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。  ---      - `axios@1.14.1` - `axios@0.3",
+  "inLanguage": "zh-CN",
+  "keywords": "安全, npm, 供应链, axios",
+  "author": {
+    "@type": "Person",
+    "name": "QinIndexCode"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "QinIndexCode",
+    "url": "https://qinindexcode.site"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://qinindexcode.site/blogs/009.html"
+  },
+  "url": "https://qinindexcode.site/blogs/009.html"
+}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>Axios 供应链攻击事件分析</h1>
+                <div class="blog-article-meta">
+                    <time datetime="2026-03-30">2026-03-30</time>
+                    <span>·</span>
+                    <span>QinIndexCode</span>
+                    <span>·</span><span>约 1048 字</span>
+                </div>
+                <div class="blog-tags"><span class="blog-tag">安全</span><span class="blog-tag">npm</span><span class="blog-tag">供应链</span><span class="blog-tag">axios</span></div>
+            </header>
+            <div class="blog-article-content">
+<h2 id="2026-03-30-axios-供应链攻击事件分析">2026-03-30 Axios 供应链攻击事件分析</h2>
+<p>2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 <strong>Axios</strong> 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。</p>
+<hr>
+<h2 id="事件概述">事件概述</h2>
+<h3 id="受影响版本">受影响版本</h3>
+<ul>
+<li><code>axios@1.14.1</code></li>
+<li><code>axios@0.30.4</code></li>
+</ul>
+<h3 id="攻击时间线">攻击时间线</h3>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-03-30</td>
+<td>StepSecurity 披露攻击事件</td>
+</tr>
+<tr>
+<td>2026-03-30</td>
+<td>Axios 团队确认并下架恶意版本</td>
+</tr>
+<tr>
+<td>2026-03-31</td>
+<td>社区开始大规模排查和修复</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="攻击手法分析">攻击手法分析</h2>
+<h3 id="1-账号劫持">1. 账号劫持</h3>
+<p>攻击者通过某种方式（疑似凭证泄露、钓鱼或社会工程）劫持了 Axios 核心维护者的 npm 账号，从而绕过正常的 CI/CD 流程，直接发布恶意版本。</p>
+<h3 id="2-依赖投毒">2. 依赖投毒</h3>
+<p>恶意代码并非直接写在 axios 主包中，而是通过<strong>伪造依赖</strong> <code>plain-crypto-js@4.2.1</code> 实现：</p>
+<pre class="hljs"><code>axios@1.14.1
+  └── plain-crypto-js@4.2.1 (恶意包)
+</code></pre>
+<p>这种间接投毒更隐蔽：</p>
+<ul>
+<li>主包代码看起来完全正常</li>
+<li>恶意行为在安装依赖阶段就执行了</li>
+<li>开发者很少会去审查传递依赖</li>
+</ul>
+<h3 id="3-执行时机">3. 执行时机</h3>
+<p>恶意代码在 <code>npm install</code> 时通过 <code>postinstall</code> 脚本自动执行：</p>
+<pre class="hljs"><code><span class="hljs-comment">// plain-crypto-js/package.json</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;postinstall&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node setup.js&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h3 id="4-跨平台木马">4. 跨平台木马</h3>
+<p><code>setup.js</code> 会下载并执行针对操作系统的恶意载荷：</p>
+<table>
+<thead>
+<tr>
+<th>操作系统</th>
+<th>伪装方式</th>
+<th>运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>macOS</strong></td>
+<td>系统缓存进程</td>
+<td>后台守护进程</td>
+</tr>
+<tr>
+<td><strong>Windows</strong></td>
+<td><code>wt.exe</code> (Windows Terminal)</td>
+<td>系统进程伪装</td>
+</tr>
+<tr>
+<td><strong>Linux</strong></td>
+<td><code>ld.py</code></td>
+<td><code>nohup</code> 后台运行</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="恶意行为详解">恶意行为详解</h2>
+<h3 id="信息窃取">信息窃取</h3>
+<p>木马会收集以下敏感信息：</p>
+<pre class="hljs"><code><span class="hljs-comment">// 伪代码示例</span>
+<span class="hljs-keyword">const</span> targets = [
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">NPM_TOKEN</span>,
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">AWS_SECRET_ACCESS_KEY</span>,
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">GITHUB_TOKEN</span>,
+  <span class="hljs-comment">// ... 其他环境变量</span>
+];
+
+<span class="hljs-comment">// 读取常见配置文件</span>
+<span class="hljs-keyword">const</span> configFiles = [
+  <span class="hljs-string">&#x27;~/.npmrc&#x27;</span>,
+  <span class="hljs-string">&#x27;~/.aws/credentials&#x27;</span>,
+  <span class="hljs-string">&#x27;~/.ssh/id_rsa&#x27;</span>,
+  <span class="hljs-comment">// ...</span>
+];
+</code></pre>
+<h3 id="远程控制">远程控制</h3>
+<p>木马会连接攻击者的 C2（Command &amp; Control）服务器，接受远程指令：</p>
+<ul>
+<li>执行任意命令</li>
+<li>上传、下载文件</li>
+<li>建立持久化后门</li>
+<li>横向移动到内网其他机器</li>
+</ul>
+<h3 id="痕迹清除">痕迹清除</h3>
+<p>执行完成后，恶意脚本会自动清除日志和临时文件，增加检测难度：</p>
+<pre class="hljs"><code><span class="hljs-comment">// 伪代码示例</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">cleanup</span>(<span class="hljs-params"></span>) {
+  fs.<span class="hljs-title function_">unlinkSync</span>(<span class="hljs-string">&#x27;/tmp/setup.js&#x27;</span>);
+  <span class="hljs-comment">// 清除 bash history</span>
+  <span class="hljs-comment">// 删除相关日志条目</span>
+}
+</code></pre>
+<hr>
+<h2 id="检测与修复">检测与修复</h2>
+<h3 id="1-检查受影响版本">1. 检查受影响版本</h3>
+<pre class="hljs"><code><span class="hljs-comment"># 查看项目中 axios 版本</span>
+npm list axios
+
+<span class="hljs-comment"># 或使用更详细的检查</span>
+npm <span class="hljs-built_in">ls</span> axios --depth=0
+</code></pre>
+<h3 id="2-立即降级到安全版本">2. 立即降级到安全版本</h3>
+<pre class="hljs"><code><span class="hljs-comment"># 卸载受影响版本</span>
+npm uninstall axios
+
+<span class="hljs-comment"># 安装安全版本（1.14.0 或更低）</span>
+npm install axios@1.14.0
+
+<span class="hljs-comment"># 或长期使用 0.30.3 及以下版本</span>
+npm install axios@0.30.3
+</code></pre>
+<h3 id="3-检查-package-lockjson">3. 检查 package-lock.json</h3>
+<p>确保锁定文件中没有恶意版本：</p>
+<pre class="hljs"><code><span class="hljs-comment"># 搜索锁定文件中的恶意版本</span>
+grep -n <span class="hljs-string">&quot;1.14.1\|0.30.4&quot;</span> package-lock.json
+
+<span class="hljs-comment"># 或使用 npm 的审计功能</span>
+npm audit
+</code></pre>
+<h3 id="4-重置敏感凭证">4. 重置敏感凭证</h3>
+<p><strong>如果怀疑已被感染，必须立即重置：</strong></p>
+<ul>
+<li>[ ] npm token</li>
+<li>[ ] GitHub/GitLab token</li>
+<li>[ ] AWS/云服务商密钥</li>
+<li>[ ] 数据库密码</li>
+<li>[ ] API keys</li>
+<li>[ ] SSH 密钥对</li>
+</ul>
+<h3 id="5-系统安全检查">5. 系统安全检查</h3>
+<pre class="hljs"><code><span class="hljs-comment"># Linux/macOS: 检查可疑进程</span>
+ps aux | grep -E <span class="hljs-string">&quot;(cache|ld\.py)&quot;</span>
+
+<span class="hljs-comment"># Windows: 检查可疑进程</span>
+tasklist | findstr <span class="hljs-string">&quot;wt.exe&quot;</span>
+
+<span class="hljs-comment"># 检查网络连接</span>
+netstat -ano | grep ESTABLISHED
+</code></pre>
+<hr>
+<h2 id="防御策略">防御策略</h2>
+<h3 id="1-锁定依赖版本">1. 锁定依赖版本</h3>
+<p>在 <code>package.json</code> 中使用精确版本号，避免自动升级：</p>
+<pre class="hljs"><code><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;axios&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.14.0&quot;</span>  <span class="hljs-comment">// ✅ 精确版本</span>
+    <span class="hljs-comment">// 而不是 &quot;axios&quot;: &quot;^1.14.0&quot; ❌</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h3 id="2-启用-npm-审计">2. 启用 npm 审计</h3>
+<pre class="hljs"><code><span class="hljs-comment"># 安装时自动审计</span>
+npm config <span class="hljs-built_in">set</span> audit <span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># CI/CD 中集成审计</span>
+npm audit --audit-level=high
+</code></pre>
+<h3 id="3-使用依赖锁定工具">3. 使用依赖锁定工具</h3>
+<pre class="hljs"><code><span class="hljs-comment"># 使用 npm-ci 确保一致性</span>
+npm ci
+
+<span class="hljs-comment"># 或使用更严格的 pnpm</span>
+pnpm install --frozen-lockfile
+</code></pre>
+<h3 id="4-监控依赖变更">4. 监控依赖变更</h3>
+<pre class="hljs"><code><span class="hljs-comment"># 使用 npm-why 查看依赖来源</span>
+npm why axios
+
+<span class="hljs-comment"># 使用 depcheck 检查未使用依赖</span>
+npx depcheck
+
+<span class="hljs-comment"># 使用 npm-audit-fix 自动修复</span>
+npx npm-audit-fix
+</code></pre>
+<h3 id="5-最小化依赖">5. 最小化依赖</h3>
+<p>定期审查和清理不必要的依赖：</p>
+<pre class="hljs"><code><span class="hljs-comment"># 查看依赖树</span>
+npm <span class="hljs-built_in">ls</span> --depth=0
+
+<span class="hljs-comment"># 移除未使用的依赖</span>
+npm uninstall unused-package
+</code></pre>
+<hr>
+<h2 id="安全工具推荐">安全工具推荐</h2>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>安装</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>npm audit</strong></td>
+<td>内置安全审计</td>
+<td><code>npm install -g npm</code></td>
+</tr>
+<tr>
+<td><strong>Snyk</strong></td>
+<td>依赖漏洞扫描</td>
+<td><code>npm install -g snyk</code></td>
+</tr>
+<tr>
+<td><strong>Dependabot</strong></td>
+<td>GitHub 自动更新</td>
+<td>GitHub 仓库设置</td>
+</tr>
+<tr>
+<td><strong>Renovate</strong></td>
+<td>依赖版本管理</td>
+<td><code>npm install renovate</code></td>
+</tr>
+<tr>
+<td><strong>Socket</strong></td>
+<td>依赖行为分析</td>
+<td><code>npm install -g @socket/security</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="事件影响与反思">事件影响与反思</h2>
+<h3 id="影响范围">影响范围</h3>
+<p>Axios 是最流行的 HTTP 客户端库之一：</p>
+<ul>
+<li><strong>npm 周下载量</strong>：4000 万以上</li>
+<li><strong>GitHub Stars</strong>：10 万以上</li>
+<li><strong>依赖它的项目</strong>：数十万计</li>
+</ul>
+<p>波及面可想而知。</p>
+<h3 id="供应链安全的脆弱性">供应链安全的脆弱性</h3>
+<p>这起事件暴露了 npm 生态系统的几个关键问题：</p>
+<ol>
+<li>
+<p><strong>维护者账号安全</strong></p>
+<ul>
+<li>单点故障风险</li>
+<li>缺乏多因素认证强制要求</li>
+</ul>
+</li>
+<li>
+<p><strong>CI/CD 流程可绕过</strong></p>
+<ul>
+<li>手动发布缺乏监督</li>
+<li>自动化测试可被跳过</li>
+</ul>
+</li>
+<li>
+<p><strong>依赖链不透明</strong></p>
+<ul>
+<li>传递依赖难以审查</li>
+<li>postinstall 脚本自动执行</li>
+</ul>
+</li>
+<li>
+<p><strong>响应机制滞后</strong></p>
+<ul>
+<li>从发布到披露有时间差</li>
+<li>缺乏快速回滚机制</li>
+</ul>
+</li>
+</ol>
+<h3 id="行业建议">行业建议</h3>
+<p>安全社区建议采取以下措施：</p>
+<pre class="hljs"><code>1. ✅ 强制维护者启用 2FA
+2. ✅ 实施发布签名和验证
+3. ✅ 建立依赖行为监控系统
+4. ✅ 推动包管理器沙箱化
+5. ✅ 建立快速应急响应机制
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>这起事件提醒的其实是一件老生常谈的事：</p>
+<blockquote>
+<p>开源依赖安全不是可选项，是必选项。</p>
+</blockquote>
+<p>落到日常开发上：</p>
+<ol>
+<li><strong>保持警惕</strong>：定期检查依赖的安全状况</li>
+<li><strong>最小依赖</strong>：只装真正需要的包</li>
+<li><strong>锁定版本</strong>：别让依赖自动升到未知版本</li>
+<li><strong>关注变更</strong>：留心里程碑版本的更新日志</li>
+<li><strong>快速响应</strong>：出了漏洞第一时间修</li>
+</ol>
+<p>安全是持续动作，不是一次性任务。用开源的便利，就得担起对应的责任。</p>
+<hr>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://stepsecurity.io/">StepSecurity Security Advisory</a></li>
+<li><a href="https://github.com/advisories?query=npm">npm Security Advisories</a></li>
+<li><a href="https://security.snyk.io/">Snyk Vulnerability DB</a></li>
+<li><a href="https://socket.dev/blog">Socket Security Blog</a></li>
+</ul>
+
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>Axios 供应链攻击事件分析</h1>
+            <p>2026-03-30 · QinIndexCode</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>

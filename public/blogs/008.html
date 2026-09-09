@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精读 Anthropic《Building Effective Agents》2025 更新版 - QinIndexCode</title>
+    <meta name="description" content="---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 **Claude Agent SDK**，文章本身也做了更新，而当初提出的核心原">
+    <meta name="keywords" content="ai, agent, anthropic, 精读">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qinindexcode.site/blogs/008.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://qinindexcode.site/blogs/008.html">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="精读 Anthropic《Building Effective Agents》2025 更新版">
+    <meta property="og:description" content="---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 **Claude Agent SDK**，文章本身也做了更新，而当初提出的核心原">
+    <meta property="article:published_time" content="2026-03-23">
+    <meta property="article:section" content="技术博客">
+        <meta property="article:tag" content="ai">
+    <meta property="article:tag" content="agent">
+    <meta property="article:tag" content="anthropic">
+    <meta property="article:tag" content="精读">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="精读 Anthropic《Building Effective Agents》2025 更新版">
+    <meta name="twitter:description" content="---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 **Claude Agent SDK**，文章本身也做了更新，而当初提出的核心原">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "精读 Anthropic《Building Effective Agents》2025 更新版",
+  "datePublished": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "description": "---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 **Claude Agent SDK**，文章本身也做了更新，而当初提出的核心原",
+  "inLanguage": "zh-CN",
+  "keywords": "ai, agent, anthropic, 精读",
+  "author": {
+    "@type": "Person",
+    "name": "QinIndexCode"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "QinIndexCode",
+    "url": "https://qinindexcode.site"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://qinindexcode.site/blogs/008.html"
+  },
+  "url": "https://qinindexcode.site/blogs/008.html"
+}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>精读 Anthropic《Building Effective Agents》2025 更新版</h1>
+                <div class="blog-article-meta">
+                    <time datetime="2026-03-23">2026-03-23</time>
+                    <span>·</span>
+                    <span>QinIndexCode</span>
+                    <span>·</span><span>约 2876 字</span>
+                </div>
+                <div class="blog-tags"><span class="blog-tag">ai</span><span class="blog-tag">agent</span><span class="blog-tag">anthropic</span><span class="blog-tag">精读</span></div>
+            </header>
+            <div class="blog-article-content">
+<h2 id="2026-03-23-精读-anthropicbuilding-effective-agents2025-更新版">2026-03-23 精读 Anthropic《Building Effective Agents》2025 更新版</h2>
+<hr>
+<h2 id="写在前面">写在前面</h2>
+<p>2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 <strong>Claude Agent SDK</strong>，文章本身也做了更新，而当初提出的核心原则在实践中基本站住了。</p>
+<p>本文基于官方原文的最新版本，结合 2025-2026 年的行业实践，重新梳理构建高效智能体的几条主线。</p>
+<blockquote>
+<p>核心观点没有变：效果好的智能体实现，往往不靠复杂框架，而是靠简单、可组合的模式搭起来。</p>
+</blockquote>
+<hr>
+<h2 id="核心概念辨析">核心概念辨析</h2>
+<h3 id="智能体-vs-工作流">智能体 vs 工作流</h3>
+<p>Anthropic 对&quot;智能体&quot;和&quot;工作流&quot;的区分，到 2025 年反而更值得强调：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>定义</th>
+<th>特点</th>
+<th>典型工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>工作流</strong></td>
+<td>通过预定义代码路径协调 LLM 和工具</td>
+<td>可预测、可控制</td>
+<td>LangChain, Vellum</td>
+</tr>
+<tr>
+<td><strong>智能体</strong></td>
+<td>LLM 动态指导自己的工作过程和工具使用</td>
+<td>灵活、自主</td>
+<td>Claude Agent SDK</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2025 年的趋势</strong>：行业重心从&quot;工作流编排&quot;转向&quot;自主智能体&quot;。LangChain 创始人甚至判断，2026 年会是&quot;Agent 工程&quot;的分水岭。</p>
+<h3 id="增强型-llm构建基石">增强型 LLM：构建基石</h3>
+<p>文章把&quot;增强型 LLM&quot;作为所有智能体系统的基本构建模块：</p>
+<pre class="hljs"><code>增强型 LLM = 基础模型 + 检索能力 + 工具调用 + 记忆系统
+</code></pre>
+<p><strong>关键更新</strong>：2025 年 Anthropic 发布了 <strong>Model Context Protocol（MCP）</strong>，给工具集成定了一套标准。有个比喻很贴切：MCP 之于 AI 工具，有点像 USB 之于外设——插上就能用。</p>
+<h3 id="skills2025-年的新范式">Skills：2025 年的新范式</h3>
+<p>2025 年底，Anthropic 推出了 <strong>Claude Skills</strong> 开放标准，Vercel 随后推出了 <a href="http://skills.sh">skills.sh</a> 这个技能分发平台。</p>
+<pre class="hljs"><code><span class="hljs-comment"># 一行命令为 AI 助手添加技能</span>
+npx skills add &lt;skill-name&gt;
+</code></pre>
+<p><strong>Skills vs MCP</strong>：</p>
+<ul>
+<li><strong>Skills</strong> 让 AI 学会&quot;怎么做&quot;（包含指令、脚本、资源的文件夹）</li>
+<li><strong>MCP</strong> 让 AI 知道&quot;用什么做&quot;（工具连接协议）</li>
+</ul>
+<p>两者配合，AI 才算有了&quot;专业技能 + 顺手工具&quot;的完整工作方式。</p>
+<hr>
+<h2 id="五种核心工作流模式">五种核心工作流模式</h2>
+<h3 id="1-提示词链prompt-chaining">1. 提示词链（Prompt Chaining）</h3>
+<p><strong>核心思想</strong>：将复杂任务分解为固定步骤，每步 LLM 调用处理前一步的输出。</p>
+<pre class="hljs"><code>输入 → 步骤 1 → 检查点 → 步骤 2 → 检查点 → ... → 输出
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>任务可清晰分解为固定子任务</li>
+<li>牺牲速度换取更高准确性</li>
+</ul>
+<p><strong>实践案例</strong>：</p>
+<pre class="hljs"><code>营销文案生成 → 翻译成多语言 → 格式化输出
+文档大纲生成 → 检查是否符合标准 → 撰写完整文档
+</code></pre>
+<p><strong>我的思考</strong>：提示词链是最容易实现也最容易出问题的模式。关键在于<strong>检查点的设计</strong>——如何在中间步骤验证流程是否正确。</p>
+<h3 id="2-路由routing">2. 路由（Routing）</h3>
+<p><strong>核心思想</strong>：对输入分类，引导至专门的处理流程。</p>
+<pre class="hljs"><code>                    ┌─→ 流程 A（专门处理 A 类问题）
+输入 → 分类器 → ────┼─→ 流程 B（专门处理 B 类问题）
+                    └─→ 流程 C（专门处理 C 类问题）
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>存在明显不同的输入类别</li>
+<li>不同类别需要不同的处理策略</li>
+</ul>
+<p><strong>实践案例</strong>：</p>
+<ul>
+<li>客服系统：一般问题、退款请求、技术支持分别路由</li>
+<li>成本优化：简单问题路由到 Haiku，复杂问题路由到 Sonnet</li>
+</ul>
+<p><strong>2025 年更新</strong>：随着模型成本下降，路由更多用于<strong>质量优化</strong>，而不是省钱。</p>
+<p><strong>我的思考</strong>：路由的本质是<strong>关注点分离</strong>。一个 Prompt 处理所有场景往往顾此失彼，不如让每个专家各司其职。</p>
+<h3 id="3-并行化parallelization">3. 并行化（Parallelization）</h3>
+<p><strong>核心思想</strong>：同时处理多个任务，聚合输出结果。</p>
+<p>两种关键形式：</p>
+<pre class="hljs"><code>分段（Sectioning）：
+任务 → 分解为子任务 A、B、C → 并行执行 → 聚合结果
+
+投票（Voting）：
+任务 → 多个模型实例并行处理 → 投票/综合 → 最终结果
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>子任务相互独立，可并行执行</li>
+<li>需要多视角验证，提高置信度</li>
+</ul>
+<p><strong>实践案例</strong>：</p>
+<ul>
+<li>内容审核：一个模型处理用户请求，另一个并行筛选敏感内容</li>
+<li>代码审查：多个提示从不同角度检查漏洞</li>
+</ul>
+<p><strong>我的思考</strong>：并行化是用<strong>空间换时间</strong>。在延迟敏感的场景中，这是提升用户体验的有效手段。</p>
+<h3 id="4-协调器-工作者orchestrator-workers">4. 协调器 - 工作者（Orchestrator-Workers）</h3>
+<p><strong>核心思想</strong>：中央 LLM 动态分解任务，分配给工作者 LLM，综合结果。</p>
+<pre class="hljs"><code>                    ┌─→ Worker 1
+输入 → Orchestrator ─┼─→ Worker 2  → 综合结果
+                    └─→ Worker 3
+</code></pre>
+<p><strong>与并行化的关键区别</strong>：子任务不是预定义的，而是由协调器根据具体输入动态确定。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>无法预先预测子任务的情况</li>
+<li>编程任务（文件数量、修改内容取决于具体问题）</li>
+</ul>
+<p><strong>实践案例</strong>：</p>
+<ul>
+<li>代码重构：根据需求动态决定修改哪些文件</li>
+<li>信息检索：从多个来源收集和分析信息</li>
+</ul>
+<p><strong>2025 年案例</strong>：Anthropic 在 SWE-bench 上的智能体就用了这个模式，可以根据 PR 描述自动处理 GitHub issue。</p>
+<p><strong>我的思考</strong>：这是最接近人类团队协作的模式。项目经理拆解任务，团队成员各司其职，最后汇总成果。</p>
+<h3 id="5-评估器-优化器evaluator-optimizer">5. 评估器 - 优化器（Evaluator-Optimizer）</h3>
+<p><strong>核心思想</strong>：一个 LLM 生成响应，另一个 LLM 提供评估和反馈，形成迭代循环。</p>
+<pre class="hljs"><code>        ┌──────────────────────────────┐
+        ↓                              │
+输入 → 生成器 → 输出 → 评估器 → 反馈 ──┘
+                    ↓
+              满足标准 → 最终输出
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>有明确的评估标准</li>
+<li>迭代改进能带来可衡量的价值</li>
+<li>LLM 能提供有价值的反馈</li>
+</ul>
+<p><strong>实践案例</strong>：</p>
+<ul>
+<li>文学翻译：评估器捕捉细微差别，指导优化</li>
+<li>复杂搜索：评估器判断是否需要继续搜索</li>
+</ul>
+<p><strong>我的思考</strong>：这类似于人类的&quot;草稿 - 审阅 - 修改&quot;循环。关键在于评估器的能力——它必须比生成器更&quot;懂&quot;什么是对的。</p>
+<hr>
+<h2 id="自主智能体agents">自主智能体（Agents）</h2>
+<p>当 LLM 具备以下能力时，真正的智能体成为可能：</p>
+<ol>
+<li><strong>理解复杂输入</strong>：解析模糊、多义的指令</li>
+<li><strong>推理和规划</strong>：分解目标，制定步骤</li>
+<li><strong>可靠使用工具</strong>：正确调用 API、执行操作</li>
+<li><strong>从错误中恢复</strong>：遇到问题能调整策略</li>
+</ol>
+<p><strong>智能体的核心循环</strong>：</p>
+<pre class="hljs"><code><span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> task_complete:
+    observation = get_environment_feedback()
+    plan = llm.plan(current_state, observation)
+    action = execute(plan)
+    evaluate(action)
+</code></pre>
+<p><strong>关键设计要点</strong>：</p>
+<ul>
+<li>清晰的工具集设计和文档</li>
+<li>适当的检查点和人工干预机制</li>
+<li>停止条件（如最大迭代次数）</li>
+</ul>
+<p><strong>2025 年重大进展</strong>：</p>
+<h3 id="claude-code终端中的-ai-软件工程师">Claude Code：终端中的 AI 软件工程师</h3>
+<p>2025 年 Anthropic 推出 <strong>Claude Code</strong>，定位是&quot;AI 软件工程师&quot;。和 Cursor 这类 IDE 插件不同，它直接跑在命令行里：</p>
+<pre class="hljs"><code><span class="hljs-comment"># 配置并启动 Claude Code</span>
+<span class="hljs-built_in">export</span> ANTHROPIC_BASE_URL=http://localhost:8000/v1
+<span class="hljs-built_in">export</span> ANTHROPIC_API_KEY=your_key
+claude
+</code></pre>
+<p><strong>核心能力</strong>：</p>
+<ul>
+<li>直接操作文件系统和终端</li>
+<li>执行代码并查看结果</li>
+<li>自主调试和修复错误</li>
+<li>多步骤任务规划</li>
+</ul>
+<h3 id="agentic-coding智能体编程时代">Agentic Coding：智能体编程时代</h3>
+<p>2026 年，苹果与 Anthropic 联合宣布，Xcode 26.3 首次原生集成 <strong>Claude Agent</strong>，支持以 Agentic Coding 方式开发。这标志着智能体正式进入主流开发工具。</p>
+<hr>
+<h2 id="三个核心原则">三个核心原则</h2>
+<p>Anthropic 总结了构建智能体的三个核心原则，在 2025 年显得更加重要：</p>
+<h3 id="1-保持简单">1. 保持简单</h3>
+<blockquote>
+<p>&quot;成功的实现通常只是 LLM 在循环中基于环境反馈使用工具。&quot;</p>
+</blockquote>
+<p>不要过度设计。简单的架构更容易调试、更容易理解、更容易维护。</p>
+<p><strong>2025 年的教训</strong>：多智能体系统烧 Token 烧得厉害。不少团队发现，单个强智能体往往比一堆弱智能体协作更有效。</p>
+<h3 id="2-优先透明度">2. 优先透明度</h3>
+<p>让智能体的规划步骤清晰可见：</p>
+<ul>
+<li>显示当前正在执行什么</li>
+<li>解释为什么选择这个行动</li>
+<li>展示中间结果</li>
+</ul>
+<p>透明度建立信任，也便于调试。</p>
+<h3 id="3-精心设计-aci">3. 精心设计 ACI</h3>
+<p><strong>Agent-Computer Interface（ACI）</strong> 与 HCI 同等重要：</p>
+<ul>
+<li>工具定义要清晰，包含使用示例和边界情况</li>
+<li>参数命名要直观，像给初级开发者写文档</li>
+<li>防错设计（Poka-yoke），让错误难以发生</li>
+</ul>
+<p><strong>实战案例</strong>：Anthropic 发现模型在使用相对路径时会出错，改为强制要求绝对路径后，表现显著提升。</p>
+<p><strong>2025 年新洞察</strong>：</p>
+<ul>
+<li>Skills 的设计应遵循&quot;渐进式披露&quot;原则</li>
+<li>MCP Server 的文档质量直接影响智能体表现</li>
+<li>工具命名应使用动词 + 名词结构（如 <code>read_file</code> 而非 <code>file_reader</code>）</li>
+</ul>
+<hr>
+<h2 id="两个高价值应用场景">两个高价值应用场景</h2>
+<h3 id="客户支持">客户支持</h3>
+<p>为什么客户支持是智能体的理想场景？</p>
+<ul>
+<li>自然对话流程 + 需要外部信息和操作</li>
+<li>可集成多种工具（查订单、退款、更新工单）</li>
+<li>成功标准清晰（问题是否解决）</li>
+<li>有公司已实现&quot;按成功付费&quot;的商业模式</li>
+</ul>
+<p><strong>2025 年进展</strong>：多家公司已经商业化落地，按解决效果付费逐渐成了通行模式。</p>
+<h3 id="编程智能体">编程智能体</h3>
+<p>为什么编程特别适合智能体？</p>
+<ul>
+<li>代码可通过自动化测试验证</li>
+<li>测试结果可作为反馈指导迭代</li>
+<li>问题空间定义明确</li>
+<li>输出质量可客观衡量</li>
+</ul>
+<p><strong>2025 年里程碑</strong>：</p>
+<ul>
+<li>Anthropic 的智能体可以独立解决 SWE-bench Verified 里的真实 GitHub issue</li>
+<li>四名工程师 10 天搭出一个完整应用，大部分代码由 Claude Code 自己编写</li>
+<li>AI 编程从&quot;代码补全&quot;走到了&quot;自主解决问题&quot;</li>
+</ul>
+<hr>
+<h2 id="框架选择指南">框架选择指南</h2>
+<h3 id="主流框架对比">主流框架对比</h3>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>类型</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude Agent SDK</strong></td>
+<td>官方 SDK</td>
+<td>生产级智能体，MCP 原生支持</td>
+</tr>
+<tr>
+<td><strong>Strands Agents SDK</strong></td>
+<td>AWS 官方</td>
+<td>AWS 生态集成</td>
+</tr>
+<tr>
+<td><strong>Rivet</strong></td>
+<td>GUI 拖拽</td>
+<td>快速原型，非技术人员</td>
+</tr>
+<tr>
+<td><strong>Vellum</strong></td>
+<td>GUI 工具</td>
+<td>工作流构建和测试</td>
+</tr>
+</tbody>
+</table>
+<h3 id="anthropic-的建议">Anthropic 的建议</h3>
+<p>文章对框架的态度很明确：</p>
+<blockquote>
+<p>&quot;框架简化了入门，但可能创建额外的抽象层，掩盖底层细节，使调试更困难。&quot;</p>
+</blockquote>
+<p><strong>2025 年的行业共识</strong>：</p>
+<ol>
+<li>先直接调 LLM API</li>
+<li>理解底层原理之后再上框架</li>
+<li>生产环境考虑降低抽象层级</li>
+</ol>
+<p><strong>值得注意的声音</strong>：LangChain 创始人判断，2026 年应该&quot;放弃 workflow 编排工具&quot;，转向面向自主智能体的框架。</p>
+<hr>
+<h2 id="我的思考与总结">我的思考与总结</h2>
+<h3 id="关于复杂性">关于复杂性</h3>
+<p>文章反复强调一个观点：<strong>只有在简单方案不足时，才增加复杂性</strong>。</p>
+<p>这条原则反直觉但很重要。做 AI 很容易陷入&quot;技术炫技&quot;——架构越复杂越好、框架越新越好。但工程上真正值钱的判断是：<strong>用最简单的方式把问题解决掉</strong>。</p>
+<p><strong>2025 年的验证</strong>：最早把简单智能体跑起来的公司，比等着&quot;完美架构&quot;的公司拿到了更多实际收益。</p>
+<h3 id="关于框架">关于框架</h3>
+<p>2025 年的教训：</p>
+<blockquote>
+<p>&quot;框架是拐杖，不是双腿。&quot;</p>
+</blockquote>
+<p>这不是说不用框架，而是要搞清楚框架底层在做什么。很多问题的根源，恰恰是对底层机制的错误假设。</p>
+<p><strong>建议学习路径</strong>：</p>
+<ol>
+<li>先用原生 API 实现一个简单智能体</li>
+<li>理解工具调用、状态管理等核心概念</li>
+<li>再选择适合的框架提升效率</li>
+</ol>
+<h3 id="关于未来">关于未来</h3>
+<p>2026 年被视为&quot;长任务 Agent 元年&quot;。Anthropic 在文末提到：</p>
+<blockquote>
+<p>&quot;在 LLM 领域取得成功，不是要构建最复杂的系统，而是要构建适合您需求的系统。&quot;</p>
+</blockquote>
+<p>这句话说透了工程实践的本质：技术是手段不是目的，最好的架构是能解决当下问题、又能适应后续变化的架构。</p>
+<p><strong>2026 年趋势判断</strong>：</p>
+<ul>
+<li>智能体从&quot;玩具&quot;变成&quot;工具&quot;</li>
+<li>企业级部署成为主流</li>
+<li>人机协作的模式逐渐成熟</li>
+</ul>
+<hr>
+<h2 id="实践建议">实践建议</h2>
+<p>基于文章内容和 2025 年实践，我总结了以下建议：</p>
+<ol>
+<li><strong>从简单开始</strong>：先用单一 Prompt，评估后再考虑增加复杂性</li>
+<li><strong>理解底层</strong>：如果使用框架，务必理解其实现原理</li>
+<li><strong>投资 ACI</strong>：工具定义和文档是智能体成功的关键</li>
+<li><strong>设置检查点</strong>：在关键节点加入人工审核或自动验证</li>
+<li><strong>持续迭代</strong>：基于评估结果不断优化，而非一次性设计完美</li>
+<li><strong>拥抱 MCP</strong>：使用标准化协议连接工具</li>
+<li><strong>善用 Skills</strong>：积累可复用的能力模块</li>
+</ol>
+<hr>
+<h2 id="代码示例claude-agent-sdk-快速开始">代码示例：Claude Agent SDK 快速开始</h2>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Agent</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@anthropic/agent-sdk&#x27;</span>;
+
+<span class="hljs-keyword">const</span> agent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Agent</span>({
+  <span class="hljs-attr">model</span>: <span class="hljs-string">&#x27;claude-sonnet-4-5-20250929&#x27;</span>,
+  <span class="hljs-attr">tools</span>: [
+    <span class="hljs-comment">// 使用 MCP 连接的工具</span>
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileSystemTool</span>(),
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">BrowserTool</span>(),
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ShellTool</span>()
+  ]
+});
+
+<span class="hljs-comment">// 运行智能体</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> agent.<span class="hljs-title function_">run</span>(
+  <span class="hljs-string">&#x27;帮我重构这个项目的认证模块，使用 JWT 替代 session&#x27;</span>
+);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">output</span>);
+</code></pre>
+<hr>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents - Anthropic (Updated 2025)</a></li>
+<li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+<li><a href="https://docs.anthropic.com/claude-code/">Claude Agent SDK Documentation</a></li>
+<li><a href="https://www.anthropic.com/news/skills">Claude Skills</a></li>
+<li><a href="https://skills.sh">skills.sh - Vercel</a></li>
+</ul>
+
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>精读 Anthropic《Building Effective Agents》2025 更新版</h1>
+            <p>2026-03-23 · QinIndexCode</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>

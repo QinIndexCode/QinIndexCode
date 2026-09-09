@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent的上下文处理 - QinIndexCode</title>
+    <meta name="description" content="---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：  - **Token 消耗过大**：">
+    <meta name="keywords" content="ai, agent, 上下文, llm">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qinindexcode.site/blogs/007.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://qinindexcode.site/blogs/007.html">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="Agent的上下文处理">
+    <meta property="og:description" content="---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：  - **Token 消耗过大**：">
+    <meta property="article:published_time" content="2026-03-23">
+    <meta property="article:section" content="技术博客">
+        <meta property="article:tag" content="ai">
+    <meta property="article:tag" content="agent">
+    <meta property="article:tag" content="上下文">
+    <meta property="article:tag" content="llm">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Agent的上下文处理">
+    <meta name="twitter:description" content="---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：  - **Token 消耗过大**：">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Agent的上下文处理",
+  "datePublished": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "description": "---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：  - **Token 消耗过大**：",
+  "inLanguage": "zh-CN",
+  "keywords": "ai, agent, 上下文, llm",
+  "author": {
+    "@type": "Person",
+    "name": "QinIndexCode"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "QinIndexCode",
+    "url": "https://qinindexcode.site"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://qinindexcode.site/blogs/007.html"
+  },
+  "url": "https://qinindexcode.site/blogs/007.html"
+}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>Agent的上下文处理</h1>
+                <div class="blog-article-meta">
+                    <time datetime="2026-03-23">2026-03-23</time>
+                    <span>·</span>
+                    <span>QinIndexCode</span>
+                    <span>·</span><span>约 914 字</span>
+                </div>
+                <div class="blog-tags"><span class="blog-tag">ai</span><span class="blog-tag">agent</span><span class="blog-tag">上下文</span><span class="blog-tag">llm</span></div>
+            </header>
+            <div class="blog-article-content">
+<h2 id="2026-03-23-agent的上下文处理">2026-03-23 Agent的上下文处理</h2>
+<hr>
+<h2 id="引言">引言</h2>
+<p>Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。</p>
+<p>上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：</p>
+<ul>
+<li><strong>Token 消耗过大</strong>：成本急剧上升</li>
+<li><strong>响应延迟增加</strong>：模型处理时间变长</li>
+<li><strong>信息噪音干扰</strong>：关键信息被淹没</li>
+<li><strong>上下文窗口溢出</strong>：超出模型限制</li>
+</ul>
+<p>所以，上下文策略是 Agent 工程里绕不开的一环。</p>
+<hr>
+<h2 id="上下文处理的常见方式">上下文处理的常见方式</h2>
+<h3 id="1-上下文缓存">1. 上下文缓存</h3>
+<p>缓存是最基础也最有效的手段：把频繁使用的上下文预先算好存起来，避免重复处理。</p>
+<p><strong>实现方式：</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">ContextCache</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, max_size=<span class="hljs-number">100</span></span>):
+        self.cache = {}
+        self.max_size = max_size
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key</span>):
+        <span class="hljs-keyword">return</span> self.cache.get(key)
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set</span>(<span class="hljs-params">self, key, value</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(self.cache) &gt;= self.max_size:
+            <span class="hljs-comment"># LRU 淘汰策略</span>
+            oldest_key = <span class="hljs-built_in">next</span>(<span class="hljs-built_in">iter</span>(self.cache))
+            <span class="hljs-keyword">del</span> self.cache[oldest_key]
+        self.cache[key] = value
+</code></pre>
+<p><strong>应用场景：</strong></p>
+<ul>
+<li>系统提示词（System Prompt）缓存</li>
+<li>常用工具描述缓存</li>
+<li>用户偏好设置缓存</li>
+<li>RAG 检索结果的缓存</li>
+</ul>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li>需要合理的缓存失效策略</li>
+<li>注意缓存一致性问题</li>
+<li>对于动态变化的内容要谨慎使用</li>
+</ul>
+<hr>
+<h3 id="2-上下文压缩">2. 上下文压缩</h3>
+<p>压缩的目标，是在不丢关键信息的前提下减少上下文的 Token 数量。</p>
+<p><strong>常用压缩技术：</strong></p>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>原理</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语义压缩</td>
+<td>提取核心语义，去除冗余表达</td>
+<td>长对话历史</td>
+</tr>
+<tr>
+<td>结构化压缩</td>
+<td>将非结构化文本转为结构化格式</td>
+<td>工具调用结果</td>
+</tr>
+<tr>
+<td>截断压缩</td>
+<td>保留最近 N 轮对话</td>
+<td>简单对话场景</td>
+</tr>
+<tr>
+<td>蒸馏压缩</td>
+<td>用小模型生成压缩版本</td>
+<td>大规模文档</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例：语义压缩</strong></p>
+<pre class="hljs"><code>原始上下文（150 tokens）：
+&quot;用户在 3 月 15 日询问了关于 Python 异步编程的问题，我详细解释了 async/await 
+的用法，并提供了三个示例代码。用户表示理解了，然后问了一个关于 asyncio 库的
+问题，我解释了事件循环的概念...&quot;
+
+压缩后（30 tokens）：
+&quot;对话主题：Python 异步编程；已解答：async/await、asyncio；用户状态：理解&quot;
+</code></pre>
+<p><strong>实现要点：</strong></p>
+<ul>
+<li>压缩比与信息保留需要权衡</li>
+<li>关键决策点信息不能丢失</li>
+<li>可使用 LLM 辅助压缩（但需考虑成本）</li>
+</ul>
+<hr>
+<h3 id="3-上下文摘要">3. 上下文摘要</h3>
+<p>摘要和压缩类似，但它不只是提取关键点，更强调生成一段连贯的总结性描述。</p>
+<p><strong>摘要层级结构：</strong></p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一层</td>
+<td>全局摘要</td>
+<td>整个会话的核心目标与进展</td>
+</tr>
+<tr>
+<td>第二层</td>
+<td>阶段摘要</td>
+<td>最近 N 轮对话的总结</td>
+</tr>
+<tr>
+<td>第三层</td>
+<td>原始对话</td>
+<td>最近 3-5 轮的完整上下文</td>
+</tr>
+</tbody>
+</table>
+<p><strong>摘要触发策略：</strong></p>
+<ul>
+<li><strong>轮次触发</strong>：每 N 轮对话生成一次摘要</li>
+<li><strong>长度触发</strong>：上下文超过阈值时触发</li>
+<li><strong>阶段触发</strong>：完成一个子任务后触发</li>
+</ul>
+<p><strong>代码示例：</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">should_summarize</span>(<span class="hljs-params">messages, threshold=<span class="hljs-number">4000</span></span>):
+    total_tokens = <span class="hljs-built_in">sum</span>(estimate_tokens(m) <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> messages)
+    <span class="hljs-keyword">return</span> total_tokens &gt; threshold
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">summarize_context</span>(<span class="hljs-params">messages, llm</span>):
+    summary_prompt = <span class="hljs-string">f&quot;&quot;&quot;
+    请总结以下对话的核心内容：
+    
+    对话历史：
+    <span class="hljs-subst">{format_messages(messages)}</span>
+    
+    请用简洁的语言总结：
+    1. 用户的核心需求
+    2. 已完成的工作
+    3. 待解决的问题
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> llm.generate(summary_prompt)
+</code></pre>
+<hr>
+<h3 id="4-上下文筛选">4. 上下文筛选</h3>
+<p>筛选指的是根据当前任务的相关性，动态决定哪些上下文值得放进窗口。</p>
+<p><strong>筛选维度：</strong></p>
+<ol>
+<li><strong>时间相关性</strong>：优先保留最近的对话</li>
+<li><strong>主题相关性</strong>：保留与当前任务相关的历史</li>
+<li><strong>重要性权重</strong>：保留关键决策和结果</li>
+<li><strong>用户关注度</strong>：保留用户明确提及的内容</li>
+</ol>
+<p><strong>基于向量检索的筛选：</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">from</span> sentence_transformers <span class="hljs-keyword">import</span> SentenceTransformer
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ContextSelector</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, model_name=<span class="hljs-string">&#x27;all-MiniLM-L6-v2&#x27;</span></span>):
+        self.model = SentenceTransformer(model_name)
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">select_relevant</span>(<span class="hljs-params">self, query, history, top_k=<span class="hljs-number">5</span></span>):
+        <span class="hljs-comment"># 编码查询</span>
+        query_embedding = self.model.encode(query)
+        
+        <span class="hljs-comment"># 编码历史上下文</span>
+        history_embeddings = self.model.encode(history)
+        
+        <span class="hljs-comment"># 计算相似度</span>
+        similarities = np.dot(history_embeddings, query_embedding)
+        
+        <span class="hljs-comment"># 选择最相关的 top_k</span>
+        top_indices = np.argsort(similarities)[-top_k:][::-<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> [history[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> top_indices]
+</code></pre>
+<p><strong>筛选策略组合：</strong></p>
+<pre class="hljs"><code>最终上下文 = 最近3轮对话 + 相关历史(检索) + 关键决策(标记) + 系统提示
+</code></pre>
+<hr>
+<h2 id="最佳实践">最佳实践</h2>
+<h3 id="分层上下文管理">分层上下文管理</h3>
+<pre class="hljs"><code>Level 1: 系统级（始终保留）
+    └── 系统提示、工具定义、安全规则
+
+Level 2: 会话级（摘要保留）
+    └── 会话目标、关键决策、重要结果
+
+Level 3: 阶段级（压缩保留）
+    └── 当前任务相关历史
+
+Level 4: 即时级（完整保留）
+    └── 最近 2-3 轮对话
+</code></pre>
+<h3 id="动态调整策略">动态调整策略</h3>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">AdaptiveContextManager</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        self.strategies = {
+            <span class="hljs-string">&#x27;simple&#x27;</span>: SimpleTruncation(),
+            <span class="hljs-string">&#x27;moderate&#x27;</span>: CompressionStrategy(),
+            <span class="hljs-string">&#x27;complex&#x27;</span>: SummaryStrategy(),
+        }
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">select_strategy</span>(<span class="hljs-params">self, task_complexity, context_length</span>):
+        <span class="hljs-keyword">if</span> context_length &lt; <span class="hljs-number">2000</span>:
+            <span class="hljs-keyword">return</span> self.strategies[<span class="hljs-string">&#x27;simple&#x27;</span>]
+        <span class="hljs-keyword">elif</span> task_complexity == <span class="hljs-string">&#x27;high&#x27;</span>:
+            <span class="hljs-keyword">return</span> self.strategies[<span class="hljs-string">&#x27;complex&#x27;</span>]
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> self.strategies[<span class="hljs-string">&#x27;moderate&#x27;</span>]
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>上下文处理是 Agent 架构的核心挑战之一。做得好的收益很直接：</p>
+<ol>
+<li><strong>降低成本</strong>：少花冤枉 Token</li>
+<li><strong>提升性能</strong>：响应更快</li>
+<li><strong>提高质量</strong>：模型的注意力集中在关键信息上</li>
+<li><strong>扩展能力</strong>：支撑更长的对话和更复杂的任务</li>
+</ol>
+<p>实际应用里通常是多种策略组合使用、按场景动态切换。另外一个趋势是：随着上下文窗口越来越大，处理的重点已经从&quot;怎么塞进去&quot;变成&quot;怎么组织得更有效&quot;。</p>
+
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>Agent的上下文处理</h1>
+            <p>2026-03-23 · QinIndexCode</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>

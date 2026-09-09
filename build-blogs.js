@@ -14,9 +14,64 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://qinindexcode.site';
+
+/* Load vendored UMD libraries via VM (no npm install needed) */
+function loadVendoredUmd(filePath) {
+    const ctx = {};
+    ctx.globalThis = ctx;
+    ctx.self = ctx;
+    vm.createContext(ctx);
+    const code = fs.readFileSync(path.join(__dirname, filePath), 'utf8');
+    vm.runInContext(code, ctx);
+    return ctx;
+}
+
+const { markdownit } = loadVendoredUmd('js/markdown-it.min.js');
+const { hljs } = loadVendoredUmd('js/highlight.min.js');
+
+/* Setup markdown-it with highlight.js to match frontend */
+const md = markdownit({
+    html: true,
+    linkify: true,
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return '<pre class="hljs"><code>' +
+                       hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+                       '</code></pre>';
+            } catch (__) {}
+        }
+        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+    }
+});
+
+/* slugify for heading ids (matches frontend logic from blogs.html) */
+function slugify(text) {
+    return String(text || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[\s\u3000]+/g, '-')
+        .replace(/[^\w\u4e00-\u9fa5-]/g, '')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '') || 'section';
+}
+
+/* Add ids to headings for TOC anchors */
+const originalHeadingOpen = md.renderer.rules.heading_open || function (tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+};
+md.renderer.rules.heading_open = function (tokens, idx, options, env, self) {
+    const token = tokens[idx];
+    const nextToken = tokens[idx + 1];
+    if (nextToken && nextToken.type === 'inline' && nextToken.content) {
+        token.attrSet('id', slugify(nextToken.content));
+    }
+    return originalHeadingOpen(tokens, idx, options, env, self);
+};
 
 const blogDir = path.join(__dirname, 'blogs');
 const files = fs.readdirSync(blogDir)
@@ -97,7 +152,23 @@ function parseBlog(fileName) {
         author,
         excerpt: makeExcerpt(body, 150),
         wordCount: wordCount(body),
-        tags
+        tags,
+        body
+    };
+}
+
+/* Metadata-only view (strips full body) for blogs-data.js & list output */
+function toMeta(blog) {
+    return {
+        id: blog.id,
+        fileName: blog.fileName,
+        seq: blog.seq,
+        title: blog.title,
+        date: blog.date,
+        author: blog.author,
+        excerpt: blog.excerpt,
+        wordCount: blog.wordCount,
+        tags: blog.tags
     };
 }
 
@@ -137,7 +208,7 @@ const dataJs = `/* ============================================
    ============================================ */
 
 window.QINBLOG_BLOGS = [
-${blogs.map((b) => '  ' + JSON.stringify(b, null, 2).split('\n').join('\n  ')).join(',\n')}
+${blogs.map((b) => '  ' + JSON.stringify(toMeta(b), null, 2).split('\n').join('\n  ')).join(',\n')}
 ];
 `;
 fs.writeFileSync(dataJsPath, dataJs, 'utf8');
@@ -161,6 +232,7 @@ const itemListJson = {
             '@type': 'BlogPosting',
             headline: b.title,
             datePublished: b.date,
+            url: `${SITE}/blogs/${b.id}.html`,
             description: cap(b.excerpt, 80).replace(/\.\.\.$/, ''),
             keywords: b.tags.join(', '),
             author: { '@type': 'Person', name: b.author }
@@ -186,7 +258,7 @@ if (!noscriptRe.test(blogsHtml)) {
     process.exit(1);
 }
 const noscriptItems = blogs.map((b) =>
-    `<li><a href="./blogs/${b.fileName}">${escapeXml(b.title)}</a> (${b.date}) - ${escapeXml(cap(b.excerpt, 100))} - 标签: ${escapeXml(b.tags.join(', '))}</li>`
+    `<li><a href="./blogs/${b.id}.html">${escapeXml(b.title)}</a> (${b.date}) - ${escapeXml(cap(b.excerpt, 100))} - 标签: ${escapeXml(b.tags.join(', '))}</li>`
 ).join('\n                ');
 blogsHtml = blogsHtml.replace(noscriptRe,
     () => `<!-- BLOG-LIST:START -->\n                ${noscriptItems}\n                <!-- BLOG-LIST:END -->`);
@@ -198,8 +270,8 @@ const nowLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
 const nowISO = nowLocal.toISOString().slice(0, 10) + 'T00:00:00+08:00';
 const feedItems = [...blogs].reverse().map((b) => `        <item>
             <title>${escapeXml(b.title)}</title>
-            <link>${SITE}/blogs/${b.fileName}</link>
-            <guid isPermaLink="true">${SITE}/blogs/${b.fileName}</guid>
+            <link>${SITE}/blogs/${b.id}.html</link>
+            <guid isPermaLink="true">${SITE}/blogs/${b.id}.html</guid>
             <pubDate>${b.date}T00:00:00+08:00</pubDate>
             <description>${escapeXml(cap(b.excerpt, 150))}</description>
             <dc:creator>${escapeXml(b.author)}</dc:creator>
@@ -233,7 +305,7 @@ if (!llmsRe.test(llms)) {
     process.exit(1);
 }
 const llmsItems = blogs.map((b, i) =>
-    `${i + 1}. ${b.title} (${b.date}): ${cap(b.excerpt, 100)} - 标签: ${b.tags.join(', ')} - /blogs/${b.fileName}`
+    `${i + 1}. ${b.title} (${b.date}): ${cap(b.excerpt, 100)} - 标签: ${b.tags.join(', ')} - https://qinindexcode.site/blogs/${b.id}.html`
 ).join('\n');
 llms = llms.replace(llmsRe,
     () => `<!-- BLOG-LIST:START -->\n${llmsItems}\n<!-- BLOG-LIST:END -->`);
@@ -249,7 +321,7 @@ if (!sitemapRe.test(sitemap)) {
     process.exit(1);
 }
 const sitemapItems = blogs.map((b) => `    <url>
-        <loc>${SITE}/blogs/${b.fileName}</loc>
+        <loc>${SITE}/blogs/${b.id}.html</loc>
         <lastmod>${b.date}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -258,5 +330,148 @@ sitemap = sitemap.replace(sitemapRe,
     () => `<!-- SITEMAP-BLOGS:START -->\n${sitemapItems}\n    <!-- SITEMAP-BLOGS:END -->`);
 fs.writeFileSync(sitemapPath, sitemap, 'utf8');
 console.log('sitemap.xml updated');
+
+/* ---------- 6. Standalone article HTML pages ---------- */
+function articleEscape(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+/* Inline styles scoped to standalone article content, following AGENTS.md
+   conventions (blockquotes as full rounded cards, no left color bars). */
+const ARTICLE_STYLE = `
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+`;
+
+function renderArticleHtml(b) {
+    const bodyHtml = md.render(b.body);
+    const canonical = `${SITE}/blogs/${b.id}.html`;
+    const description = cap(b.excerpt.replace(/\.\.\.$/, ''), 155).trim();
+    const tagList = b.tags.map((t) => articleEscape(t)).join(', ');
+    const tagHtml = b.tags.map((t) => `<span class="blog-tag">${articleEscape(t)}</span>`).join('');
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: b.title,
+        datePublished: b.date,
+        dateModified: b.date,
+        description: description,
+        inLanguage: 'zh-CN',
+        keywords: b.tags.join(', '),
+        author: { '@type': 'Person', name: b.author },
+        publisher: { '@type': 'Person', name: 'QinIndexCode', url: `${SITE}` },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+        url: canonical
+    };
+    const jsonLdHtml = JSON.stringify(jsonLd, null, 2).replace(/</g, '\\u003c');
+
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${articleEscape(b.title)} - QinIndexCode</title>
+    <meta name="description" content="${articleEscape(description)}">
+    <meta name="keywords" content="${articleEscape(tagList)}">
+    <meta name="author" content="${articleEscape(b.author)}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="${canonical}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="${canonical}">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="${articleEscape(b.title)}">
+    <meta property="og:description" content="${articleEscape(description)}">
+    <meta property="article:published_time" content="${b.date}">
+    <meta property="article:section" content="技术博客">
+    ${b.tags.length ? b.tags.map((t) => `    <meta property="article:tag" content="${articleEscape(t)}">`).join('\n') : ''}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="${articleEscape(b.title)}">
+    <meta name="twitter:description" content="${articleEscape(description)}">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>${ARTICLE_STYLE}</style>
+    <script type="application/ld+json">
+${jsonLdHtml}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>${articleEscape(b.title)}</h1>
+                <div class="blog-article-meta">
+                    <time datetime="${b.date}">${articleEscape(b.date)}</time>
+                    <span>·</span>
+                    <span>${articleEscape(b.author)}</span>
+                    ${b.wordCount ? `<span>·</span><span>约 ${b.wordCount} 字</span>` : ''}
+                </div>
+                ${tagHtml ? `<div class="blog-tags">${tagHtml}</div>` : ''}
+            </header>
+            <div class="blog-article-content">
+${bodyHtml}
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>${articleEscape(b.title)}</h1>
+            <p>${articleEscape(b.date)} · ${articleEscape(b.author)}</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>`;
+}
+
+const articleOutDir = blogDir;
+for (const b of blogs) {
+    const articlePath = path.join(articleOutDir, `${b.id}.html`);
+    fs.writeFileSync(articlePath, renderArticleHtml(b), 'utf8');
+}
+console.log(`standalone articles: ${blogs.length} html pages generated`);
 
 console.log(`\nDone! ${blogs.length} articles generated.`);

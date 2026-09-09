@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS原型污染漏洞 - QinIndexCode</title>
+    <meta name="description" content="原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。    JavaScript 中几乎所有对象都继承自 `Object.prototype`，而原型可">
+    <meta name="keywords" content="javascript, 安全, 漏洞">
+    <meta name="author" content="QinIndexCode">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://qinindexcode.site/blogs/002.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://qinindexcode.site/blogs/002.html">
+    <meta property="og:site_name" content="QinIndexCode">
+    <meta property="og:title" content="JS原型污染漏洞">
+    <meta property="og:description" content="原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。    JavaScript 中几乎所有对象都继承自 `Object.prototype`，而原型可">
+    <meta property="article:published_time" content="2025-12-24">
+    <meta property="article:section" content="技术博客">
+        <meta property="article:tag" content="javascript">
+    <meta property="article:tag" content="安全">
+    <meta property="article:tag" content="漏洞">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="JS原型污染漏洞">
+    <meta name="twitter:description" content="原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。    JavaScript 中几乎所有对象都继承自 `Object.prototype`，而原型可">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link href="../css/css2.min.css" rel="stylesheet">
+    <link href="../css/main.min.css" rel="stylesheet">
+    <link href="../css/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+    .blog-article-standalone { padding: clamp(1.25rem, 3vw, 2.5rem); }
+    .blog-breadcrumb { margin-bottom: 1rem; font-size: 0.9rem; }
+    .blog-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .blog-article-header h1 { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.35; }
+    .blog-article-meta { color: var(--text-secondary); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .blog-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .blog-tag { background: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.7rem; border-radius: 999px; font-size: 0.8rem; }
+    .blog-article-content { margin-top: 1.5rem; line-height: 1.85; word-break: break-word; }
+    .blog-article-content h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; padding-top: 0.5rem; }
+    .blog-article-content h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; }
+    .blog-article-content p { margin: 0.75rem 0; }
+    .blog-article-content a { color: var(--accent); text-decoration: underline; }
+    .blog-article-content ul, .blog-article-content ol { margin: 0.75rem 0; padding-left: 1.4rem; }
+    .blog-article-content li { margin: 0.35rem 0; }
+    .blog-article-content code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.88em;
+        background: var(--bg-tertiary, rgba(127,127,127,0.15)); padding: 0.15em 0.4em; border-radius: 0.3rem; }
+    .blog-article-content pre { margin: 1rem 0; border-radius: var(--radius, 0.75rem); overflow-x: auto;
+        background: var(--bg-tertiary, #1c1917); padding: 1rem; }
+    .blog-article-content pre code { background: none; padding: 0; }
+    .blog-article-content blockquote { margin: 1rem 0; padding: 0.9rem 1.1rem;
+        background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius, 0.75rem); }
+    .blog-article-content blockquote p { margin: 0.25rem 0; }
+    .blog-article-content img { max-width: 100%; border-radius: var(--radius, 0.5rem); }
+    .blog-article-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .blog-article-content th, .blog-article-content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+    .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JS原型污染漏洞",
+  "datePublished": "2025-12-24",
+  "dateModified": "2025-12-24",
+  "description": "原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。    JavaScript 中几乎所有对象都继承自 `Object.prototype`，而原型可",
+  "inLanguage": "zh-CN",
+  "keywords": "javascript, 安全, 漏洞",
+  "author": {
+    "@type": "Person",
+    "name": "QinIndexCode"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "QinIndexCode",
+    "url": "https://qinindexcode.site"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://qinindexcode.site/blogs/002.html"
+  },
+  "url": "https://qinindexcode.site/blogs/002.html"
+}
+    </script>
+    <script src="../js/theme-tokens.js"></script>
+    <script src="../js/i18n.js" defer></script>
+    <script src="../js/nav-loader.js" defer></script>
+    <script src="../js/theme-listener.js" defer></script>
+</head>
+<body>
+    <main class="container" role="main">
+        <article class="card glass blog-article-standalone">
+            <header class="blog-article-header">
+                <nav class="blog-breadcrumb" aria-label="面包屑">
+                    <a href="../blogs.html">随记</a>
+                </nav>
+                <h1>JS原型污染漏洞</h1>
+                <div class="blog-article-meta">
+                    <time datetime="2025-12-24">2025-12-24</time>
+                    <span>·</span>
+                    <span>QinIndexCode</span>
+                    <span>·</span><span>约 576 字</span>
+                </div>
+                <div class="blog-tags"><span class="blog-tag">javascript</span><span class="blog-tag">安全</span><span class="blog-tag">漏洞</span></div>
+            </header>
+            <div class="blog-article-content">
+<h2 id="2025-12-24-js原型污染漏洞">2025-12-24 JS原型污染漏洞</h2>
+<p>原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。</p>
+<h3 id="原型污染的基本原理">原型污染的基本原理</h3>
+<p>JavaScript 中几乎所有对象都继承自 <code>Object.prototype</code>，而原型可以通过 <code>__proto__</code>、<code>prototype</code>、<code>constructor</code> 这几个特殊属性访问和修改。</p>
+<p>如果往一个普通对象上动态添加属性时，键名恰好是 <code>__proto__</code>，改动就会落到原型对象上，整条原型链随之被污染。</p>
+<h4 id="简单演示">简单演示</h4>
+<pre class="hljs"><code><span class="hljs-comment">// 正常情况：给空对象添加属性</span>
+<span class="hljs-keyword">const</span> user = {};
+user.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Alice&#x27;</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">name</span>); <span class="hljs-comment">// &#x27;Alice&#x27;</span>
+
+<span class="hljs-comment">// 原型污染攻击</span>
+<span class="hljs-keyword">const</span> maliciousInput = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-string">&#x27;{&quot;__proto__&quot;: {&quot;isAdmin&quot;: true}}&#x27;</span>);
+
+<span class="hljs-comment">// 假设有一个不安全的深层合并函数（常见于许多库）</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">target, source</span>) {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> source) {
+    target[key] = source[key];
+  }
+  <span class="hljs-keyword">return</span> target;
+}
+
+<span class="hljs-keyword">const</span> cleanObj = {};
+<span class="hljs-title function_">merge</span>(cleanObj, maliciousInput);
+
+<span class="hljs-comment">// 现在所有普通对象的原型都被污染了！</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>({}.<span class="hljs-property">isAdmin</span>);        <span class="hljs-comment">// true  ← 危险！任意空对象都有 isAdmin 属性</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">isAdmin</span>);      <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()).<span class="hljs-property">isAdmin</span>); <span class="hljs-comment">// true，甚至原生对象也可能受影响</span>
+</code></pre>
+<p>攻击者只要让输入对象里出现 <code>__proto__</code> 这样的键，就可能往 <code>Object.prototype</code> 上注入属性，之后创建的所有对象都会受影响。</p>
+<h3 id="常见的特殊键">常见的特殊键</h3>
+<p>以下键都会影响原型链（统称为污染入口）：</p>
+<ul>
+<li><code>__proto__</code>        ← 最常见、最直接</li>
+<li><code>prototype</code>        ← 常用于污染构造函数的原型</li>
+<li><code>constructor</code>      ← 可间接访问 prototype</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-comment">// 三种等效的污染方式</span>
+obj[<span class="hljs-string">&#x27;__proto__&#x27;</span>].<span class="hljs-property">polluted</span> = <span class="hljs-literal">true</span>;
+obj.<span class="hljs-property">constructor</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">polluted</span> = <span class="hljs-literal">true</span>;
+obj[<span class="hljs-string">&#x27;constructor&#x27;</span>][<span class="hljs-string">&#x27;prototype&#x27;</span>].<span class="hljs-property">polluted</span> = <span class="hljs-literal">true</span>;
+
+<span class="hljs-comment">// 结果都是：Object.prototype.polluted === true</span>
+</code></pre>
+<h3 id="真实攻击场景举例">真实攻击场景举例</h3>
+<ol>
+<li>
+<p><strong>权限绕过</strong></p>
+<pre class="hljs"><code><span class="hljs-comment">// 服务端校验用户权限</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isAdmin</span>(<span class="hljs-params">user</span>) {
+  <span class="hljs-keyword">return</span> user.<span class="hljs-property">isAdmin</span> === <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 本应从数据库读取</span>
+}
+
+<span class="hljs-comment">// 攻击者提交 { &quot;__proto__&quot;: { &quot;isAdmin&quot;: true } }</span>
+<span class="hljs-comment">// 导致所有对象默认都有 isAdmin: true → 权限绕过成功</span>
+</code></pre>
+</li>
+<li>
+<p><strong>拒绝服务（DoS）</strong></p>
+<pre class="hljs"><code><span class="hljs-comment">// 注入一个会导致无限循环或崩溃的 getter</span>
+{<span class="hljs-string">&quot;__proto__&quot;</span>: {<span class="hljs-string">&quot;toString&quot;</span>: <span class="hljs-function">() =&gt;</span> { <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {} }}}
+</code></pre>
+</li>
+<li>
+<p><strong>结合其他漏洞实现 RCE（远程代码执行）</strong>
+在某些 Node.js 环境中，污染 <code>child_process</code> 或 <code>fs</code> 相关原型后，可能配合其他 gadget 实现任意命令执行。历史上 lodash（&lt; 4.17.11）等多个知名库都中过招。</p>
+</li>
+</ol>
+<h3 id="如何防御原型污染">如何防御原型污染</h3>
+<ol>
+<li>
+<p><strong>避免直接使用用户输入作为对象键进行递归合并</strong></p>
+<ul>
+<li>不要自己写深层 merge 函数</li>
+<li>使用安全的库或手动控制合并逻辑</li>
+</ul>
+</li>
+<li>
+<p><strong>严格校验键名</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">function</span> <span class="hljs-title function_">safeAssign</span>(<span class="hljs-params">target, key, value</span>) {
+  <span class="hljs-keyword">if</span> (key === <span class="hljs-string">&#x27;__proto__&#x27;</span> || key === <span class="hljs-string">&#x27;prototype&#x27;</span> || key === <span class="hljs-string">&#x27;constructor&#x27;</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Forbidden property name&#x27;</span>);
+  }
+  target[key] = value;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>使用 Object.create(null) 创建无原型对象</strong></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> map = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>);  <span class="hljs-comment">// 没有 __proto__ 属性，完全安全</span>
+map[userInputKey] = value;        <span class="hljs-comment">// 即使 key 是 &quot;__proto__&quot; 也只是普通键</span>
+</code></pre>
+</li>
+<li>
+<p><strong>冻结原型（生产环境可考虑）</strong></p>
+<pre class="hljs"><code><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">freeze</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>);
+<span class="hljs-comment">// 尝试污染会静默失败（非严格模式）或抛错（严格模式）</span>
+</code></pre>
+</li>
+<li>
+<p><strong>升级依赖库</strong>
+许多知名库（如 lodash、jquery、express 等）都修复过原型污染漏洞，保持依赖最新非常重要。</p>
+</li>
+</ol>
+<h3 id="小结">小结</h3>
+<p>原型污染的本质，是攻击者通过控制键名改掉了所有对象共享的原型。</p>
+<p>它听起来冷门，实际上离日常开发很近，这几类场景要特别当心：</p>
+<ul>
+<li>接收 JSON 输入的 API</li>
+<li>做深层对象合并的配置系统</li>
+<li>停留在旧版本、未修复漏洞的第三方库</li>
+</ul>
+<p>防御原则一句话：外部输入不能直接拿来当对象属性键，递归合并时尤其如此。</p>
+
+            </div>
+            <footer class="blog-article-footer">
+                <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+            </footer>
+        </article>
+    </main>
+    <noscript>
+        <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
+            <h1>JS原型污染漏洞</h1>
+            <p>2025-12-24 · QinIndexCode</p>
+            <p><a href="../blogs.html">返回随记列表</a></p>
+        </div>
+    </noscript>
+</body>
+</html>

@@ -21,19 +21,26 @@
     const L = (key, zh) => (window.QinBlogI18n ? window.QinBlogI18n.t(key) : zh);
 
     // 导航配置
+    // Build href from root to work correctly for pages in subdirectories (like /blogs/{id}.html)
+    const base = window.location.pathname.split('/').length > 2 ? '../' : './';
     const navItems = [
-        { id: 'home',    label: L('nav.home', '首页'),  icon: '#i-home',     href: './' },
-        { id: 'tech',    label: L('nav.tech', '技术'),  icon: '#i-code',     href: './tech.html' },
-        { id: 'projects',label: L('nav.projects', '项目'), icon: '#i-folder', href: './projects.html' },
-        { id: 'blogs',   label: L('nav.blogs', '随记'),  icon: '#i-book-open', href: './blogs.html' },
-        { id: 'tools',   label: L('nav.tools', '工具'),  icon: '#i-wrench',    href: './tools.html' },
-        { id: 'donate',  label: L('nav.donate', '捐赠'), icon: '#i-heart',     href: './donate.html' },
-        { id: 'about',   label: L('nav.about', '关于'),  icon: '#i-user',      href: './about.html' }
+        { id: 'home',    label: L('nav.home', '首页'),  icon: '#i-home',     href: base + '' },
+        { id: 'tech',    label: L('nav.tech', '技术'),  icon: '#i-code',     href: base + 'tech.html' },
+        { id: 'projects',label: L('nav.projects', '项目'), icon: '#i-folder', href: base + 'projects.html' },
+        { id: 'blogs',   label: L('nav.blogs', '随记'),  icon: '#i-book-open', href: base + 'blogs.html' },
+        { id: 'tools',   label: L('nav.tools', '工具'),  icon: '#i-wrench',    href: base + 'tools.html' },
+        { id: 'donate',  label: L('nav.donate', '捐赠'), icon: '#i-heart',     href: base + 'donate.html' },
+        { id: 'about',   label: L('nav.about', '关于'),  icon: '#i-user',      href: base + 'about.html' }
     ];
 
+    // active check for blogs articles under /blogs/ subdir: any /blogs/id.html should highlight "blogs" nav
+    const isBlogsPage = currentPage.startsWith('blogs/') || currentPage === 'blogs';
     // 生成导航菜单 HTML
     const navMenuHTML = navItems.map(item => {
-        const isActive = item.id === currentPage;
+        let isActive = item.id === currentPage;
+        if (item.id === 'blogs' && isBlogsPage) {
+            isActive = true;
+        }
         return `
             <li class="nav-item" role="none">
                 <a href="${item.href}" class="nav-link${isActive ? ' active' : ''}" role="menuitem">
@@ -65,7 +72,7 @@
         <aside class="sidebar glass" id="sidebar" role="navigation" aria-label="主导航">
             <div class="profile-section">
                 <div class="profile-avatar">
-                    <img src="assets/images/avatar.webp" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/avatar.jpg'">
+                    <img src="${base}assets/images/avatar.webp" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${base}assets/images/avatar.jpg'">
                 </div>
                 <div class="profile-name">QinIndexCode</div>
             </div>
