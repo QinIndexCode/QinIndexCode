@@ -1,0 +1,32 @@
+[
+  {
+    "id": "expo-lite-data-store",
+    "name": "expo-lite-data-store",
+    "github": "https://github.com/QinIndexCode/expo-lite-data-store",
+    "desc": "由本人主导开发的项目，用于 Expo 应用的轻量级数据存储库，旨在提供一个轻量快捷的本地存储解决方案，支持比分散 JSON 文件更清晰的格式化能力。"
+  },
+  {
+    "id": "agent-workbench",
+    "name": "Agent Workbench",
+    "github": "https://github.com/QinIndexCode/agent-workbench",
+    "desc": "本地优先的 AI Agent 工作台，支持基于风险的权限审批、加密 SQLite 持久状态、多模型供应商配置（OpenAI / Anthropic / Gemini）、Web UI 和 CLI。"
+  },
+  {
+    "id": "web-screenshot-skill",
+    "name": "web-screenshot-skill",
+    "github": "https://github.com/QinIndexCode/web-screenshot-skill",
+    "desc": "高质量网页截图工具，支持 12 种设备预设、批量处理、高 DPI 渲染、暗色模式和元数据生成，专为多模态 LLM 视觉分析设计。"
+  },
+  {
+    "id": "reflexlm",
+    "name": "ReflexLM",
+    "github": "https://github.com/QinIndexCode/reflexlm",
+    "desc": "有界原生突触接口 (NSI) 运行时的实验实现，聚焦于可证伪的机制验证，包含结构化受体、显著性与抑制模型、以及受控命令选择基准测试。"
+  },
+  {
+    "id": "reference",
+    "name": "GitHub Reference 中文文档",
+    "github": "https://github.com/jaywcjlove/reference",
+    "desc": "参与编写面向开发者的技术速查清单集合，整理常见技术、工具与开发流程，帮助快速查阅关键信息，提高开发效率。该项目已获得 15.1k Stars。"
+  }
+]

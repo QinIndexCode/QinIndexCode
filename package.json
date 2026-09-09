@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "astro dev",
     "blogs:build": "node build-blogs.js",
+    "projects:build": "node build-projects.js",
     "css:build": "node build-css.js",
     "sync:public": "node sync-public.js",
-    "build": "npm run blogs:build && npm run css:build && npm run sync:public && astro build",
+    "build": "npm run blogs:build && npm run css:build && npm run projects:build && npm run sync:public && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "check:i18n": "node check-i18n.js",
+    "check:projects": "node check-projects.js"
   },
   "dependencies": {
     "astro": "^5.13.0"

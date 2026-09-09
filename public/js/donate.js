@@ -46,38 +46,17 @@
     }
 
     /* ---------- Donor List ---------- */
-    function decodeDonors(base64) {
-        try {
-            const binary = atob(base64);
-            const bytes = new Uint8Array(binary.length);
-            for (let i = 0; i < binary.length; i++) {
-                bytes[i] = binary.charCodeAt(i);
-            }
-            // Reverse bytes
-            const reversed = bytes.reverse();
-            return new TextDecoder('utf-8').decode(reversed);
-        } catch {
-            return '';
-        }
-    }
-
     async function loadDonors() {
         try {
             const response = await fetch('donations.md');
             if (!response.ok) return;
             const text = await response.text();
-            // Find base64 lines (skip HTML comments)
-            const lines = text.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('<'));
-            if (!lines.length) return;
-
-            const donors = [];
-            for (const line of lines) {
-                const decoded = decodeDonors(line);
-                if (!decoded) continue;
-                // Format: "name:amount"
-                const name = decoded.split(':')[0];
-                if (name) donors.push(name);
-            }
+            // Plain-text list: one donor name per line (strip any HTML comment block)
+            const donors = text
+                .replace(/<!--[\s\S]*?-->/g, '')
+                .split('\n')
+                .map(l => l.trim())
+                .filter(Boolean);
 
             if (!donors.length) return;
 

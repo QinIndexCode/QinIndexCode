@@ -12,6 +12,6 @@
 
   **Open to collaborations and interesting conversations.**
 
-  Reach out on the channels in my [blog](https://qinindexcode.github.io) or buy me a coffee on [Ko-fi](https://ko-fi.com/qinindexcode).
+  Reach out on the channels in my [blog](https://qinindexcode.site) or buy me a coffee on [Ko-fi](https://ko-fi.com/qinindexcode).
 
 </div>

@@ -36,6 +36,9 @@ jobs:
       - name: Check i18n consistency
         run: node check-i18n.js
 
+      - name: Check project list consistency
+        run: node check-projects.js
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

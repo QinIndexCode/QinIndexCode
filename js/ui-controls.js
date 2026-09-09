@@ -274,6 +274,9 @@
             document.documentElement.classList.add('no-glow-js');
             return;
         }
+        // 非禁用路径：清掉之前可能残留的 no-glow-js（如冷启动 medium 阶段加上的），
+        // 否则 .no-glow-js .glow-border::after 的 display:none 会盖住已绑定的光效
+        document.documentElement.classList.remove('no-glow-js');
 
         var cards = document.querySelectorAll('.glow-border:not([data-glow-initialized])');
         Array.prototype.forEach.call(cards, function (card) {

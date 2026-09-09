@@ -21,7 +21,7 @@ const pub = path.join(__dirname, 'public');
 const DIRS = ['js', 'css', 'blogs', 'assets', 'i18n'];
 const FILES = [
     'feed.xml', 'sitemap.xml', 'robots.txt', 'llms.txt',
-    'donations.md', 'README.md', 'CNAME', 'sw.js', '.nojekyll'
+    'donations.md', 'CNAME', 'sw.js', '.nojekyll'
 ];
 
 function copyDir(srcDir, destDir) {

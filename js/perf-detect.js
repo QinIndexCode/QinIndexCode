@@ -277,6 +277,13 @@
                 applyLevel(level);
                 cacheResult(level);
 
+                // 采样完成后若升级到 high，补绑鼠标跟随光效（ui-controls.js，内部幂等）。
+                // 修复冷启动竞态：DOMContentLoaded 时等级多为 medium（采样约 7 秒后才出结果），
+                // 各页卡片在当时会跳过绑定；随记页卡片更是 fetch 完成后才渲染，更早错过窗口。
+                if (level === 'high' && window.__initGlowBorder) {
+                    try { window.__initGlowBorder(); } catch (e) { /* ignore */ }
+                }
+
                 // 开发环境详细日志
                 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                     console.log('[PerfDetect v2]', {

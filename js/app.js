@@ -28,7 +28,7 @@
     const redirect = urlParams.get('redirect');
     const fromPage = urlParams.get('from');
     // 保留 hash 片段（如 /blogs#001 重定向后变为 index.html?from=blogs#001）
-    const initialHash = window.location.hash;
+    let initialHash = window.location.hash;
     let initialPage = 'home';
     let shouldSwitchPage = false;
 
@@ -42,7 +42,15 @@
             console.warn('Parse redirect URL failed:', e);
         }
     } else if (fromPage) {
-        initialPage = fromPage;
+        // 裸数字的 from（如 /123 或 /2 经 404 兜底而来）视为博客文章编号：
+        // 切到随记页并补成 3 位 hash（如 '123' → '#123'、'2' → '#002'）以命中
+        // blogs.html 用 location.hash 做 b.id 精确匹配的文章 id 格式（'001'）。
+        if (/^\d+$/.test(fromPage)) {
+            initialPage = 'blogs';
+            initialHash = '#' + fromPage.padStart(3, '0');
+        } else {
+            initialPage = fromPage;
+        }
         shouldSwitchPage = true;
     }
 

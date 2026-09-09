@@ -198,8 +198,8 @@ const nowLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
 const nowISO = nowLocal.toISOString().slice(0, 10) + 'T00:00:00+08:00';
 const feedItems = [...blogs].reverse().map((b) => `        <item>
             <title>${escapeXml(b.title)}</title>
-            <link>${SITE}/blogs/${b.id}</link>
-            <guid isPermaLink="true">${SITE}/blogs/${b.id}</guid>
+            <link>${SITE}/blogs/${b.fileName}</link>
+            <guid isPermaLink="true">${SITE}/blogs/${b.fileName}</guid>
             <pubDate>${b.date}T00:00:00+08:00</pubDate>
             <description>${escapeXml(cap(b.excerpt, 150))}</description>
             <dc:creator>${escapeXml(b.author)}</dc:creator>
@@ -233,7 +233,7 @@ if (!llmsRe.test(llms)) {
     process.exit(1);
 }
 const llmsItems = blogs.map((b, i) =>
-    `${i + 1}. ${b.title} (${b.date}): ${cap(b.excerpt, 100)} - 标签: ${b.tags.join(', ')} - /blogs.html#${b.id}`
+    `${i + 1}. ${b.title} (${b.date}): ${cap(b.excerpt, 100)} - 标签: ${b.tags.join(', ')} - /blogs/${b.fileName}`
 ).join('\n');
 llms = llms.replace(llmsRe,
     () => `<!-- BLOG-LIST:START -->\n${llmsItems}\n<!-- BLOG-LIST:END -->`);
@@ -249,7 +249,7 @@ if (!sitemapRe.test(sitemap)) {
     process.exit(1);
 }
 const sitemapItems = blogs.map((b) => `    <url>
-        <loc>${SITE}/blogs/${b.id}</loc>
+        <loc>${SITE}/blogs/${b.fileName}</loc>
         <lastmod>${b.date}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>

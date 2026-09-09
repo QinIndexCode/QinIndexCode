@@ -24,11 +24,20 @@ body.dark-theme .tool-icon,
     filter: brightness(0) saturate(100%) invert(85%) sepia(20%) saturate(600%) hue-rotate(350deg) brightness(105%) contrast(95%);
 }
 
+/* 卡片网格顶部预留上浮空间：网格顶边与滚动视口齐平时，
+   首行卡片 hover 位移不被裁剪边界吃掉 */
+.grid {
+    padding-top: 10px;
+}
+
 /* Tool Card Enhanced Styles */
 .tool-card {
     display: flex;
     flex-direction: column;
     min-height: 380px;
+    /* 锚点跳转后卡片顶部与滚动视口留出间隙，
+       避免 hover 上浮位移被裁剪边界吃掉（translateY 3px + 阴影） */
+    scroll-margin-top: 1rem;
     background:
         linear-gradient(180deg,
             color-mix(in srgb, var(--surface) 100%, var(--text-primary) 2%) 0%,

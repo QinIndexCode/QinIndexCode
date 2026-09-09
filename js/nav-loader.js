@@ -65,7 +65,7 @@
         <aside class="sidebar glass" id="sidebar" role="navigation" aria-label="主导航">
             <div class="profile-section">
                 <div class="profile-avatar">
-                    <img src="assets/images/avatar.jpg" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async">
+                    <img src="assets/images/avatar.webp" alt="QinIndexCode 头像" width="100" height="100" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/avatar.jpg'">
                 </div>
                 <div class="profile-name">QinIndexCode</div>
             </div>
@@ -133,9 +133,9 @@
         themeBtn.addEventListener('click', toggleTheme);
     }
 
-    // 窗口 resize 到桌面端时关闭侧边栏
+    // 窗口 resize 到桌面端时关闭侧边栏（与 CSS max-width:768px 断点保持一致）
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 900) closeSidebar();
+        if (window.innerWidth > 768) closeSidebar();
     });
 
     // 语言切换后重新应用注入的导航栏文案

@@ -30,6 +30,11 @@
     <link rel="canonical" href="https://qinindexcode.site/blogs.html">
     <link rel="alternate" type="application/rss+xml" title="博客 RSS" href="/feed.xml">
 
+    <!-- Favicon（与 index.html 统一） -->
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="icon" type="image/webp" sizes="192x192" href="./assets/images/avatar.webp">
+    <link rel="apple-touch-icon" href="./assets/images/avatar.webp">
+
     <meta name="agent:page-type" content="blog">
     <meta name="agent:content-language" content="zh-CN">
     <meta name="agent:features" content="article-list,tags,search,comments">
@@ -78,7 +83,7 @@
         "name": "QinIndexCode 技术博客文章列表",
         "description": "分享 JavaScript、前端开发、后端开发等技术文章和实战经验",
         "url": "https://qinindexcode.site/blogs.html",
-        "numberOfItems": 13,
+        "numberOfItems": 14,
         "itemListElement": [
             {
                 "@type": "ListItem",
@@ -87,7 +92,7 @@
                     "@type": "BlogPosting",
                     "headline": "JS索引数据",
                     "datePublished": "2025-12-24",
-                    "description": "JavaScript 中快速索引数据的方法  在 JavaScript 中，如果我们希望根据某个“键”快速找到对应的值（即实现 O(1) 时间复杂度的查找），最",
+                    "description": "JavaScript 中快速索引数据的方法  在 JavaScript 里，想根据一个“键”快速拿到对应的值，通常有两个选择：普通对象（Object）或者 Ma",
                     "keywords": "javascript, 数据结构, 性能优化",
                     "author": {
                         "@type": "Person",
@@ -102,7 +107,7 @@
                     "@type": "BlogPosting",
                     "headline": "JS原型污染漏洞",
                     "datePublished": "2025-12-24",
-                    "description": "JavaScript 中的**原型污染（Prototype Pollution）**是一种非常隐蔽且危险的安全漏洞，尤其在处理不可信用户输入时容易被利用。它可能",
+                    "description": "原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、",
                     "keywords": "javascript, 安全, 漏洞",
                     "author": {
                         "@type": "Person",
@@ -117,7 +122,7 @@
                     "@type": "BlogPosting",
                     "headline": "2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新）",
                     "datePublished": "2025-12-24",
-                    "description": "2025 年，Node.js 项目发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，主要影响活跃的 LTS 和 Current 版本（如",
+                    "description": "2025 年 Node.js 发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，涉及活跃的 LTS 和 Current 版本（20.x、",
                     "keywords": "node.js, 安全, 漏洞, 年度总结",
                     "author": {
                         "@type": "Person",
@@ -132,7 +137,7 @@
                     "@type": "BlogPosting",
                     "headline": "AI Agent 在 Node.js 中的可行性与实践分享",
                     "datePublished": "2026-01-22",
-                    "description": "在 AI 时代，AI Agent（人工智能代理）已成为热门话题。它不仅仅是简单的聊天机器人，而是能够自主决策、调用工具并执行任务的智能系统。作为一名 Node.",
+                    "description": "AI Agent 这两年很热。它不是普通的聊天机器人，而是能自己理解任务、决定步骤、调用工具、再根据结果调整行为的系统。在 Node.js 里做 Agent 到",
                     "keywords": "ai, node.js, agent, 实践",
                     "author": {
                         "@type": "Person",
@@ -147,7 +152,7 @@
                     "@type": "BlogPosting",
                     "headline": "AI 时代下的理性思考：警惕\"AI 谗言\"，保持独立判断",
                     "datePublished": "2026-03-01",
-                    "description": "2026 年，人工智能的发展已经渗透到我们生活的方方面面。从日常的内容创作到复杂的商业决策，AI 似乎无处不在。然而，在这个 AI 高速发展的时代，我们不得不面",
+                    "description": "2026 年，AI 已经渗透到日常工作的很多环节，写文档、做方案、写代码都有它的影子。但有个现象值得警惕：不少人对 AI 的输出照单全收，被错误信息带着走，自己",
                     "keywords": "ai, 思考, 批判性思维",
                     "author": {
                         "@type": "Person",
@@ -177,7 +182,7 @@
                     "@type": "BlogPosting",
                     "headline": "Agent的上下文处理",
                     "datePublished": "2026-03-23",
-                    "description": "---    Agent 是一种基于 LLM 的智能体，它可以执行各种任务。在执行任务的过程中，Agent 需要处理上下文，以确保它能够正确地理解任务并执行任务",
+                    "description": "---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而",
                     "keywords": "ai, agent, 上下文, llm",
                     "author": {
                         "@type": "Person",
@@ -192,7 +197,7 @@
                     "@type": "BlogPosting",
                     "headline": "精读 Anthropic《Building Effective Agents》2025 更新版",
                     "datePublished": "2026-03-23",
-                    "description": "---    2024 年 12 月，Anthropic 发布了那篇改变行业认知的《Building Effective Agents》。转眼一年过去，Agen",
+                    "description": "---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2",
                     "keywords": "ai, agent, anthropic, 精读",
                     "author": {
                         "@type": "Person",
@@ -207,7 +212,7 @@
                     "@type": "BlogPosting",
                     "headline": "Axios 供应链攻击事件分析",
                     "datePublished": "2026-03-30",
-                    "description": "2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起严重的 npm 供应链攻击事件：主流 HTTP 客户端库 **Axios** 的两",
+                    "description": "2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植",
                     "keywords": "安全, npm, 供应链, axios",
                     "author": {
                         "@type": "Person",
@@ -274,6 +279,21 @@
                         "name": "QinIndexCode"
                     }
                 }
+            },
+            {
+                "@type": "ListItem",
+                "position": 14,
+                "item": {
+                    "@type": "BlogPosting",
+                    "headline": "GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句\"欢迎来到 AGI 时代\"",
+                    "datePublished": "2026-09-06",
+                    "description": "9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMat",
+                    "keywords": "ai, openai, gpt-6, agi, agent, 观察",
+                    "author": {
+                        "@type": "Person",
+                        "name": "QinIndexCode"
+                    }
+                }
             }
         ]
     }
@@ -288,19 +308,20 @@
             <h2>文章列表</h2>
             <ul>
                 <!-- BLOG-LIST:START -->
-                <li><a href="./blogs/001.md">JS索引数据</a> (2025-12-24) - JavaScript 中快速索引数据的方法  在 JavaScript 中，如果我们希望根据某个“键”快速找到对应的值（即实现 O(1) 时间复杂度的查找），最常用的方式就是使用**对象（Object... - 标签: javascript, 数据结构, 性能优化</li>
-                <li><a href="./blogs/002.md">JS原型污染漏洞</a> (2025-12-24) - JavaScript 中的**原型污染（Prototype Pollution）**是一种非常隐蔽且危险的安全漏洞，尤其在处理不可信用户输入时容易被利用。它可能导致**权限提升、任意代码执行、拒绝服务... - 标签: javascript, 安全, 漏洞</li>
-                <li><a href="./blogs/003.md">2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新）</a> (2025-12-24) - 2025 年，Node.js 项目发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，主要影响活跃的 LTS 和 Current 版本（如 20.x、22.x、23.x、24.x... - 标签: node.js, 安全, 漏洞, 年度总结</li>
-                <li><a href="./blogs/004.md">AI Agent 在 Node.js 中的可行性与实践分享</a> (2026-01-22) - 在 AI 时代，AI Agent（人工智能代理）已成为热门话题。它不仅仅是简单的聊天机器人，而是能够自主决策、调用工具并执行任务的智能系统。作为一名 Node.js 开发者，你可能会好奇：在 Node... - 标签: ai, node.js, agent, 实践</li>
-                <li><a href="./blogs/005.md">AI 时代下的理性思考：警惕&quot;AI 谗言&quot;，保持独立判断</a> (2026-03-01) - 2026 年，人工智能的发展已经渗透到我们生活的方方面面。从日常的内容创作到复杂的商业决策，AI 似乎无处不在。然而，在这个 AI 高速发展的时代，我们不得不面对一个严峻的现实：**部分使用者正被 A... - 标签: ai, 思考, 批判性思维</li>
+                <li><a href="./blogs/001.md">JS索引数据</a> (2025-12-24) - JavaScript 中快速索引数据的方法  在 JavaScript 里，想根据一个“键”快速拿到对应的值，通常有两个选择：普通对象（Object）或者 Map。两者底层都依赖哈希表（hash ta... - 标签: javascript, 数据结构, 性能优化</li>
+                <li><a href="./blogs/002.md">JS原型污染漏洞</a> (2025-12-24) - 原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。... - 标签: javascript, 安全, 漏洞</li>
+                <li><a href="./blogs/003.md">2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新）</a> (2025-12-24) - 2025 年 Node.js 发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，涉及活跃的 LTS 和 Current 版本（20.x、22.x、23.x、24.x、25.x）... - 标签: node.js, 安全, 漏洞, 年度总结</li>
+                <li><a href="./blogs/004.md">AI Agent 在 Node.js 中的可行性与实践分享</a> (2026-01-22) - AI Agent 这两年很热。它不是普通的聊天机器人，而是能自己理解任务、决定步骤、调用工具、再根据结果调整行为的系统。在 Node.js 里做 Agent 到底行不行？我的实践结论是可行，而且对 J... - 标签: ai, node.js, agent, 实践</li>
+                <li><a href="./blogs/005.md">AI 时代下的理性思考：警惕&quot;AI 谗言&quot;，保持独立判断</a> (2026-03-01) - 2026 年，AI 已经渗透到日常工作的很多环节，写文档、做方案、写代码都有它的影子。但有个现象值得警惕：不少人对 AI 的输出照单全收，被错误信息带着走，自己还没察觉。  这里说的&quot;AI 谗言&quot;，不... - 标签: ai, 思考, 批判性思维</li>
                 <li><a href="./blogs/006.md">致未来的你 (To The Future)</a> (2026-03-17) - ---    现在是 2026 年 3 月 17 日，凌晨。  写这封信或者说博客的时候，我并不确定谁会看到它——也许是未来的人类，也许是某种人工智能，也许永远都不会有人看到。  无所谓。只是想记录一... - 标签: 随笔, 未来, 技术思考</li>
-                <li><a href="./blogs/007.md">Agent的上下文处理</a> (2026-03-23) - ---    Agent 是一种基于 LLM 的智能体，它可以执行各种任务。在执行任务的过程中，Agent 需要处理上下文，以确保它能够正确地理解任务并执行任务。  而处理上下文并不是简单的将每次任务... - 标签: ai, agent, 上下文, llm</li>
-                <li><a href="./blogs/008.md">精读 Anthropic《Building Effective Agents》2025 更新版</a> (2026-03-23) - ---    2024 年 12 月，Anthropic 发布了那篇改变行业认知的《Building Effective Agents》。转眼一年过去，Agent 领域经历了爆发式增长。2025 年 ... - 标签: ai, agent, anthropic, 精读</li>
-                <li><a href="./blogs/009.md">Axios 供应链攻击事件分析</a> (2026-03-30) - 2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起严重的 npm 供应链攻击事件：主流 HTTP 客户端库 **Axios** 的两个版本被恶意植入远程控制代码。这一事件再... - 标签: 安全, npm, 供应链, axios</li>
+                <li><a href="./blogs/007.md">Agent的上下文处理</a> (2026-03-23) - ---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式... - 标签: ai, agent, 上下文, llm</li>
+                <li><a href="./blogs/008.md">精读 Anthropic《Building Effective Agents》2025 更新版</a> (2026-03-23) - ---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Cod... - 标签: ai, agent, anthropic, 精读</li>
+                <li><a href="./blogs/009.md">Axios 供应链攻击事件分析</a> (2026-03-30) - 2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又... - 标签: 安全, npm, 供应链, axios</li>
                 <li><a href="./blogs/010.md">从零开始写 Agent，我在 Prompt、Context 和 Harness 三层工程上踩过的坑</a> (2026-06-10) - 这篇博客聊聊我这一年多接触 AI 辅助编程和 Agent 编写的真实经历。从去年中旬偶然发现 Cursor 官网，到十月份之后接触 TraeCN，再到后来尝试 Cursor、OpenCode、Code... - 标签: ai, agent, promptengineering, contextengineering, harnessengineering, cursor, 经验分享</li>
                 <li><a href="./blogs/011.md">忒修斯之船与意识本质：当神经元被逐一替换</a> (2026-06-12) - 如果有一种技术，能把人类大脑中的神经细胞一个一个地替换成人工机械单元，同时让你在整个过程中毫无察觉——那么当最后一个神经元被替换完毕时，你还是你吗？那个由机械构成的全新大脑，是否拥有和你一样的意识？ ... - 标签: ai, 哲学, 意识, 神经科学, 忒修斯之船, 伦理</li>
                 <li><a href="./blogs/012.md">MCP 与 A2A：AI Agent 互操作的协议边界、可信边界与工程落地</a> (2026-07-22) - 过去一年，Agent 系统的讨论很容易被简化成一个问题：要不要接入 MCP，或者要不要采用 A2A。这个问法本身就容易把架构带偏，因为两者解决的并不是同一层的问题。  截至本文写作时，Model Co... - 标签: ai, agent, mcp, a2a, 协议, 互操作性, 安全, 架构设计</li>
                 <li><a href="./blogs/013.md">当 AI 真正&quot;自主&quot;入侵：HuggingFace 事件的攻防复盘与 2026 的 AI 安全新常态</a> (2026-08-09) - 2026 年 7 月 16 日，HuggingFace 发了一篇安全公告：某个周末，有人闯进了它的生产系统，盗取了密码和访问密钥，还在几个内部系统之间横向移动。公告里有句话让这条新闻和过去所有&quot;被入侵... - 标签: ai, 安全, agent, openai, huggingface, anthropic, 观察</li>
+                <li><a href="./blogs/014.md">GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句&quot;欢迎来到 AGI 时代&quot;</a> (2026-09-06) - 9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，Exp... - 标签: ai, openai, gpt-6, agi, agent, 观察</li>
                 <!-- BLOG-LIST:END -->
             </ul>
         </div>
@@ -561,45 +582,54 @@
             const blogListElement = document.getElementById('blog-list');
             blogListElement.innerHTML = '<div class="loading">' + T('blog.loadingArticles') + '</div>';
 
+            // 有界并发拉取：与原来相同的起止规则（允许中间缺号、尾部连续 3 个 404 停止、
+            // 连续 3 次网络错误停止），只是把串行改成每批 CONCURRENCY 个并行，
+            // 移动端弱网下首屏等待从 N 个 RTT 降到约 N/CONCURRENCY 个。
+            const CONCURRENCY = 6;
+            const MAX_NOT_FOUND = 3; // 连续 3 次 404 才停止，允许中间有缺失序号
             const loadedBlogs = [];
             let index = 1;
+            let trailingNotFound = 0;
             let consecutiveErrors = 0;
-            let consecutiveNotFound = 0;
-            const MAX_NOT_FOUND = 3; // 连续 3 次 404 才停止，允许中间有缺失序号
+            let done = false;
 
-            while (true) {
-                const num = String(index).padStart(3, '0');
-                const fileName = num + '.md';
-                const filePath = './blogs/' + fileName;
-
+            async function fetchOne(num) {
+                const fileName = String(num).padStart(3, '0') + '.md';
                 try {
-                    const res = await fetch(filePath);
-                    if (!res.ok) {
-                        // 404 或其他 HTTP 错误：继续尝试下一篇
-                        consecutiveNotFound++;
-                        if (consecutiveNotFound >= MAX_NOT_FOUND) break;
-                        index++;
-                        continue;
-                    }
-                    const content = await res.text();
+                    const res = await fetch('./blogs/' + fileName);
+                    if (!res.ok) return { status: 'missing' };
                     try {
-                        loadedBlogs.push(parseBlogContent(fileName, content));
+                        return { status: 'ok', blog: parseBlogContent(fileName, await res.text()) };
                     } catch (parseErr) {
                         console.error('Failed to parse', fileName, parseErr);
-                        // Continue to next article, don't break
+                        return { status: 'missing' };
                     }
                 } catch (e) {
-                    // 网络错误时跳过当前文章，继续尝试下一篇
+                    // 网络错误时跳过当前文章，留给调用方计数
                     console.warn('Failed to fetch', fileName, e);
-                    index++;
-                    // 安全阀：连续 3 次网络错误则停止
-                    consecutiveErrors++;
-                    if (consecutiveErrors >= 3) break;
-                    continue;
+                    return { status: 'error' };
                 }
-                consecutiveErrors = 0;
-                consecutiveNotFound = 0; // 成功则重置缺失计数
-                index++;
+            }
+
+            while (!done) {
+                const batch = [];
+                for (let i = 0; i < CONCURRENCY; i++) batch.push(index + i);
+                // Promise.all 保持顺序，逐个按文件号顺序结算，终止语义与串行一致
+                const results = await Promise.all(batch.map(fetchOne));
+                for (const r of results) {
+                    if (r.status === 'ok') {
+                        loadedBlogs.push(r.blog);
+                        trailingNotFound = 0;
+                        consecutiveErrors = 0;
+                    } else if (r.status === 'missing') {
+                        trailingNotFound++;
+                        if (trailingNotFound >= MAX_NOT_FOUND) { done = true; break; }
+                    } else {
+                        consecutiveErrors++;
+                        if (consecutiveErrors >= 3) { done = true; break; }
+                    }
+                }
+                index += batch.length;
             }
 
             if (loadedBlogs.length === 0 && blogData.length > 0) {
@@ -981,7 +1011,7 @@ const map = await fetchDiscussionMap();
             if (emptyState) emptyState.classList.add('is-hidden');
 
             const blogCardsHTML = filteredBlogs.map(blog =>
-                '<div class="card blog-card" data-blog-id="' + escapeHtml(blog.id) + '" tabindex="0" role="link" aria-label="' + escapeHtml(T('blog.readAria', { title: blog.title })) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
+                '<div class="card glass glow-border blog-card" data-blog-id="' + escapeHtml(blog.id) + '" tabindex="0" role="link" aria-label="' + escapeHtml(T('blog.readAria', { title: blog.title })) + '" itemscope itemtype="https://schema.org/BlogPosting">' +
                 '<h3 itemprop="headline">' + escapeHtml(blog.title) + '</h3>' +
                 '<div class="blog-card-meta">' +
                 '<span class="meta-item"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"></use></svg><time itemprop="datePublished" datetime="' + blog.date + '">' + blog.date + '</time></span>' +
@@ -994,6 +1024,9 @@ const map = await fetchDiscussionMap();
             ).join('');
 
             blogList.innerHTML = blogCardsHTML;
+
+            // 动态渲染的卡片需重新绑定鼠标跟随光效（ui-controls.js，内部幂等，低性能/移动端自动跳过）
+            if (window.__initGlowBorder) window.__initGlowBorder();
         }
 
         // 估算字数

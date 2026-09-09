@@ -15,8 +15,8 @@ window.QINBLOG_BLOGS = [
     "title": "JS索引数据",
     "date": "2025-12-24",
     "author": "QinIndexCode",
-    "excerpt": "JavaScript 中快速索引数据的方法  在 JavaScript 中，如果我们希望根据某个“键”快速找到对应的值（即实现 O(1) 时间复杂度的查找），最常用的方式就是使用**对象（Object）**或**Map** 来构建一个键值映射结构。这两种方式本质上都基于哈希表（hash table）...",
-    "wordCount": 812,
+    "excerpt": "JavaScript 中快速索引数据的方法  在 JavaScript 里，想根据一个“键”快速拿到对应的值，通常有两个选择：普通对象（Object）或者 Map。两者底层都依赖哈希表（hash table），查找、插入和删除的平均时间复杂度都是 O(1)，区别主要在键的类型和使用体验上。    对...",
+    "wordCount": 717,
     "tags": [
       "javascript",
       "数据结构",
@@ -30,8 +30,8 @@ window.QINBLOG_BLOGS = [
     "title": "JS原型污染漏洞",
     "date": "2025-12-24",
     "author": "QinIndexCode",
-    "excerpt": "JavaScript 中的**原型污染（Prototype Pollution）**是一种非常隐蔽且危险的安全漏洞，尤其在处理不可信用户输入时容易被利用。它可能导致**权限提升、任意代码执行、拒绝服务（DoS）**等严重后果。    JavaScript 中几乎所有对象都继承自 `Object.pr...",
-    "wordCount": 586,
+    "excerpt": "原型污染（Prototype Pollution）是 JavaScript 里一类隐蔽但危害很大的漏洞，处理不可信输入时尤其容易中招。被利用后可能导致权限提升、任意代码执行、拒绝服务（DoS）等后果。    JavaScript 中几乎所有对象都继承自 `Object.prototype`，而原型可...",
+    "wordCount": 576,
     "tags": [
       "javascript",
       "安全",
@@ -45,8 +45,8 @@ window.QINBLOG_BLOGS = [
     "title": "2025 年 Node.js 高危漏洞年度总结（2026 年 3 月更新）",
     "date": "2025-12-24",
     "author": "QinIndexCode",
-    "excerpt": "2025 年，Node.js 项目发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，主要影响活跃的 LTS 和 Current 版本（如 20.x、22.x、23.x、24.x、25.x）。这些漏洞涉及拒绝服务（DoS）、路径遍历、权限绕过等常见问题。同时，生态系统中的 Re...",
-    "wordCount": 1225,
+    "excerpt": "2025 年 Node.js 发布了多次安全更新，修复了多个高严重度（High Severity）漏洞，涉及活跃的 LTS 和 Current 版本（20.x、22.x、23.x、24.x、25.x），类型集中在拒绝服务（DoS）、路径遍历、权限绕过等。另外，生态里的 React Server Co...",
+    "wordCount": 1205,
     "tags": [
       "node.js",
       "安全",
@@ -61,8 +61,8 @@ window.QINBLOG_BLOGS = [
     "title": "AI Agent 在 Node.js 中的可行性与实践分享",
     "date": "2026-01-22",
     "author": "QinIndexCode",
-    "excerpt": "在 AI 时代，AI Agent（人工智能代理）已成为热门话题。它不仅仅是简单的聊天机器人，而是能够自主决策、调用工具并执行任务的智能系统。作为一名 Node.js 开发者，你可能会好奇：在 Node.js 环境中构建 AI Agent 是否可行？答案是肯定的！本文将探讨其可行性，并分享一些实用知识...",
-    "wordCount": 1130,
+    "excerpt": "AI Agent 这两年很热。它不是普通的聊天机器人，而是能自己理解任务、决定步骤、调用工具、再根据结果调整行为的系统。在 Node.js 里做 Agent 到底行不行？我的实践结论是可行，而且对 JS 开发者来说门槛不高。这篇文章记录一下可行性判断，以及一个能跑起来的最小示例。    AI Age...",
+    "wordCount": 1150,
     "tags": [
       "ai",
       "node.js",
@@ -77,8 +77,8 @@ window.QINBLOG_BLOGS = [
     "title": "AI 时代下的理性思考：警惕\"AI 谗言\"，保持独立判断",
     "date": "2026-03-01",
     "author": "QinIndexCode",
-    "excerpt": "2026 年，人工智能的发展已经渗透到我们生活的方方面面。从日常的内容创作到复杂的商业决策，AI 似乎无处不在。然而，在这个 AI 高速发展的时代，我们不得不面对一个严峻的现实：**部分使用者正被 AI 的\"谗言\"蒙蔽，导致错误决策的产生**。  这里的\"AI 谗言\"并非指 AI 有意欺骗，而是指：...",
-    "wordCount": 1337,
+    "excerpt": "2026 年，AI 已经渗透到日常工作的很多环节，写文档、做方案、写代码都有它的影子。但有个现象值得警惕：不少人对 AI 的输出照单全收，被错误信息带着走，自己还没察觉。  这里说的\"AI 谗言\"，不是指 AI 存心骗人，而是指三种使用习惯：  - 对 AI 输出的盲目信任 - 拿到答案不做批判性验...",
+    "wordCount": 1309,
     "tags": [
       "ai",
       "思考",
@@ -107,8 +107,8 @@ window.QINBLOG_BLOGS = [
     "title": "Agent的上下文处理",
     "date": "2026-03-23",
     "author": "QinIndexCode",
-    "excerpt": "---    Agent 是一种基于 LLM 的智能体，它可以执行各种任务。在执行任务的过程中，Agent 需要处理上下文，以确保它能够正确地理解任务并执行任务。  而处理上下文并不是简单的将每次任务的上下文都传递给 LLM，而是需要根据任务的性质和上下文的类型，选择合适的处理方式。随着对话轮次的增...",
-    "wordCount": 971,
+    "excerpt": "---    Agent 是基于 LLM 完成任务的系统，而上下文管理直接决定它能不能正确理解和执行任务。  上下文处理不是把所有历史记录一股脑塞给 LLM，而是要根据任务性质和上下文类型选择处理方式。对话轮次一多，上下文会持续膨胀，全量传递会带来几个直接问题：  - **Token 消耗过大**：...",
+    "wordCount": 914,
     "tags": [
       "ai",
       "agent",
@@ -123,8 +123,8 @@ window.QINBLOG_BLOGS = [
     "title": "精读 Anthropic《Building Effective Agents》2025 更新版",
     "date": "2026-03-23",
     "author": "QinIndexCode",
-    "excerpt": "---    2024 年 12 月，Anthropic 发布了那篇改变行业认知的《Building Effective Agents》。转眼一年过去，Agent 领域经历了爆发式增长。2025 年 9 月，Anthropic 将原有的 Claude Code SDK 正式升级为 **Claude ...",
-    "wordCount": 2891,
+    "excerpt": "---    2024 年 12 月，Anthropic 发布了《Building Effective Agents》。一年多过去，Agent 领域变化很快：2025 年 9 月，Claude Code SDK 升级为 **Claude Agent SDK**，文章本身也做了更新，而当初提出的核心原...",
+    "wordCount": 2876,
     "tags": [
       "ai",
       "agent",
@@ -139,8 +139,8 @@ window.QINBLOG_BLOGS = [
     "title": "Axios 供应链攻击事件分析",
     "date": "2026-03-30",
     "author": "QinIndexCode",
-    "excerpt": "2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起严重的 npm 供应链攻击事件：主流 HTTP 客户端库 **Axios** 的两个版本被恶意植入远程控制代码。这一事件再次为开源依赖安全敲响了警钟。  ---      - `axios@1.14.1` - `axios...",
-    "wordCount": 1079,
+    "excerpt": "2026 年 3 月 30 日，安全机构 StepSecurity 披露了一起 npm 供应链攻击：主流 HTTP 客户端库 **Axios** 的两个版本被植入了远程控制代码。开源依赖的安全问题，又一次被摆到了台面上。  ---      - `axios@1.14.1` - `axios@0.3...",
+    "wordCount": 1048,
     "tags": [
       "安全",
       "npm",
@@ -221,6 +221,24 @@ window.QINBLOG_BLOGS = [
       "openai",
       "huggingface",
       "anthropic",
+      "观察"
+    ]
+  },
+  {
+    "id": "014",
+    "fileName": "014.md",
+    "seq": 14,
+    "title": "GPT-6 Astra 发布三天：三个满分级测试、缺席的 GDPval 与一句\"欢迎来到 AGI 时代\"",
+    "date": "2026-09-06",
+    "author": "QinIndexCode",
+    "excerpt": "9 月 3 日周四，OpenAI 发布 GPT-6 Astra。我看了发布会回放，分数表翻来覆去对了好几遍：ARC-AGI-3 逼近满分，FrontierMath Tier 4 到 97.6%，ExploitBench 直接 100%。总裁 Greg Brockman 称这次发布是\"代际跨越\"，个人...",
+    "wordCount": 2274,
+    "tags": [
+      "ai",
+      "openai",
+      "gpt-6",
+      "agi",
+      "agent",
       "观察"
     ]
   }

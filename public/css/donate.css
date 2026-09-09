@@ -158,6 +158,8 @@
 
 .pay-modal.active {
     background: rgba(0, 0, 0, 0.6);
+    /* 主题自适应遮罩：--text-inverse 即当前主题反色（深色下近黑、浅色下近白） */
+    background: color-mix(in srgb, var(--text-inverse) 60%, transparent);
     backdrop-filter: blur(12px);
     opacity: 1;
     pointer-events: auto;
@@ -243,6 +245,8 @@
     justify-content: center;
     padding: 1rem;
     background: rgba(0, 0, 0, 0.75);
+    /* 主题自适应遮罩：深色下近黑、浅色下近白 */
+    background: color-mix(in srgb, var(--text-inverse) 75%, transparent);
     backdrop-filter: blur(8px);
     opacity: 0;
     pointer-events: none;
