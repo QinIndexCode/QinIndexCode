@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mygitblog-v14';
-const STATIC_CACHE_NAME = 'mygitblog-static-v14';
-const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v14';
-const IMAGE_CACHE_NAME = 'mygitblog-images-v14';
+const CACHE_NAME = 'mygitblog-v15';
+const STATIC_CACHE_NAME = 'mygitblog-static-v15';
+const DYNAMIC_CACHE_NAME = 'mygitblog-dynamic-v15';
+const IMAGE_CACHE_NAME = 'mygitblog-images-v15';
 
 const STATIC_ASSETS = [
     './',
