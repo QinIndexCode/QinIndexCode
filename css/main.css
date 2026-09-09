@@ -3546,7 +3546,9 @@ textarea {
 /* 桌面端：侧边栏固定显示，页面内容向右偏移 */
 @media (min-width: 769px) {
     body.has-standalone-nav {
-        padding-left: calc(280px + var(--spacing-md) * 2);
+        /* 固定常量：280px 侧边栏 + 左右两个 --spacing-md(16px) 间距。
+           避免 calc(var() * N)（部分浏览器解析失败会导致内边距塌陷，见 AGENTS.md）。 */
+        padding-left: 312px;
     }
     body.has-standalone-nav .sidebar {
         position: fixed;
