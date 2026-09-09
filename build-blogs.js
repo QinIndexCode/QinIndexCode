@@ -371,6 +371,9 @@ const ARTICLE_STYLE = `
     .blog-article-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     .blog-article-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
     .back-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .blog-article-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+    .comment-link { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; }
+    .comments-card { margin-top: 1.25rem; }
 `;
 
 function renderArticleHtml(b) {
@@ -418,8 +421,10 @@ function renderArticleHtml(b) {
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="${articleEscape(b.title)}">
     <meta name="twitter:description" content="${articleEscape(description)}">
+    <meta property="og:image" content="${SITE}/assets/images/avatar.webp">
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="icon" type="image/webp" sizes="192x192" href="../assets/images/avatar.webp">
+    <link rel="apple-touch-icon" href="../assets/images/avatar.webp">
     <link href="../css/css2.min.css" rel="stylesheet">
     <link href="../css/main.min.css" rel="stylesheet">
     <link href="../css/atom-one-dark.min.css" rel="stylesheet">
@@ -431,6 +436,7 @@ ${jsonLdHtml}
     <script src="../js/i18n.js" defer></script>
     <script src="../js/nav-loader.js" defer></script>
     <script src="../js/theme-listener.js" defer></script>
+    <script src="../js/svg-sprite.js" defer></script>
 </head>
 <body>
     <main class="container" role="main">
@@ -441,10 +447,16 @@ ${jsonLdHtml}
                 </nav>
                 <h1>${articleEscape(b.title)}</h1>
                 <div class="blog-article-meta">
-                    <time datetime="${b.date}">${articleEscape(b.date)}</time>
-                    <span>·</span>
-                    <span>${articleEscape(b.author)}</span>
-                    ${b.wordCount ? `<span>·</span><span>约 ${b.wordCount} 字</span>` : ''}
+                    <span class="meta-item">
+                        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                        <time datetime="${b.date}">${articleEscape(b.date)}</time>
+                    </span>
+                    <span class="meta-item" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-feather"></use></svg>
+                        <span itemprop="name">${articleEscape(b.author)}</span>
+                    </span>
+                    ${b.wordCount ? `<span class="meta-item"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-file-text"></use></svg><span>约 ${b.wordCount} 字</span></span>` : ''}
+                    ${b.wordCount ? `<span class="meta-item"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-clock"></use></svg><span>约 ${Math.max(1, Math.ceil(b.wordCount / 300))} 分钟阅读</span></span>` : ''}
                 </div>
                 ${tagHtml ? `<div class="blog-tags">${tagHtml}</div>` : ''}
             </header>
@@ -453,8 +465,23 @@ ${bodyHtml}
             </div>
             <footer class="blog-article-footer">
                 <a class="back-link" href="../blogs.html">&larr; 返回随记列表</a>
+                <a class="comment-link" href="#comments-section">
+                    <svg class="icon" aria-hidden="true"><use href="#i-message"></use></svg>
+                    <span>评论</span>
+                </a>
             </footer>
         </article>
+
+        <!-- Giscus 评论区域（与主站文章详情一致） -->
+        <section class="card comments-card" id="comments-section">
+            <div class="comments-header">
+                <h2>
+                    <svg class="icon" aria-hidden="true"><use href="#i-message"></use></svg>
+                    <span>评论讨论</span>
+                </h2>
+            </div>
+            <div class="giscus" id="giscus-container"></div>
+        </section>
     </main>
     <noscript>
         <div style="padding:1.5rem;max-width:820px;margin:0 auto;font-family:system-ui,sans-serif;line-height:1.7;">
@@ -463,6 +490,44 @@ ${bodyHtml}
             <p><a href="../blogs.html">返回随记列表</a></p>
         </div>
     </noscript>
+    <script>
+        /* 独立文章页初始化：加载 Giscus 评论（讨论 ID 与主站一致 = 文章 ID） */
+        (function () {
+            'use strict';
+            function loadComments() {
+                var container = document.getElementById('giscus-container');
+                if (!container) return;
+                var root = getComputedStyle(document.documentElement);
+                var bg = root.getPropertyValue('--bg-primary').trim();
+                var theme = (bg === '#0C0A09' || bg.indexOf('0C0A09') !== -1)
+                    ? 'https://qinindexcode.site/css/giscus-dark.css'
+                    : 'https://qinindexcode.site/css/giscus-light.css';
+                var s = document.createElement('script');
+                s.src = 'https://giscus.app/client.js';
+                s.async = true;
+                s.crossOrigin = 'anonymous';
+                s.setAttribute('data-repo', 'QinIndexCode/QinIndexCode');
+                s.setAttribute('data-repo-id', 'R_kgDOQmJfZg');
+                s.setAttribute('data-category', 'General');
+                s.setAttribute('data-category-id', 'DIC_kwDOQmJfZs4C3dZh');
+                s.setAttribute('data-mapping', 'specific');
+                s.setAttribute('data-term', '${b.id}');
+                s.setAttribute('data-strict', '0');
+                s.setAttribute('data-reactions-enabled', '1');
+                s.setAttribute('data-emit-metadata', '0');
+                s.setAttribute('data-input-position', 'top');
+                s.setAttribute('data-theme', theme);
+                s.setAttribute('data-lang', 'zh-CN');
+                s.setAttribute('data-loading', 'lazy');
+                container.appendChild(s);
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadComments);
+            } else {
+                loadComments();
+            }
+        })();
+    </script>
 </body>
 </html>`;
 }
