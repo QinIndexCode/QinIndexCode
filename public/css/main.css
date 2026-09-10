@@ -3557,6 +3557,14 @@ textarea {
         bottom: var(--spacing-md);
         height: auto;
         border-radius: var(--radius-xl);
+        /* 固定元素 + backdrop-filter 会在内容滚过其背后时逐帧重新模糊，
+           造成跳转/滚动时侧边栏闪烁。侧边栏自带 --surface 渐变背景，
+           禁用 blur 后视觉基本不变，同时提升到独立合成层彻底消除闪烁。 */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        transform: translateZ(0);
+        will-change: transform;
+        backface-visibility: hidden;
     }
     body.has-standalone-nav .hamburger-btn {
         display: none;
