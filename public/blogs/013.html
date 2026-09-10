@@ -84,11 +84,14 @@
     </script>
     <script src="../js/theme-tokens.js"></script>
     <script src="../js/i18n.js" defer></script>
-    <script src="../js/nav-loader.js" defer></script>
     <script src="../js/theme-listener.js" defer></script>
-    <script src="../js/svg-sprite.js" defer></script>
 </head>
-<body>
+<body class="has-standalone-nav">
+    <!-- 同步注入图标精灵与导航侧边栏：has-standalone-nav 已烘焙进 body，
+        padding 自首帧即生效；nav 在 <main> 内容之前注入，侧边栏首屏即在位，
+        彻底消除跳转时左侧侧边栏延迟注入 + body padding 突变造成的闪烁(FOUC)。 -->
+    <script src="../js/svg-sprite.js"></script>
+    <script src="../js/nav-loader.js"></script>
     <!-- 阅读进度条 -->
     <div class="reading-progress-bar" id="reading-progress">
         <div class="progress-fill" id="progress-fill"></div>
