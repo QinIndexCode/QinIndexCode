@@ -109,7 +109,7 @@
         if (params.get('from') || params.get('redirect')) return;
         var clean = path.replace(/^\/|\/$/g, '').replace(/\.html$/, '');
         if (!clean || clean === 'index') return;
-        var validPages = ['home','tech','projects','blogs','tools','donate','about'];
+        var validPages = ['home','projects','blogs','tools','donate','about'];
         var page = clean.replace(/\/.*/, '');
         if (validPages.indexOf(page) !== -1) {
             var url = '/?from=' + page;
@@ -154,12 +154,6 @@
                     <div class="nav-link active" data-target="home" data-src="home.html" role="menuitem" tabindex="0">
                         <svg class="icon" aria-hidden="true"><use href="#i-home"></use></svg>
                         <span data-i18n="nav.home">首页</span>
-                    </div>
-                </li>
-                <li class="nav-item" role="none">
-                    <div class="nav-link" data-target="tech" data-src="tech.html" role="menuitem" tabindex="0">
-                        <svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg>
-                        <span data-i18n="nav.tech">技术</span>
                     </div>
                 </li>
                 <li class="nav-item" role="none">

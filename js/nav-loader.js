@@ -25,7 +25,6 @@
     const base = window.location.pathname.split('/').length > 2 ? '../' : './';
     const navItems = [
         { id: 'home',    label: L('nav.home', '首页'),  icon: '#i-home',     href: base + '' },
-        { id: 'tech',    label: L('nav.tech', '技术'),  icon: '#i-code',     href: base + 'tech.html' },
         { id: 'projects',label: L('nav.projects', '项目'), icon: '#i-folder', href: base + 'projects.html' },
         { id: 'blogs',   label: L('nav.blogs', '随记'),  icon: '#i-book-open', href: base + 'blogs.html' },
         { id: 'tools',   label: L('nav.tools', '工具'),  icon: '#i-wrench',    href: base + 'tools.html' },

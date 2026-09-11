@@ -1,5 +1,5 @@
 /**
- * Theme Listener — used by iframe pages (home.html, tech.html, etc.)
+ * Theme Listener — used by iframe pages (home.html, projects.html, etc.)
  * The synchronous theme application is done by theme-tokens.js.
  * This file only handles live theme updates from the parent shell.
  */

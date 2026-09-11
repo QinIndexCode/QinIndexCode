@@ -12,7 +12,6 @@ export default defineConfig({
         input: {
           index: './src/pages/index.astro',
           home: './src/pages/home.astro',
-          tech: './src/pages/tech.astro',
           projects: './src/pages/projects.astro',
           blogs: './src/pages/blogs.astro',
           tools: './src/pages/tools.astro',

@@ -20,14 +20,6 @@
         <priority>0.9</priority>
     </url>
 
-    <!-- 技术页面 -->
-    <url>
-        <loc>https://qinindexcode.site/tech.html</loc>
-        <lastmod>2026-06-10</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
     <!-- 项目页面 -->
     <url>
         <loc>https://qinindexcode.site/projects.html</loc>
