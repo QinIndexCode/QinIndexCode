@@ -585,6 +585,22 @@
 
         async function loadBlogsSequentially() {
             const blogListElement = document.getElementById('blog-list');
+
+            // 优先用打包的 blogs-data.js（本地零网络）立即渲染列表：
+            // 列表仅需元数据，而 blogs-data.js 由 build-blogs.js 与文章同源自同构建生成，
+            // 与逐篇 fetch .md 的元数据一致。这样每次进入/从阅读页返回随记页
+            // 都无需先显示“加载中”、也无需逐篇网络拉取 .md——弱网下的闪烁/等待得以消除。
+            if (blogData.length > 0) {
+                blogData = [...blogData].sort((a, b) => b.seq - a.seq);
+                filteredBlogs = [...blogData];
+                renderBlogList();
+                renderFilterTags();
+                initSearchAndFilters();
+                updateBlogJsonLd();
+                return;
+            }
+
+            // 兜底：blogs-data.js 未加载（异常场景）时，才走网络拉取
             blogListElement.innerHTML = '<div class="loading">' + T('blog.loadingArticles') + '</div>';
 
             // 有界并发拉取：与原来相同的起止规则（允许中间缺号、尾部连续 3 个 404 停止、
@@ -1024,7 +1040,7 @@ const map = await fetchDiscussionMap();
                 '</div>' +
                 '<p itemprop="description" class="blog-card-excerpt">' + escapeHtml(blog.excerpt) + '</p>' +
                 '<span class="link-arrow">' + T('blog.readMore') + '</span>' +
-                '<meta itemprop="wordCount" content="' + estimateWordCount(blog.content) + '">' +
+                '<meta itemprop="wordCount" content="' + (blog.wordCount || estimateWordCount(blog.content || '')) + '">' +
                 '</a>'
             ).join('');
 
